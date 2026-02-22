@@ -8,14 +8,16 @@ export default function Home() {
   return (
     <div>
       {/* Hero */}
-      <section className="border-b border-[#222] bg-gradient-to-b from-[#0a0a0a] to-[#111]">
+      <section className="border-b border-[#27272a] bg-gradient-to-b from-[#0c0c0d] via-[#131315] to-[#18181b] relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/5 via-purple-600/5 to-teal-600/5"></div>
+        <div className="relative">
         <div className="mx-auto max-w-7xl px-4 py-20 text-center">
           <h1 className="mb-4 text-4xl font-bold tracking-tight md:text-6xl">
-            The Humanoid Robot <span className="text-[#3b82f6]">Database</span>
+            <span className="text-[#3b82f6]">Bridging</span> Tech & Everyday Life
           </h1>
           <p className="mx-auto mb-8 max-w-2xl text-lg text-[#a0a0a0]">
-            Specs, comparisons, and news for every humanoid robot.
-            Track the machines that will reshape our world.
+            Understand which humanoid robots will enter your home, workplace, school, and healthcare. 
+            We track capabilities, availability, and real-world impact of every robot.
           </p>
           <div className="flex justify-center gap-4">
             <a href="/robots" className="rounded-lg bg-[#3b82f6] px-6 py-2.5 text-sm font-medium text-white transition hover:bg-[#2563eb]">
@@ -30,6 +32,7 @@ export default function Home() {
             <div><span className="text-2xl font-bold text-white">{manufacturers.length}</span><br/>Manufacturers</div>
             <div><span className="text-2xl font-bold text-white">{robots.filter(r => r.status === 'shipping').length}</span><br/>Shipping</div>
           </div>
+        </div>
         </div>
       </section>
 

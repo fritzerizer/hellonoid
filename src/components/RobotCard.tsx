@@ -31,10 +31,44 @@ export default function RobotCard({ robot }: { robot: Robot }) {
         🤖
       </div>
       <p className="mb-3 text-sm text-[#a0a0a0] line-clamp-2">{robot.summary}</p>
-      <div className="flex gap-4 text-xs text-[#666]">
-        {height && <span>{height.spec_value} {height.spec_unit}</span>}
-        {weight && <span>{weight.spec_value} {weight.spec_unit}</span>}
-        <span className="text-[#555]">{robot.category}</span>
+      <div className="space-y-2">
+        <div className="flex gap-4 text-xs text-[#666]">
+          {height && <span>{height.spec_value} {height.spec_unit}</span>}
+          {weight && <span>{weight.spec_value} {weight.spec_unit}</span>}
+          <span className="text-[#555]">{robot.category}</span>
+        </div>
+        
+        {/* New structured data */}
+        <div className="flex items-center gap-3 text-xs">
+          {robot.dof?.total && (
+            <span className="flex items-center gap-1 text-[#3b82f6]">
+              <span>⚡</span>
+              <span>{robot.dof.total} DOF</span>
+            </span>
+          )}
+          {robot.battery?.life_hours && (
+            <span className="flex items-center gap-1 text-[#10b981]">
+              <span>🔋</span>
+              <span>{robot.battery.life_hours}h</span>
+            </span>
+          )}
+          {robot.purchase_price_usd && (
+            <span className="flex items-center gap-1 text-[#f59e0b]">
+              <span>💰</span>
+              <span>${(robot.purchase_price_usd / 1000).toFixed(0)}k</span>
+            </span>
+          )}
+        </div>
+        
+        {/* Capabilities icons */}
+        {robot.capabilities && (
+          <div className="flex gap-1">
+            {robot.capabilities.can_fold_laundry && <span className="text-xs">👕</span>}
+            {robot.capabilities.can_vacuum && <span className="text-xs">🧹</span>}
+            {robot.capabilities.can_climb_stairs && <span className="text-xs">🪜</span>}
+            {robot.ai?.voice_capable && <span className="text-xs">🎤</span>}
+          </div>
+        )}
       </div>
     </a>
   );

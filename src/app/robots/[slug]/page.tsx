@@ -53,8 +53,167 @@ export default async function RobotPage({ params }: { params: Promise<{ slug: st
 
           <p className="mb-8 text-lg text-[#a0a0a0]">{robot.summary}</p>
 
-          {/* Specs */}
-          <h2 className="mb-4 text-xl font-semibold">Specifications</h2>
+          {/* Capabilities */}
+          {robot.capabilities && (
+            <div className="mb-8">
+              <h2 className="mb-4 text-xl font-semibold">Capabilities</h2>
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {robot.capabilities.can_fold_laundry === true && (
+                  <div className="flex items-center gap-3 rounded-lg border border-[#222] bg-[#161616] p-3">
+                    <span className="text-2xl">👕</span>
+                    <span className="text-sm font-medium">Fold Laundry</span>
+                  </div>
+                )}
+                {robot.capabilities.can_vacuum === true && (
+                  <div className="flex items-center gap-3 rounded-lg border border-[#222] bg-[#161616] p-3">
+                    <span className="text-2xl">🧹</span>
+                    <span className="text-sm font-medium">Vacuum Cleaning</span>
+                  </div>
+                )}
+                {robot.capabilities.can_climb_stairs === true && (
+                  <div className="flex items-center gap-3 rounded-lg border border-[#222] bg-[#161616] p-3">
+                    <span className="text-2xl">🪜</span>
+                    <span className="text-sm font-medium">Climb Stairs</span>
+                  </div>
+                )}
+                {robot.capabilities.max_lift_kg && (
+                  <div className="flex items-center gap-3 rounded-lg border border-[#222] bg-[#161616] p-3">
+                    <span className="text-2xl">🏋️</span>
+                    <span className="text-sm font-medium">Lift up to {robot.capabilities.max_lift_kg}kg</span>
+                  </div>
+                )}
+                {robot.capabilities.max_carry_kg && (
+                  <div className="flex items-center gap-3 rounded-lg border border-[#222] bg-[#161616] p-3">
+                    <span className="text-2xl">📦</span>
+                    <span className="text-sm font-medium">Carry up to {robot.capabilities.max_carry_kg}kg</span>
+                  </div>
+                )}
+                {robot.capabilities.autonomous_duration_hours && (
+                  <div className="flex items-center gap-3 rounded-lg border border-[#222] bg-[#161616] p-3">
+                    <span className="text-2xl">🔋</span>
+                    <span className="text-sm font-medium">{robot.capabilities.autonomous_duration_hours}h autonomous</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Degrees of Freedom */}
+          {robot.dof && (
+            <div className="mb-8">
+              <h2 className="mb-4 text-xl font-semibold">Degrees of Freedom</h2>
+              <div className="rounded-lg border border-[#222] bg-[#161616] p-5">
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {robot.dof.total && (
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-[#3b82f6]">{robot.dof.total}</div>
+                      <div className="text-sm text-[#666]">Total DOF</div>
+                    </div>
+                  )}
+                  {robot.dof.hands_each && (
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-[#10b981]">{robot.dof.hands_each}</div>
+                      <div className="text-sm text-[#666]">Per Hand</div>
+                    </div>
+                  )}
+                  {robot.dof.arms_each && (
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-[#f59e0b]">{robot.dof.arms_each}</div>
+                      <div className="text-sm text-[#666]">Per Arm</div>
+                    </div>
+                  )}
+                  {robot.dof.legs_each && (
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-[#ef4444]">{robot.dof.legs_each}</div>
+                      <div className="text-sm text-[#666]">Per Leg</div>
+                    </div>
+                  )}
+                  {robot.dof.torso && (
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-[#8b5cf6]">{robot.dof.torso}</div>
+                      <div className="text-sm text-[#666]">Torso</div>
+                    </div>
+                  )}
+                  {robot.dof.head && (
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-[#ec4899]">{robot.dof.head}</div>
+                      <div className="text-sm text-[#666]">Head</div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* AI & Brain */}
+          {robot.ai && (
+            <div className="mb-8">
+              <h2 className="mb-4 text-xl font-semibold">AI & Brain</h2>
+              <div className="rounded-lg border border-[#222] bg-[#161616] p-5">
+                <div className="space-y-4">
+                  {robot.ai.model && (
+                    <div>
+                      <span className="text-sm font-medium text-[#a0a0a0]">AI Model:</span>
+                      <p className="mt-1">{robot.ai.model}</p>
+                    </div>
+                  )}
+                  {robot.ai.response_time && (
+                    <div>
+                      <span className="text-sm font-medium text-[#a0a0a0]">Response Time:</span>
+                      <p className="mt-1">{robot.ai.response_time}</p>
+                    </div>
+                  )}
+                  <div className="flex gap-4">
+                    {robot.ai.voice_capable !== null && (
+                      <div className="flex items-center gap-2">
+                        <span className="text-lg">{robot.ai.voice_capable ? '🎤' : '🔇'}</span>
+                        <span className="text-sm">{robot.ai.voice_capable ? 'Voice Capable' : 'No Voice'}</span>
+                      </div>
+                    )}
+                    {robot.ai.autonomy_level && (
+                      <div className="flex items-center gap-2">
+                        <span className="text-lg">
+                          {robot.ai.autonomy_level === 'full_autonomous' ? '🤖' : 
+                           robot.ai.autonomy_level === 'teleoperated' ? '🎮' : '⚡'}
+                        </span>
+                        <span className="text-sm capitalize">{robot.ai.autonomy_level.replace('_', ' ')}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Battery */}
+          {robot.battery && (
+            <div className="mb-8">
+              <h2 className="mb-4 text-xl font-semibold">Battery & Power</h2>
+              <div className="grid gap-4 sm:grid-cols-3">
+                {robot.battery.capacity_kwh && (
+                  <div className="rounded-lg border border-[#222] bg-[#161616] p-4 text-center">
+                    <div className="text-xl font-bold text-[#10b981]">{robot.battery.capacity_kwh}</div>
+                    <div className="text-sm text-[#666]">kWh Capacity</div>
+                  </div>
+                )}
+                {robot.battery.life_hours && (
+                  <div className="rounded-lg border border-[#222] bg-[#161616] p-4 text-center">
+                    <div className="text-xl font-bold text-[#3b82f6]">{robot.battery.life_hours}</div>
+                    <div className="text-sm text-[#666]">Hours Runtime</div>
+                  </div>
+                )}
+                {robot.battery.charge_time_hours && (
+                  <div className="rounded-lg border border-[#222] bg-[#161616] p-4 text-center">
+                    <div className="text-xl font-bold text-[#f59e0b]">{robot.battery.charge_time_hours}</div>
+                    <div className="text-sm text-[#666]">Hours to Charge</div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Traditional Specs */}
+          <h2 className="mb-4 text-xl font-semibold">Technical Specifications</h2>
           <SpecTable specs={specs} />
 
           {/* Related News */}
@@ -76,6 +235,41 @@ export default async function RobotPage({ params }: { params: Promise<{ slug: st
 
         {/* Sidebar */}
         <aside className="space-y-4">
+          {/* Availability & Pricing */}
+          <div className="rounded-lg border border-[#222] bg-[#161616] p-5">
+            <h3 className="mb-3 text-sm font-medium text-[#a0a0a0]">Availability & Pricing</h3>
+            <div className="space-y-3">
+              {robot.purchase_price_usd && (
+                <div>
+                  <span className="text-sm text-[#666]">Price</span>
+                  <div className="text-lg font-bold text-[#10b981]">${robot.purchase_price_usd.toLocaleString()}</div>
+                </div>
+              )}
+              {robot.expected_delivery && (
+                <div>
+                  <span className="text-sm text-[#666]">Expected Delivery</span>
+                  <div className="font-medium">{robot.expected_delivery}</div>
+                </div>
+              )}
+              {robot.country_of_origin && (
+                <div>
+                  <span className="text-sm text-[#666]">Made in</span>
+                  <div className="font-medium">{robot.country_of_origin}</div>
+                </div>
+              )}
+              {robot.purchase_url && (
+                <a 
+                  href={robot.purchase_url} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="mt-3 block rounded-lg bg-[#3b82f6] px-4 py-2 text-center text-sm font-medium text-white transition hover:bg-[#2563eb]"
+                >
+                  Learn More →
+                </a>
+              )}
+            </div>
+          </div>
+
           <div className="rounded-lg border border-[#222] bg-[#161616] p-5">
             <h3 className="mb-3 text-sm font-medium text-[#a0a0a0]">Quick Specs</h3>
             {specs.filter(s => ['Height', 'Weight', 'Top Speed', 'Walking Speed', 'Payload', 'Battery Life', 'Price'].includes(s.spec_key)).map(s => (

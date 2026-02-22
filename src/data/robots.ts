@@ -20,6 +20,43 @@ export interface Robot {
   summary: string;
   created_at: string;
   updated_at: string;
+  
+  // New structured fields (Phase 1)
+  country_of_origin?: string | null;
+  expected_delivery?: string | null;
+  purchase_url?: string | null;
+  purchase_price_usd?: number | null;
+  
+  capabilities?: {
+    can_fold_laundry?: boolean | null;
+    can_vacuum?: boolean | null;
+    can_climb_stairs?: boolean | null;
+    max_lift_kg?: number | null;
+    max_carry_kg?: number | null;
+    autonomous_duration_hours?: number | null;
+  };
+  
+  dof?: {
+    total?: number | null;
+    hands_each?: number | null;
+    arms_each?: number | null;
+    legs_each?: number | null;
+    torso?: number | null;
+    head?: number | null;
+  };
+  
+  ai?: {
+    model?: string | null;
+    response_time?: string | null;
+    voice_capable?: boolean | null;
+    autonomy_level?: 'full_autonomous' | 'teleoperated' | 'hybrid' | null;
+  };
+  
+  battery?: {
+    capacity_kwh?: number | null;
+    life_hours?: number | null;
+    charge_time_hours?: number | null;
+  };
 }
 
 export interface RobotSpec {
@@ -55,16 +92,436 @@ export const manufacturers: Manufacturer[] = [
 ];
 
 export const robots: Robot[] = [
-  { id: 1, name: 'Tesla Optimus (Gen 2)', slug: 'tesla-optimus-gen-2', manufacturer_id: 1, status: 'development', category: 'General Purpose', hero_image_url: '', summary: 'Tesla\'s second-generation humanoid robot featuring improved hands with 22 degrees of freedom and 30% faster walking speed.', created_at: '2024-01-01', updated_at: '2024-12-01' },
-  { id: 2, name: '1X NEO', slug: '1x-neo', manufacturer_id: 2, status: 'development', category: 'Home Assistant', hero_image_url: '', summary: 'Lightweight android designed for home environments with an exceptionally long 20-hour battery life.', created_at: '2024-01-01', updated_at: '2024-08-01' },
-  { id: 3, name: 'Figure 02', slug: 'figure-02', manufacturer_id: 3, status: 'development', category: 'General Purpose', hero_image_url: '', summary: 'Second-generation humanoid with integrated speech capabilities powered by OpenAI, designed for commercial deployment.', created_at: '2024-01-01', updated_at: '2024-08-01' },
-  { id: 4, name: 'Unitree H1', slug: 'unitree-h1', manufacturer_id: 4, status: 'shipping', category: 'Research/Industrial', hero_image_url: '', summary: 'High-performance humanoid with record-breaking 9.4 m/s top speed, targeting research and industrial applications.', created_at: '2024-01-01', updated_at: '2024-06-01' },
-  { id: 5, name: 'Unitree G1', slug: 'unitree-g1', manufacturer_id: 4, status: 'shipping', category: 'General Purpose', hero_image_url: '', summary: 'Affordable humanoid robot starting at $16,000, making humanoid robotics accessible to a wider market.', created_at: '2024-01-01', updated_at: '2024-06-01' },
-  { id: 6, name: 'Boston Dynamics Atlas (Electric)', slug: 'boston-dynamics-atlas-electric', manufacturer_id: 5, status: 'development', category: 'Industrial', hero_image_url: '', summary: 'All-electric successor to the hydraulic Atlas, featuring multi-axis joints and unprecedented range of motion.', created_at: '2024-01-01', updated_at: '2024-10-01' },
-  { id: 7, name: 'Agility Digit', slug: 'agility-digit', manufacturer_id: 6, status: 'shipping', category: 'Logistics', hero_image_url: '', summary: 'Purpose-built for warehouse logistics, Digit can lift and carry packages in human-designed spaces.', created_at: '2024-01-01', updated_at: '2024-09-01' },
-  { id: 8, name: 'Apptronik Apollo', slug: 'apptronik-apollo', manufacturer_id: 7, status: 'development', category: 'Industrial', hero_image_url: '', summary: 'Industrial humanoid with 25kg payload capacity, designed for manufacturing and logistics environments.', created_at: '2024-01-01', updated_at: '2024-07-01' },
-  { id: 9, name: 'Sanctuary AI Phoenix', slug: 'sanctuary-ai-phoenix', manufacturer_id: 8, status: 'development', category: 'General Purpose', hero_image_url: '', summary: 'General-purpose humanoid featuring industry-leading dexterous hands with 20+ degrees of freedom per hand.', created_at: '2024-01-01', updated_at: '2024-09-01' },
-  { id: 10, name: 'Xiaomi CyberOne', slug: 'xiaomi-cyberone', manufacturer_id: 9, status: 'announced', category: 'Research', hero_image_url: '', summary: 'Xiaomi\'s humanoid robot prototype capable of emotion recognition and 3D space perception.', created_at: '2024-01-01', updated_at: '2024-03-01' },
+  { 
+    id: 1, 
+    name: 'Tesla Optimus (Gen 2)', 
+    slug: 'tesla-optimus-gen-2', 
+    manufacturer_id: 1, 
+    status: 'development', 
+    category: 'General Purpose', 
+    hero_image_url: '', 
+    summary: 'Tesla\'s second-generation humanoid robot featuring improved hands with 22 degrees of freedom and 30% faster walking speed.', 
+    created_at: '2024-01-01', 
+    updated_at: '2024-12-01',
+    country_of_origin: 'USA',
+    expected_delivery: '2026-2027',
+    purchase_url: null,
+    purchase_price_usd: 20000,
+    capabilities: {
+      can_fold_laundry: true,
+      can_vacuum: true,
+      can_climb_stairs: true,
+      max_lift_kg: 9,
+      max_carry_kg: 9,
+      autonomous_duration_hours: null
+    },
+    dof: {
+      total: 28,
+      hands_each: 11,
+      arms_each: 7,
+      legs_each: 6,
+      torso: 2,
+      head: 2
+    },
+    ai: {
+      model: 'Tesla FSD computer/neural networks',
+      response_time: null,
+      voice_capable: true,
+      autonomy_level: 'hybrid'
+    },
+    battery: {
+      capacity_kwh: 2.3,
+      life_hours: null,
+      charge_time_hours: null
+    }
+  },
+  { 
+    id: 2, 
+    name: '1X NEO', 
+    slug: '1x-neo', 
+    manufacturer_id: 2, 
+    status: 'development', 
+    category: 'Home Assistant', 
+    hero_image_url: '', 
+    summary: 'Lightweight android designed for home environments with an exceptionally long 20-hour battery life.', 
+    created_at: '2024-01-01', 
+    updated_at: '2024-08-01',
+    country_of_origin: 'Norway',
+    expected_delivery: '2025-2026',
+    purchase_url: 'https://1x.tech',
+    purchase_price_usd: null,
+    capabilities: {
+      can_fold_laundry: true,
+      can_vacuum: true,
+      can_climb_stairs: false,
+      max_lift_kg: 5,
+      max_carry_kg: 5,
+      autonomous_duration_hours: 4
+    },
+    dof: {
+      total: null,
+      hands_each: null,
+      arms_each: null,
+      legs_each: null,
+      torso: null,
+      head: null
+    },
+    ai: {
+      model: 'Neural network end-to-end control',
+      response_time: null,
+      voice_capable: true,
+      autonomy_level: 'full_autonomous'
+    },
+    battery: {
+      capacity_kwh: null,
+      life_hours: 4,
+      charge_time_hours: null
+    }
+  },
+  { 
+    id: 3, 
+    name: 'Figure 02', 
+    slug: 'figure-02', 
+    manufacturer_id: 3, 
+    status: 'development', 
+    category: 'General Purpose', 
+    hero_image_url: '', 
+    summary: 'Second-generation humanoid with integrated speech capabilities powered by OpenAI, designed for commercial deployment.', 
+    created_at: '2024-01-01', 
+    updated_at: '2024-08-01',
+    country_of_origin: 'USA',
+    expected_delivery: '2025',
+    purchase_url: 'https://figure.ai',
+    purchase_price_usd: null,
+    capabilities: {
+      can_fold_laundry: true,
+      can_vacuum: false,
+      can_climb_stairs: false,
+      max_lift_kg: 20,
+      max_carry_kg: 20,
+      autonomous_duration_hours: 5
+    },
+    dof: {
+      total: null,
+      hands_each: 8,
+      arms_each: 6,
+      legs_each: 6,
+      torso: 3,
+      head: 2
+    },
+    ai: {
+      model: 'OpenAI integration',
+      response_time: '< 3 seconds',
+      voice_capable: true,
+      autonomy_level: 'hybrid'
+    },
+    battery: {
+      capacity_kwh: null,
+      life_hours: 5,
+      charge_time_hours: null
+    }
+  },
+  { 
+    id: 4, 
+    name: 'Unitree H1', 
+    slug: 'unitree-h1', 
+    manufacturer_id: 4, 
+    status: 'shipping', 
+    category: 'Research/Industrial', 
+    hero_image_url: '', 
+    summary: 'High-performance humanoid with record-breaking 9.4 m/s top speed, targeting research and industrial applications.', 
+    created_at: '2024-01-01', 
+    updated_at: '2024-06-01',
+    country_of_origin: 'China',
+    expected_delivery: 'Available now',
+    purchase_url: 'https://unitree.com',
+    purchase_price_usd: 90000,
+    capabilities: {
+      can_fold_laundry: false,
+      can_vacuum: false,
+      can_climb_stairs: false,
+      max_lift_kg: null,
+      max_carry_kg: null,
+      autonomous_duration_hours: 1
+    },
+    dof: {
+      total: 19,
+      hands_each: 5,
+      arms_each: 4,
+      legs_each: 5,
+      torso: 0,
+      head: 0
+    },
+    ai: {
+      model: 'Proprietary control algorithms',
+      response_time: null,
+      voice_capable: false,
+      autonomy_level: 'teleoperated'
+    },
+    battery: {
+      capacity_kwh: 0.864,
+      life_hours: 1,
+      charge_time_hours: null
+    }
+  },
+  { 
+    id: 5, 
+    name: 'Unitree G1', 
+    slug: 'unitree-g1', 
+    manufacturer_id: 4, 
+    status: 'shipping', 
+    category: 'General Purpose', 
+    hero_image_url: '', 
+    summary: 'Affordable humanoid robot starting at $16,000, making humanoid robotics accessible to a wider market.', 
+    created_at: '2024-01-01', 
+    updated_at: '2024-06-01',
+    country_of_origin: 'China',
+    expected_delivery: 'Available now',
+    purchase_url: 'https://unitree.com',
+    purchase_price_usd: 16000,
+    capabilities: {
+      can_fold_laundry: true,
+      can_vacuum: false,
+      can_climb_stairs: false,
+      max_lift_kg: null,
+      max_carry_kg: null,
+      autonomous_duration_hours: null
+    },
+    dof: {
+      total: 43,
+      hands_each: 5,
+      arms_each: 7,
+      legs_each: 6,
+      torso: 3,
+      head: 2
+    },
+    ai: {
+      model: 'Reinforcement learning control',
+      response_time: null,
+      voice_capable: false,
+      autonomy_level: 'hybrid'
+    },
+    battery: {
+      capacity_kwh: 9,
+      life_hours: null,
+      charge_time_hours: null
+    }
+  },
+  { 
+    id: 6, 
+    name: 'Boston Dynamics Atlas (Electric)', 
+    slug: 'boston-dynamics-atlas-electric', 
+    manufacturer_id: 5, 
+    status: 'development', 
+    category: 'Industrial', 
+    hero_image_url: '', 
+    summary: 'All-electric successor to the hydraulic Atlas, featuring multi-axis joints and unprecedented range of motion.', 
+    created_at: '2024-01-01', 
+    updated_at: '2024-10-01',
+    country_of_origin: 'USA',
+    expected_delivery: '2025-2026',
+    purchase_url: null,
+    purchase_price_usd: null,
+    capabilities: {
+      can_fold_laundry: false,
+      can_vacuum: false,
+      can_climb_stairs: true,
+      max_lift_kg: 25,
+      max_carry_kg: 25,
+      autonomous_duration_hours: null
+    },
+    dof: {
+      total: 28,
+      hands_each: 3,
+      arms_each: 7,
+      legs_each: 6,
+      torso: 3,
+      head: 2
+    },
+    ai: {
+      model: 'Proprietary AI perception and planning',
+      response_time: null,
+      voice_capable: false,
+      autonomy_level: 'full_autonomous'
+    },
+    battery: {
+      capacity_kwh: null,
+      life_hours: null,
+      charge_time_hours: null
+    }
+  },
+  { 
+    id: 7, 
+    name: 'Agility Digit', 
+    slug: 'agility-digit', 
+    manufacturer_id: 6, 
+    status: 'shipping', 
+    category: 'Logistics', 
+    hero_image_url: '', 
+    summary: 'Purpose-built for warehouse logistics, Digit can lift and carry packages in human-designed spaces.', 
+    created_at: '2024-01-01', 
+    updated_at: '2024-09-01',
+    country_of_origin: 'USA',
+    expected_delivery: 'Available now',
+    purchase_url: 'https://agilityrobotics.com',
+    purchase_price_usd: null,
+    capabilities: {
+      can_fold_laundry: false,
+      can_vacuum: false,
+      can_climb_stairs: false,
+      max_lift_kg: 16,
+      max_carry_kg: 16,
+      autonomous_duration_hours: 4
+    },
+    dof: {
+      total: 20,
+      hands_each: 3,
+      arms_each: 7,
+      legs_each: 6,
+      torso: 1,
+      head: 0
+    },
+    ai: {
+      model: 'Agility Robotics perception and planning stack',
+      response_time: null,
+      voice_capable: false,
+      autonomy_level: 'full_autonomous'
+    },
+    battery: {
+      capacity_kwh: null,
+      life_hours: 4,
+      charge_time_hours: null
+    }
+  },
+  { 
+    id: 8, 
+    name: 'Apptronik Apollo', 
+    slug: 'apptronik-apollo', 
+    manufacturer_id: 7, 
+    status: 'development', 
+    category: 'Industrial', 
+    hero_image_url: '', 
+    summary: 'Industrial humanoid with 25kg payload capacity, designed for manufacturing and logistics environments.', 
+    created_at: '2024-01-01', 
+    updated_at: '2024-07-01',
+    country_of_origin: 'USA',
+    expected_delivery: '2025',
+    purchase_url: 'https://apptronik.com',
+    purchase_price_usd: null,
+    capabilities: {
+      can_fold_laundry: false,
+      can_vacuum: false,
+      can_climb_stairs: false,
+      max_lift_kg: 25,
+      max_carry_kg: 25,
+      autonomous_duration_hours: 4
+    },
+    dof: {
+      total: 30,
+      hands_each: 5,
+      arms_each: 7,
+      legs_each: 6,
+      torso: 3,
+      head: 2
+    },
+    ai: {
+      model: 'Proprietary task planning and control',
+      response_time: null,
+      voice_capable: false,
+      autonomy_level: 'hybrid'
+    },
+    battery: {
+      capacity_kwh: null,
+      life_hours: 4,
+      charge_time_hours: 1
+    }
+  },
+  { 
+    id: 9, 
+    name: 'Sanctuary AI Phoenix', 
+    slug: 'sanctuary-ai-phoenix', 
+    manufacturer_id: 8, 
+    status: 'development', 
+    category: 'General Purpose', 
+    hero_image_url: '', 
+    summary: 'General-purpose humanoid featuring industry-leading dexterous hands with 20+ degrees of freedom per hand.', 
+    created_at: '2024-01-01', 
+    updated_at: '2024-09-01',
+    country_of_origin: 'Canada',
+    expected_delivery: '2025-2026',
+    purchase_url: null,
+    purchase_price_usd: null,
+    capabilities: {
+      can_fold_laundry: true,
+      can_vacuum: true,
+      can_climb_stairs: false,
+      max_lift_kg: 25,
+      max_carry_kg: 25,
+      autonomous_duration_hours: null
+    },
+    dof: {
+      total: 55,
+      hands_each: 20,
+      arms_each: 7,
+      legs_each: 6,
+      torso: 3,
+      head: 2
+    },
+    ai: {
+      model: 'Carbon (proprietary AGI system)',
+      response_time: null,
+      voice_capable: true,
+      autonomy_level: 'full_autonomous'
+    },
+    battery: {
+      capacity_kwh: null,
+      life_hours: null,
+      charge_time_hours: null
+    }
+  },
+  { 
+    id: 10, 
+    name: 'Xiaomi CyberOne', 
+    slug: 'xiaomi-cyberone', 
+    manufacturer_id: 9, 
+    status: 'announced', 
+    category: 'Research', 
+    hero_image_url: '', 
+    summary: 'Xiaomi\'s humanoid robot prototype capable of emotion recognition and 3D space perception.', 
+    created_at: '2024-01-01', 
+    updated_at: '2024-03-01',
+    country_of_origin: 'China',
+    expected_delivery: null,
+    purchase_url: null,
+    purchase_price_usd: null,
+    capabilities: {
+      can_fold_laundry: null,
+      can_vacuum: null,
+      can_climb_stairs: null,
+      max_lift_kg: null,
+      max_carry_kg: null,
+      autonomous_duration_hours: null
+    },
+    dof: {
+      total: 21,
+      hands_each: 5,
+      arms_each: 4,
+      legs_each: 4,
+      torso: 2,
+      head: 2
+    },
+    ai: {
+      model: 'Emotion recognition and 3D perception AI',
+      response_time: null,
+      voice_capable: true,
+      autonomy_level: 'hybrid'
+    },
+    battery: {
+      capacity_kwh: null,
+      life_hours: null,
+      charge_time_hours: null
+    }
+  },
 ];
 
 export const robotSpecs: RobotSpec[] = [
