@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import { Poppins } from 'next/font/google';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faRobot } from '@/lib/fontawesome';
 import "./globals.css";
+
+// Importera Font Awesome-setup
+import '@/lib/fontawesome';
 
 const poppins = Poppins({ subsets: ['latin'], variable: '--font-poppins', weight: ['300', '400', '500', '600', '700'] });
 
@@ -17,7 +22,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <nav className="sticky top-0 z-50 border-b border-[#27272a] bg-[#0c0c0d]/90 backdrop-blur-md">
           <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4">
             <a href="/" className="flex items-center gap-2 text-lg font-bold tracking-tight font-display">
-              <span className="bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">●</span>
+              <FontAwesomeIcon 
+                icon={faRobot} 
+                className="text-lg bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent" 
+              />
               <span className="bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">hellonoid</span>
             </a>
             <div className="flex items-center gap-6 text-sm text-[#a0a0a0]">

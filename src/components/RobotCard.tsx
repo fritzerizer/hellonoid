@@ -1,4 +1,15 @@
 import { Robot, manufacturers, robotSpecs } from '@/data/robots';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { 
+  faRobot, 
+  faBolt, 
+  faBatteryHalf, 
+  faTag, 
+  faShirt, 
+  faBroom, 
+  faStairs, 
+  faMicrophone 
+} from '@/lib/fontawesome';
 
 const statusColors: Record<string, string> = {
   shipping: 'bg-green-500/20 text-green-400 border-green-500/30',
@@ -28,7 +39,7 @@ export default function RobotCard({ robot }: { robot: Robot }) {
         </span>
       </div>
       <div className="mb-3 flex h-32 items-center justify-center rounded-md bg-[#111] text-4xl text-[#333]">
-        🤖
+        <FontAwesomeIcon icon={faRobot} />
       </div>
       <p className="mb-3 text-sm text-[#a0a0a0] line-clamp-2">{robot.summary}</p>
       <div className="space-y-2">
@@ -42,19 +53,19 @@ export default function RobotCard({ robot }: { robot: Robot }) {
         <div className="flex items-center gap-3 text-xs">
           {robot.dof?.total && (
             <span className="flex items-center gap-1 text-[#3b82f6]">
-              <span>⚡</span>
+              <FontAwesomeIcon icon={faBolt} />
               <span>{robot.dof.total} DOF</span>
             </span>
           )}
           {robot.battery?.life_hours && (
             <span className="flex items-center gap-1 text-[#10b981]">
-              <span>🔋</span>
+              <FontAwesomeIcon icon={faBatteryHalf} />
               <span>{robot.battery.life_hours}h</span>
             </span>
           )}
           {robot.purchase_price_usd && (
             <span className="flex items-center gap-1 text-[#f59e0b]">
-              <span>💰</span>
+              <FontAwesomeIcon icon={faTag} />
               <span>${(robot.purchase_price_usd / 1000).toFixed(0)}k</span>
             </span>
           )}
@@ -62,11 +73,11 @@ export default function RobotCard({ robot }: { robot: Robot }) {
         
         {/* Capabilities icons */}
         {robot.capabilities && (
-          <div className="flex gap-1">
-            {robot.capabilities.can_fold_laundry && <span className="text-xs">👕</span>}
-            {robot.capabilities.can_vacuum && <span className="text-xs">🧹</span>}
-            {robot.capabilities.can_climb_stairs && <span className="text-xs">🪜</span>}
-            {robot.ai?.voice_capable && <span className="text-xs">🎤</span>}
+          <div className="flex gap-2">
+            {robot.capabilities.can_fold_laundry && <FontAwesomeIcon icon={faShirt} className="text-xs" />}
+            {robot.capabilities.can_vacuum && <FontAwesomeIcon icon={faBroom} className="text-xs" />}
+            {robot.capabilities.can_climb_stairs && <FontAwesomeIcon icon={faStairs} className="text-xs" />}
+            {robot.ai?.voice_capable && <FontAwesomeIcon icon={faMicrophone} className="text-xs" />}
           </div>
         )}
       </div>
