@@ -9,18 +9,18 @@ export default function Home() {
     <div>
       {/* Hero */}
       <section className="border-b border-[#27272a] bg-gradient-to-b from-[#0c0c0d] via-[#131315] to-[#18181b] relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/5 via-purple-600/5 to-teal-600/5"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-teal-600/5 via-cyan-600/5 to-emerald-600/5"></div>
         <div className="relative">
         <div className="mx-auto max-w-7xl px-4 py-20 text-center">
           <h1 className="mb-4 text-4xl font-bold tracking-tight md:text-6xl">
-            <span className="text-[#3b82f6]">Bridging</span> Tech & Everyday Life
+            <span className="text-[#239eab]">Hello</span> human!
           </h1>
           <p className="mx-auto mb-8 max-w-2xl text-lg text-[#a0a0a0]">
             Understand which humanoid robots will enter your home, workplace, school, and healthcare. 
             We track capabilities, availability, and real-world impact of every robot.
           </p>
           <div className="flex justify-center gap-4">
-            <a href="/robots" className="rounded-lg bg-[#3b82f6] px-6 py-2.5 text-sm font-medium text-white transition hover:bg-[#2563eb]">
+            <a href="/robots" className="rounded-lg bg-[#239eab] px-6 py-2.5 text-sm font-medium text-white transition hover:bg-[#1a8a96]">
               Browse Robots
             </a>
             <a href="/compare" className="rounded-lg border border-[#333] px-6 py-2.5 text-sm font-medium text-[#a0a0a0] transition hover:border-[#555] hover:text-white">
@@ -40,7 +40,7 @@ export default function Home() {
       <section className="mx-auto max-w-7xl px-4 py-12">
         <div className="mb-6 flex items-center justify-between">
           <h2 className="text-xl font-semibold">Featured Robots</h2>
-          <a href="/robots" className="text-sm text-[#3b82f6] hover:underline">View all →</a>
+          <a href="/robots" className="text-sm text-[#239eab] hover:underline">View all →</a>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {featured.map(robot => (
@@ -54,11 +54,11 @@ export default function Home() {
         <div className="mx-auto max-w-7xl px-4 py-12">
           <div className="mb-6 flex items-center justify-between">
             <h2 className="text-xl font-semibold">Latest News</h2>
-            <a href="/news" className="text-sm text-[#3b82f6] hover:underline">All news →</a>
+            <a href="/news" className="text-sm text-[#239eab] hover:underline">All news →</a>
           </div>
           <div className="grid gap-4 md:grid-cols-2">
             {latestNews.map(article => (
-              <a key={article.id} href={`/news#${article.slug}`} className="block rounded-lg border border-[#222] bg-[#161616] p-5 transition hover:border-[#3b82f6]/40">
+              <a key={article.id} href={`/news#${article.slug}`} className="block rounded-lg border border-[#222] bg-[#161616] p-5 transition hover:border-[#239eab]/40">
                 <time className="text-xs text-[#666]">{article.published_at}</time>
                 <h3 className="mt-1 font-medium text-white">{article.title}</h3>
                 <p className="mt-2 text-sm text-[#a0a0a0] line-clamp-2">{article.content}</p>

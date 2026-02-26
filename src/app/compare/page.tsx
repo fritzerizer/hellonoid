@@ -39,7 +39,7 @@ export default function ComparePage() {
               onClick={() => toggle(r.id)}
               className={`rounded-full border px-3 py-1.5 text-sm transition ${
                 isSelected
-                  ? 'border-[#3b82f6] bg-[#3b82f6]/20 text-[#3b82f6]'
+                  ? 'border-[#239eab] bg-[#239eab]/20 text-[#239eab]'
                   : 'border-[#333] text-[#a0a0a0] hover:border-[#555] hover:text-white'
               } ${!isSelected && selected.length >= 4 ? 'opacity-40 cursor-not-allowed' : ''}`}
               disabled={!isSelected && selected.length >= 4}
@@ -59,7 +59,7 @@ export default function ComparePage() {
                 <th className="p-3 text-left text-[#666] font-medium w-40">Spec</th>
                 {selectedRobots.map(r => (
                   <th key={r.id} className="p-3 text-left font-medium">
-                    <a href={`/robots/${r.slug}`} className="text-[#3b82f6] hover:underline">{r.name}</a>
+                    <a href={`/robots/${r.slug}`} className="text-[#239eab] hover:underline">{r.name}</a>
                     <div className="text-xs text-[#666] font-normal">{manufacturers.find(m => m.id === r.manufacturer_id)?.name}</div>
                   </th>
                 ))}

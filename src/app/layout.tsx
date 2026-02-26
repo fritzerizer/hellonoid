@@ -21,7 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <nav className="sticky top-0 z-50 border-b border-[#27272a] bg-[#0c0c0d]/90 backdrop-blur-md">
           <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4">
             <a href="/" className="flex items-center gap-2 text-lg font-bold tracking-tight font-display">
-              <Image src="/logo.svg" alt="Hellonoid" width={160} height={36} className="h-8 w-auto" priority />
+              <Image src="/logo.svg" alt="Hellonoid" width={280} height={60} className="h-10 w-auto" priority />
             </a>
             <div className="flex items-center gap-6 text-sm text-[#a0a0a0]">
               <a href="/robots" className="transition hover:text-white">Robots</a>

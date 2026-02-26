@@ -23,7 +23,7 @@ export function generateStaticParams() {
 const statusColors: Record<string, string> = {
   shipping: 'bg-green-500/20 text-green-400',
   development: 'bg-yellow-500/20 text-yellow-400',
-  announced: 'bg-purple-500/20 text-purple-400',
+  announced: 'bg-teal-500/20 text-teal-400',
   discontinued: 'bg-gray-500/20 text-gray-400',
 };
 
@@ -55,7 +55,7 @@ export default async function RobotPage({ params }: { params: Promise<{ slug: st
               <span className="text-sm text-[#666]">{robot.category}</span>
             </div>
             <h1 className="text-3xl font-bold md:text-4xl">{robot.name}</h1>
-            <a href="#" className="text-sm text-[#3b82f6] hover:underline">{manufacturer.name}</a>
+            <a href="#" className="text-sm text-[#239eab] hover:underline">{manufacturer.name}</a>
             <span className="mx-2 text-[#333]">·</span>
             <span className="text-sm text-[#666]">{manufacturer.country}</span>
           </div>
@@ -120,7 +120,7 @@ export default async function RobotPage({ params }: { params: Promise<{ slug: st
                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                   {robot.dof.total && (
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-[#3b82f6]">{robot.dof.total}</div>
+                      <div className="text-2xl font-bold text-[#239eab]">{robot.dof.total}</div>
                       <div className="text-sm text-[#666]">Total DOF</div>
                     </div>
                   )}
@@ -216,7 +216,7 @@ export default async function RobotPage({ params }: { params: Promise<{ slug: st
                 )}
                 {robot.battery.life_hours && (
                   <div className="rounded-lg border border-[#222] bg-[#161616] p-4 text-center">
-                    <div className="text-xl font-bold text-[#3b82f6]">{robot.battery.life_hours}</div>
+                    <div className="text-xl font-bold text-[#239eab]">{robot.battery.life_hours}</div>
                     <div className="text-sm text-[#666]">Hours Runtime</div>
                   </div>
                 )}
@@ -280,7 +280,7 @@ export default async function RobotPage({ params }: { params: Promise<{ slug: st
                   href={robot.purchase_url} 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="mt-3 block rounded-lg bg-[#3b82f6] px-4 py-2 text-center text-sm font-medium text-white transition hover:bg-[#2563eb]"
+                  className="mt-3 block rounded-lg bg-[#239eab] px-4 py-2 text-center text-sm font-medium text-white transition hover:bg-[#1a8a96]"
                 >
                   Learn More →
                 </a>
@@ -304,13 +304,13 @@ export default async function RobotPage({ params }: { params: Promise<{ slug: st
             <p className="mt-1 text-sm text-[#666]">{manufacturer.country} · Founded {manufacturer.founded_year}</p>
             <p className="mt-2 text-sm text-[#a0a0a0]">{manufacturer.description}</p>
             {manufacturer.website && (
-              <a href={manufacturer.website} target="_blank" rel="noopener" className="mt-3 inline-block text-sm text-[#3b82f6] hover:underline">
+              <a href={manufacturer.website} target="_blank" rel="noopener" className="mt-3 inline-block text-sm text-[#239eab] hover:underline">
                 Website →
               </a>
             )}
           </div>
 
-          <a href={`/compare?robots=${robot.slug}`} className="block rounded-lg border border-[#3b82f6]/30 bg-[#3b82f6]/10 p-4 text-center text-sm font-medium text-[#3b82f6] transition hover:bg-[#3b82f6]/20">
+          <a href={`/compare?robots=${robot.slug}`} className="block rounded-lg border border-[#239eab]/30 bg-[#239eab]/10 p-4 text-center text-sm font-medium text-[#239eab] transition hover:bg-[#239eab]/20">
             Compare this robot →
           </a>
         </aside>

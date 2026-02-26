@@ -25,7 +25,7 @@ export default function RobotsPage() {
         <select
           value={statusFilter}
           onChange={e => setStatusFilter(e.target.value)}
-          className="rounded-lg border border-[#333] bg-[#161616] px-3 py-2 text-sm text-white outline-none focus:border-[#3b82f6]"
+          className="rounded-lg border border-[#333] bg-[#161616] px-3 py-2 text-sm text-white outline-none focus:border-[#239eab]"
         >
           {statuses.map(s => (
             <option key={s} value={s}>{s === 'all' ? 'All Statuses' : s.charAt(0).toUpperCase() + s.slice(1)}</option>
@@ -34,7 +34,7 @@ export default function RobotsPage() {
         <select
           value={manufacturerFilter}
           onChange={e => setManufacturerFilter(e.target.value)}
-          className="rounded-lg border border-[#333] bg-[#161616] px-3 py-2 text-sm text-white outline-none focus:border-[#3b82f6]"
+          className="rounded-lg border border-[#333] bg-[#161616] px-3 py-2 text-sm text-white outline-none focus:border-[#239eab]"
         >
           <option value="all">All Manufacturers</option>
           {manufacturers.map(m => (

@@ -12,7 +12,7 @@ export default function NewsPage() {
               <div className="mb-2 flex items-center gap-3">
                 <time className="text-xs text-[#666]">{article.published_at}</time>
                 {robot && (
-                  <a href={`/robots/${robot.slug}`} className="rounded-full bg-[#3b82f6]/10 px-2 py-0.5 text-xs text-[#3b82f6] hover:underline">
+                  <a href={`/robots/${robot.slug}`} className="rounded-full bg-[#239eab]/10 px-2 py-0.5 text-xs text-[#239eab] hover:underline">
                     {robot.name}
                   </a>
                 )}
@@ -20,7 +20,7 @@ export default function NewsPage() {
               <h2 className="mb-3 text-xl font-semibold">{article.title}</h2>
               <p className="text-[#a0a0a0] leading-relaxed">{article.content}</p>
               {article.source_url && (
-                <a href={article.source_url} target="_blank" rel="noopener" className="mt-3 inline-block text-sm text-[#3b82f6] hover:underline">
+                <a href={article.source_url} target="_blank" rel="noopener" className="mt-3 inline-block text-sm text-[#239eab] hover:underline">
                   Source →
                 </a>
               )}
