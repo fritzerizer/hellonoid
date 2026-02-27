@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Poppins } from 'next/font/google';
 /* eslint-disable @next/next/no-img-element */
+import { config } from '@fortawesome/fontawesome-svg-core';
+import '@fortawesome/fontawesome-svg-core/styles.css';
+config.autoAddCss = false;
 import "./globals.css";
 
 // Importera Font Awesome-setup
