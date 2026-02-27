@@ -8,6 +8,7 @@ import "./globals.css";
 
 // Importera Font Awesome-setup
 import '@/lib/fontawesome';
+import AuthLink from '@/components/AuthLink';
 
 const poppins = Poppins({ subsets: ['latin'], variable: '--font-poppins', weight: ['300', '400', '500', '600', '700'] });
 
@@ -30,6 +31,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <a href="/robots" className="transition hover:text-white">Robots</a>
               <a href="/compare" className="transition hover:text-white">Compare</a>
               <a href="/news" className="transition hover:text-white">News</a>
+              <AuthLink />
             </div>
           </div>
         </nav>
