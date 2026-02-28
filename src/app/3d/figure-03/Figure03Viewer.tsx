@@ -7,7 +7,7 @@ const ModelViewer = dynamic(() => import('@/components/ModelViewer'), { ssr: fal
 export default function Figure03Viewer() {
   return (
     <ModelViewer
-      src="/models/figure-03.glb"
+      src="/models/figure-03-v2.glb"
       alt="Figure 03 humanoid robot 3D model"
     />
   );
