@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hellonoid — Logotyp v4 (UCDA-principer)</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { 
+    background: #0a0a0b; color: #e0e0e0; 
+    font-family: 'Poppins', sans-serif; 
+    padding: 40px 20px;
+    transition: background 0.3s;
+  }
+  body.light { background: #f0f0f0; color: #222; }
+  
+  header { max-width: 700px; margin: 0 auto 40px; text-align: center; }
+  h1 { font-size: 2rem; margin-bottom: 8px; color: #fff; font-weight: 700; }
+  body.light h1 { color: #111; }
+  .subtitle { color: #666; margin-bottom: 16px; font-size: 0.9rem; }
+  
+  .principles {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 8px; margin-bottom: 20px; max-width: 600px; margin-left: auto; margin-right: auto;
+  }
+  .principles span {
+    background: #1a1a1e; border: 1px solid #222; border-radius: 8px;
+    padding: 6px 10px; font-size: 0.72rem; color: #888; text-align: center;
+  }
+  body.light .principles span { background: #fff; border-color: #ddd; }
+  
+  .links { text-align: center; margin-bottom: 30px; font-size: 0.85rem; }
+  .links a { color: #239eab; text-decoration: none; margin: 0 8px; }
+  .links a:hover { text-decoration: underline; }
+  
+  .controls { text-align: center; margin-bottom: 30px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .controls button {
+    background: #1a1a1e; border: 1px solid #333; color: #aaa;
+    padding: 8px 18px; border-radius: 8px; cursor: pointer;
+    font-size: 0.8rem; font-family: inherit; transition: all 0.2s;
+  }
+  .controls button:hover, .controls button.active { border-color: #239eab; color: #239eab; }
+  body.light .controls button { background: #fff; border-color: #ccc; color: #666; }
+  body.light .controls button:hover, body.light .controls button.active { border-color: #239eab; color: #239eab; }
+  
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+    max-width: 1500px;
+    margin: 0 auto;
+  }
+  .grid.large { grid-template-columns: repeat(auto-fill, minmax(480px, 1fr)); }
+  
+  .section-title {
+    grid-column: 1 / -1;
+    font-size: 0.95rem; color: #239eab;
+    border-bottom: 1px solid #222; padding-bottom: 8px; margin-top: 16px; font-weight: 600;
+  }
+  body.light .section-title { border-color: #ddd; }
+  
+  .card {
+    background: #141416; border: 1px solid #222; border-radius: 16px;
+    overflow: hidden; transition: border-color 0.2s, transform 0.15s;
+    cursor: pointer; position: relative;
+  }
+  .card:hover { border-color: #239eab; transform: translateY(-2px); }
+  body.light .card { background: #fff; border-color: #ddd; }
+  
+  .card img { 
+    width: 100%; aspect-ratio: 1; object-fit: contain; 
+    display: block; padding: 24px; background: white;
+  }
+  .card-info { padding: 12px 16px; border-top: 1px solid #222; }
+  body.light .card-info { border-color: #eee; }
+  .card .num { 
+    position: absolute; top: 12px; left: 14px; 
+    font-size: 0.7rem; color: #fff; font-weight: 600;
+    background: rgba(0,0,0,0.5); padding: 2px 8px; border-radius: 6px;
+  }
+  .card .label { font-size: 0.78rem; color: #888; font-weight: 300; line-height: 1.4; }
+  .card .rule { font-size: 0.65rem; color: #239eab; margin-top: 4px; opacity: 0.7; }
+  
+  .overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.92);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 999; cursor: pointer; flex-direction: column; gap: 16px;
+    opacity: 0; transition: opacity 0.2s; pointer-events: none;
+  }
+  .overlay.show { opacity: 1; pointer-events: all; }
+  .overlay img { max-width: 90vw; max-height: 70vh; border-radius: 12px; background: white; padding: 20px; }
+  .overlay .caption { color: #888; font-size: 0.95rem; text-align: center; max-width: 600px; }
+  .overlay .nav { display: flex; gap: 20px; }
+  .overlay .nav button {
+    background: #222; border: 1px solid #444; color: #ccc;
+    padding: 8px 20px; border-radius: 8px; cursor: pointer; font-family: inherit;
+  }
+  .overlay .nav button:hover { border-color: #239eab; color: #fff; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Hellonoid - Logotyp v4</h1>
+  <p class="subtitle">20 koncept baserade pa UCDA:s 15 gyllene regler for logodesign</p>
+  <div class="principles">
+    <span>Borja i svartvitt</span>
+    <span>Enkelhet = igenkanning</span>
+    <span>Var inte for bokstavlig</span>
+    <span>Funkar i alla storlekar</span>
+    <span>Gom en smart detalj</span>
+    <span>Skapa en aha-upplevelse</span>
+  </div>
+</header>
+
+<div class="links">
+  <a href="/logos3.html">v3 (subtil)</a>
+  <a href="/logos2.html">v2 (AI)</a>
+  <a href="/logos.html">v1 (SVG)</a>
+  <a href="/">hellonoid.com</a>
+</div>
+
+<div class="controls">
+  <button onclick="document.body.classList.toggle('light')">Ljus/mork</button>
+  <button onclick="document.querySelector('.grid').classList.toggle('large')">Storre</button>
+  <button onclick="filterCards('all')" class="active" data-f="all">Alla</button>
+  <button onclick="filterCards('bw')" data-f="bw">Svartvitt</button>
+  <button onclick="filterCards('neg')" data-f="neg">Negativt utrymme</button>
+  <button onclick="filterCards('scale')" data-f="scale">Alla storlekar</button>
+  <button onclick="filterCards('abs')" data-f="abs">Abstrakt</button>
+  <button onclick="filterCards('word')" data-f="word">Wordmark</button>
+</div>
+
+<div class="grid">
+
+<div class="section-title" data-cat="bw">Svartvitt - Formen forst, fargen sen</div>
+
+<div class="card" data-cat="bw"><span class="num">#1</span>
+  <img src="/logo-gen-v4/logo-1.png" loading="lazy">
+  <div class="card-info"><div class="label">Dolt negativt utrymme i H:et - som FedEx-pilen.</div><div class="rule">Regel 3: Borja i svartvitt</div></div>
+</div>
+
+<div class="card" data-cat="bw"><span class="num">#2</span>
+  <img src="/logo-gen-v4/logo-2.png" loading="lazy">
+  <div class="card-info"><div class="label">Korsband format sa negativt utrymme bildar figur.</div><div class="rule">Regel 3, 8: Svartvitt + inte for bokstavlig</div></div>
+</div>
+
+<div class="card" data-cat="bw"><span class="num">#3</span>
+  <img src="/logo-gen-v4/logo-3.png" loading="lazy">
+  <div class="card-info"><div class="label">Proportionsskillnader i H:ets fonster skapar axel/hoft-effekt.</div><div class="rule">Regel 3, 5: Svartvitt + enkel atergivning</div></div>
+</div>
+
+<div class="card" data-cat="bw"><span class="num">#4</span>
+  <img src="/logo-gen-v4/logo-4.png" loading="lazy">
+  <div class="card-info"><div class="label">Konkav kurva under korsbandet - antyder figur i vitt.</div><div class="rule">Regel 3, 10: Svartvitt + fa folk att le</div></div>
+</div>
+
+<div class="card" data-cat="bw"><span class="num">#5</span>
+  <img src="/logo-gen-v4/logo-5.png" loading="lazy">
+  <div class="card-info"><div class="label">Utatkurvade fotter + cirkulart gap = minimal humanoid.</div><div class="rule">Regel 3, 5, 6: Svartvitt + enkel + annorlunda</div></div>
+</div>
+
+<div class="card" data-cat="bw"><span class="num">#6</span>
+  <img src="/logo-gen-v4/logo-6.png" loading="lazy">
+  <div class="card-info"><div class="label">Nyckelhalformat negativt utrymme - huvud + kropp.</div><div class="rule">Regel 3, 8: Svartvitt + inte bokstavlig</div></div>
+</div>
+
+<div class="section-title" data-cat="neg">Negativt utrymme - Aha-upplevelsen</div>
+
+<div class="card" data-cat="neg"><span class="num">#7</span>
+  <img src="/logo-gen-v4/logo-7.png" loading="lazy">
+  <div class="card-info"><div class="label">Figuren uppstar helt fran H:ets naturliga utrymmen.</div><div class="rule">Regel 5, 8: Enkel + inte bokstavlig</div></div>
+</div>
+
+<div class="card" data-cat="neg"><span class="num">#8</span>
+  <img src="/logo-gen-v4/logo-8.png" loading="lazy">
+  <div class="card-info"><div class="label">Korsbandets placering skapar axlar ovanfor, ben nedanfor.</div><div class="rule">Regel 5, 10: Enkel + smart detalj</div></div>
+</div>
+
+<div class="card" data-cat="neg"><span class="num">#9</span>
+  <img src="/logo-gen-v4/logo-9.png" loading="lazy">
+  <div class="card-info"><div class="label">Cirkulart snitt i toppen = huvud, pelare = ben, topp = armar.</div><div class="rule">Regel 5, 6: Enkel + annorlunda</div></div>
+</div>
+
+<div class="card" data-cat="neg"><span class="num">#10</span>
+  <img src="/logo-gen-v4/logo-10.png" loading="lazy">
+  <div class="card-info"><div class="label">Strekbreddsvariation ger humanoid kvalitet - kans mer an syns.</div><div class="rule">Regel 5, 8: Enkel + inte bokstavlig</div></div>
+</div>
+
+<div class="section-title" data-cat="scale">Alla storlekar - Favicon till skylt</div>
+
+<div class="card" data-cat="scale"><span class="num">#11</span>
+  <img src="/logo-gen-v4/logo-11.png" loading="lazy">
+  <div class="card-info"><div class="label">Tre former: tva rektanglar + en cirkel. Funkar pa 16px.</div><div class="rule">Regel 5, 7: Enkel + tanker bredare</div></div>
+</div>
+
+<div class="card" data-cat="scale"><span class="num">#12</span>
+  <img src="/logo-gen-v4/logo-12.png" loading="lazy">
+  <div class="card-info"><div class="label">Pillformad korsband + punkt = torso + huvud. Funkar pa 12px.</div><div class="rule">Regel 5, 9: Enkel + symboler ej nodvandiga</div></div>
+</div>
+
+<div class="card" data-cat="scale"><span class="num">#13</span>
+  <img src="/logo-gen-v4/logo-13.png" loading="lazy">
+  <div class="card-info"><div class="label">5 element: pelare, korsband, cirkel, prick. Absolut minimum.</div><div class="rule">Regel 5: Enkel atergivning</div></div>
+</div>
+
+<div class="section-title" data-cat="abs">Abstrakt - Tidlos och bestaende</div>
+
+<div class="card" data-cat="abs"><span class="num">#14</span>
+  <img src="/logo-gen-v4/logo-14.png" loading="lazy">
+  <div class="card-info"><div class="label">Inte bokstav, inte robot - bade tva genom ren geometri.</div><div class="rule">Regel 8: Inte for bokstavlig</div></div>
+</div>
+
+<div class="card" data-cat="abs"><span class="num">#15</span>
+  <img src="/logo-gen-v4/logo-15.png" loading="lazy">
+  <div class="card-info"><div class="label">Tvetydig form - bokstav? figur? symbol? Allt tre.</div><div class="rule">Regel 6, 8: Annorlunda + abstrakt</div></div>
+</div>
+
+<div class="card" data-cat="abs"><span class="num">#16</span>
+  <img src="/logo-gen-v4/logo-16.png" loading="lazy">
+  <div class="card-info"><div class="label">Paul Rand-inspirerad. Reducerad till vasentlig geometri.</div><div class="rule">Regel 5, 8: Enkel + tidlos</div></div>
+</div>
+
+<div class="section-title" data-cat="word">Wordmark - Komplett logotyp</div>
+
+<div class="card" data-cat="word"><span class="num">#17</span>
+  <img src="/logo-gen-v4/logo-17.png" loading="lazy">
+  <div class="card-info"><div class="label">Ikon + 'hellonoid' i horisontell lockup.</div><div class="rule">Regel 7, 9: Bredare identitet + wordmark</div></div>
+</div>
+
+<div class="card" data-cat="word"><span class="num">#18</span>
+  <img src="/logo-gen-v4/logo-18.png" loading="lazy">
+  <div class="card-info"><div class="label">HELLONOID dar H:et ar subtilt modifierat.</div><div class="rule">Regel 9: Wordmark kan racka</div></div>
+</div>
+
+<div class="card" data-cat="word"><span class="num">#19</span>
+  <img src="/logo-gen-v4/logo-19.png" loading="lazy">
+  <div class="card-info"><div class="label">Staplad: ikon ovanfor, text under. Favicon-redo.</div><div class="rule">Regel 7, 9: Bredare identitet</div></div>
+</div>
+
+<div class="card" data-cat="word"><span class="num">#20</span>
+  <img src="/logo-gen-v4/logo-20.png" loading="lazy">
+  <div class="card-info"><div class="label">Bara en teal prick ovanfor H:et - hela konceptet i en detalj.</div><div class="rule">Regel 5, 10: Minimal + smart</div></div>
+</div>
+
+</div>
+
+<div style="text-align:center; margin-top:60px; padding: 20px; color: #444; font-size: 0.8rem;">
+  Baserat pa UCDA:s 15 gyllene regler - Julia 2026-03-06
+</div>
+
+<div class="overlay" id="overlay">
+  <img src="" id="overlay-img">
+  <div class="caption" id="overlay-caption"></div>
+  <div class="nav">
+    <button onclick="event.stopPropagation();navOverlay(-1)">Foregaende</button>
+    <button onclick="event.stopPropagation();navOverlay(1)">Nasta</button>
+  </div>
+</div>
+
+<script>
+const overlay=document.getElementById('overlay'),overlayImg=document.getElementById('overlay-img'),overlayCaption=document.getElementById('overlay-caption');
+let currentIdx=0;const cards=[...document.querySelectorAll('.card')];
+cards.forEach((c,i)=>c.addEventListener('click',()=>{currentIdx=i;show(c)}));
+function show(c){overlayImg.src=c.querySelector('img').src;overlayCaption.textContent=c.querySelector('.num').textContent+' - '+c.querySelector('.label').textContent;overlay.classList.add('show')}
+function navOverlay(d){currentIdx=(currentIdx+d+cards.length)%cards.length;show(cards[currentIdx])}
+overlay.addEventListener('click',e=>{if(e.target===overlay)overlay.classList.remove('show')});
+document.addEventListener('keydown',e=>{if(!overlay.classList.contains('show'))return;if(e.key==='Escape')overlay.classList.remove('show');if(e.key==='ArrowLeft')navOverlay(-1);if(e.key==='ArrowRight')navOverlay(1)});
+function filterCards(cat){document.querySelectorAll('[data-f]').forEach(b=>b.classList.remove('active'));document.querySelector(`[data-f="${cat}"]`).classList.add('active');document.querySelectorAll('.card,.section-title').forEach(el=>{el.style.display=cat==='all'||el.dataset.cat===cat?'':'none'})}
+</script>
+</body>
+</html>
