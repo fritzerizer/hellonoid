@@ -1,4 +1,4 @@
-import { Robot, manufacturers, robotSpecs } from '@/data/robots';
+import type { Robot, Entity, RobotSpec } from '@/data/robots';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faRobot, 
@@ -18,11 +18,15 @@ const statusColors: Record<string, string> = {
   discontinued: 'bg-gray-500/20 text-gray-400 border-gray-500/30',
 };
 
-export default function RobotCard({ robot }: { robot: Robot }) {
-  const manufacturer = manufacturers.find(m => m.id === robot.manufacturer_id);
-  const specs = robotSpecs.filter(s => s.robot_id === robot.id);
-  const height = specs.find(s => s.spec_key === 'Height');
-  const weight = specs.find(s => s.spec_key === 'Weight');
+interface Props {
+  robot: Robot;
+  entity?: Entity;
+  specs?: RobotSpec[];
+}
+
+export default function RobotCard({ robot, entity, specs }: Props) {
+  const height = specs?.find(s => s.spec_key === 'Height');
+  const weight = specs?.find(s => s.spec_key === 'Weight');
 
   return (
     <a
@@ -32,7 +36,7 @@ export default function RobotCard({ robot }: { robot: Robot }) {
       <div className="mb-3 flex items-start justify-between">
         <div>
           <h3 className="font-semibold text-white group-hover:text-[#239eab] transition">{robot.name}</h3>
-          <p className="text-sm text-[#a0a0a0]">{manufacturer?.name}</p>
+          {entity && <p className="text-sm text-[#a0a0a0]">{entity.name}</p>}
         </div>
         <span className={`rounded-full border px-2 py-0.5 text-xs font-medium ${statusColors[robot.status]}`}>
           {robot.status}

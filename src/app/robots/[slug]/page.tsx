@@ -1,4 +1,4 @@
-import { robots, manufacturers, robotSpecs, getRobotWithDetails, news } from '@/data/robots';
+import { getRobotWithDetails, getAllRobotSlugs } from '@/lib/queries';
 import SpecTable from '@/components/SpecTable';
 import { notFound } from 'next/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -16,8 +16,11 @@ import {
   faBolt 
 } from '@/lib/fontawesome';
 
-export function generateStaticParams() {
-  return robots.map(r => ({ slug: r.slug }));
+export const revalidate = 60;
+
+export async function generateStaticParams() {
+  const slugs = await getAllRobotSlugs();
+  return slugs.map(slug => ({ slug }));
 }
 
 const statusColors: Record<string, string> = {
@@ -29,11 +32,10 @@ const statusColors: Record<string, string> = {
 
 export default async function RobotPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const data = getRobotWithDetails(slug);
+  const data = await getRobotWithDetails(slug);
   if (!data) notFound();
 
-  const { robot, manufacturer, specs } = data;
-  const relatedNews = news.filter(n => n.robot_id === robot.id);
+  const { robot, entity: manufacturer, specs, relatedNews } = data;
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">

@@ -1,6 +1,13 @@
-import { news, robots } from '@/data/robots';
+import { getNews, getRobots } from '@/lib/queries';
 
-export default function NewsPage() {
+export const revalidate = 60;
+
+export default async function NewsPage() {
+  const [news, robots] = await Promise.all([
+    getNews(),
+    getRobots(),
+  ]);
+
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
       <h1 className="mb-6 text-3xl font-bold">News</h1>

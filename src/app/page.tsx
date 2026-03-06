@@ -1,7 +1,15 @@
 import RobotCard from '@/components/RobotCard';
-import { robots, news, manufacturers } from '@/data/robots';
+import { getRobots, getEntities, getNews } from '@/lib/queries';
 
-export default function Home() {
+export const revalidate = 60; // ISR: revalidate every 60 seconds
+
+export default async function Home() {
+  const [robots, entities, news] = await Promise.all([
+    getRobots(),
+    getEntities(),
+    getNews(),
+  ]);
+
   const featured = robots.slice(0, 6);
   const latestNews = news.slice(0, 4);
 
@@ -29,7 +37,7 @@ export default function Home() {
           </div>
           <div className="mt-12 flex justify-center gap-8 text-sm text-[#666]">
             <div><span className="text-2xl font-bold text-white">{robots.length}</span><br/>Robots</div>
-            <div><span className="text-2xl font-bold text-white">{manufacturers.length}</span><br/>Manufacturers</div>
+            <div><span className="text-2xl font-bold text-white">{entities.filter(e => e.entity_type === 'manufacturer').length}</span><br/>Manufacturers</div>
             <div><span className="text-2xl font-bold text-white">{robots.filter(r => r.status === 'shipping').length}</span><br/>Shipping</div>
           </div>
         </div>
