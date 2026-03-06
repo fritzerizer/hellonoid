@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hellonoid — Logotypförslag v2 (AI-genererade)</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { 
+    background: #0a0a0b; color: #e0e0e0; 
+    font-family: 'Poppins', sans-serif; 
+    padding: 40px 20px;
+    transition: background 0.3s, color 0.3s;
+  }
+  body.light { background: #f0f0f0; color: #222; }
+  
+  h1 { text-align: center; font-size: 2.2rem; margin-bottom: 8px; color: #fff; font-weight: 700; }
+  body.light h1 { color: #111; }
+  .subtitle { text-align: center; color: #666; margin-bottom: 12px; font-size: 0.9rem; }
+  .links { text-align: center; margin-bottom: 30px; font-size: 0.85rem; }
+  .links a { color: #239eab; text-decoration: none; margin: 0 8px; }
+  .links a:hover { text-decoration: underline; }
+  
+  .controls { text-align: center; margin-bottom: 30px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .controls button {
+    background: #1a1a1e; border: 1px solid #333; color: #aaa;
+    padding: 8px 18px; border-radius: 8px; cursor: pointer;
+    font-size: 0.8rem; font-family: inherit; transition: all 0.2s;
+  }
+  .controls button:hover, .controls button.active { border-color: #239eab; color: #239eab; }
+  body.light .controls button { background: #fff; border-color: #ccc; color: #666; }
+  body.light .controls button:hover, body.light .controls button.active { border-color: #239eab; color: #239eab; }
+  
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+    max-width: 1500px;
+    margin: 0 auto;
+  }
+  .grid.large { grid-template-columns: repeat(auto-fill, minmax(440px, 1fr)); }
+  
+  .section-title {
+    grid-column: 1 / -1;
+    font-size: 1rem;
+    color: #239eab;
+    border-bottom: 1px solid #222;
+    padding-bottom: 8px;
+    margin-top: 16px;
+    font-weight: 600;
+  }
+  body.light .section-title { border-color: #ddd; }
+  
+  .card {
+    background: #141416;
+    border: 1px solid #222;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.15s;
+    cursor: pointer;
+    position: relative;
+  }
+  .card:hover { border-color: #239eab; transform: translateY(-2px); }
+  body.light .card { background: #fff; border-color: #ddd; }
+  
+  .card img { 
+    width: 100%; aspect-ratio: 1; object-fit: contain; 
+    display: block; padding: 20px;
+    background: white;
+  }
+  body.light .card img { background: #f8f8f8; }
+  .card.dark-preview img { background: #0a0a1a; }
+  
+  .card-info {
+    padding: 12px 16px;
+    border-top: 1px solid #222;
+  }
+  body.light .card-info { border-color: #eee; }
+  .card .num { 
+    position: absolute; top: 12px; left: 14px; 
+    font-size: 0.7rem; color: #fff; font-weight: 600;
+    background: rgba(0,0,0,0.5); padding: 2px 8px; border-radius: 6px;
+  }
+  .card .label { font-size: 0.8rem; color: #888; font-weight: 300; line-height: 1.4; }
+  
+  /* Overlay zoom */
+  .overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.92);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 999; cursor: pointer; flex-direction: column; gap: 16px;
+    opacity: 0; transition: opacity 0.2s; pointer-events: none;
+  }
+  .overlay.show { opacity: 1; pointer-events: all; }
+  .overlay img { max-width: 90vw; max-height: 75vh; border-radius: 12px; }
+  .overlay .caption { color: #888; font-size: 0.95rem; text-align: center; max-width: 600px; }
+  .overlay .nav { display: flex; gap: 20px; margin-top: 8px; }
+  .overlay .nav button {
+    background: #222; border: 1px solid #444; color: #ccc;
+    padding: 8px 20px; border-radius: 8px; cursor: pointer; font-family: inherit;
+  }
+  .overlay .nav button:hover { border-color: #239eab; color: #fff; }
+</style>
+</head>
+<body>
+<h1>Hellonoid — Logotypförslag v2</h1>
+<p class="subtitle">30 AI-genererade koncept: Humanoid robotsiluett × bokstaven H</p>
+<div class="links">
+  <a href="/logos.html">← Se SVG-förslagen (v1)</a>
+  <a href="/">← Tillbaka till hellonoid.com</a>
+</div>
+
+<div class="controls">
+  <button onclick="document.body.classList.toggle('light')" title="Växla bakgrund">☀️ Ljus/mörk</button>
+  <button onclick="document.querySelector('.grid').classList.toggle('large')" title="Större kort">🔍 Större</button>
+  <button onclick="filterCards('all')" class="active" data-filter="all">Alla</button>
+  <button onclick="filterCards('neg')" data-filter="neg">Negativt utrymme</button>
+  <button onclick="filterCards('form')" data-filter="form">Robot = H</button>
+  <button onclick="filterCards('prem')" data-filter="prem">Premium</button>
+  <button onclick="filterCards('abs')" data-filter="abs">Abstrakt</button>
+  <button onclick="filterCards('word')" data-filter="word">Med text</button>
+  <button onclick="filterCards('color')" data-filter="color">Färgvarianter</button>
+  <button onclick="filterCards('shape')" data-filter="shape">Former</button>
+  <button onclick="filterCards('inno')" data-filter="inno">Innovativa</button>
+</div>
+
+<div class="grid">
+
+<div class="section-title" data-cat="neg">A — Negativt utrymme: Robot inuti H</div>
+
+<div class="card" data-cat="neg">
+  <span class="num">#1</span>
+  <img src="/logo-gen/logo-1.png" alt="Logo 1" loading="lazy">
+  <div class="card-info"><div class="label">Klassiskt H med robotsiluett i negativt utrymme. Teal, geometriskt.</div></div>
+</div>
+
+<div class="card" data-cat="neg">
+  <span class="num">#2</span>
+  <img src="/logo-gen/logo-2.png" alt="Logo 2" loading="lazy">
+  <div class="card-info"><div class="label">Navy-blått H, gående robot i negativt utrymme.</div></div>
+</div>
+
+<div class="card" data-cat="neg">
+  <span class="num">#3</span>
+  <img src="/logo-gen/logo-3.png" alt="Logo 3" loading="lazy">
+  <div class="card-info"><div class="label">Sköldformat H med futuristisk robot, teal-gradient.</div></div>
+</div>
+
+<div class="card" data-cat="neg">
+  <span class="num">#4</span>
+  <img src="/logo-gen/logo-4.png" alt="Logo 4" loading="lazy">
+  <div class="card-info"><div class="label">App-ikon-stil (squircle) med robot i H.</div></div>
+</div>
+
+<div class="card" data-cat="neg">
+  <span class="num">#5</span>
+  <img src="/logo-gen/logo-5.png" alt="Logo 5" loading="lazy">
+  <div class="card-info"><div class="label">Robottorso ersätter korsbandet i H:et.</div></div>
+</div>
+
+<div class="section-title" data-cat="form">B — Robot som bildar H-formen</div>
+
+<div class="card" data-cat="form">
+  <span class="num">#6</span>
+  <img src="/logo-gen/logo-6.png" alt="Logo 6" loading="lazy">
+  <div class="card-info"><div class="label">Robot med utsträckta armar bildar H.</div></div>
+</div>
+
+<div class="card" data-cat="form">
+  <span class="num">#7</span>
+  <img src="/logo-gen/logo-7.png" alt="Logo 7" loading="lazy">
+  <div class="card-info"><div class="label">Abstrakt: cirkel + rektanglar = H + robot.</div></div>
+</div>
+
+<div class="card" data-cat="form">
+  <span class="num">#8</span>
+  <img src="/logo-gen/logo-8.png" alt="Logo 8" loading="lazy">
+  <div class="card-info"><div class="label">Robot mellan pelare, armar bildar korsband.</div></div>
+</div>
+
+<div class="section-title" data-cat="prem">C — Premium / Detaljerad</div>
+
+<div class="card" data-cat="prem">
+  <span class="num">#9</span>
+  <img src="/logo-gen/logo-9.png" alt="Logo 9" loading="lazy">
+  <div class="card-info"><div class="label">Premium sköld/emblem, detaljerad robotsiluett.</div></div>
+</div>
+
+<div class="card" data-cat="prem">
+  <span class="num">#10</span>
+  <img src="/logo-gen/logo-10.png" alt="Logo 10" loading="lazy">
+  <div class="card-info"><div class="label">Hexagonal badge med android-robot.</div></div>
+</div>
+
+<div class="card" data-cat="prem">
+  <span class="num">#11</span>
+  <img src="/logo-gen/logo-11.png" alt="Logo 11" loading="lazy">
+  <div class="card-info"><div class="label">Cirkulärt emblem, robot i H.</div></div>
+</div>
+
+<div class="card dark-preview" data-cat="prem">
+  <span class="num">#12</span>
+  <img src="/logo-gen/logo-12.png" alt="Logo 12" loading="lazy">
+  <div class="card-info"><div class="label">Kretskortsstil, glödande teal på mörk bakgrund.</div></div>
+</div>
+
+<div class="section-title" data-cat="abs">D — Abstrakt / Konstnärlig</div>
+
+<div class="card" data-cat="abs">
+  <span class="num">#13</span>
+  <img src="/logo-gen/logo-13.png" alt="Logo 13" loading="lazy">
+  <div class="card-info"><div class="label">Ultra-minimalt: grundformer bildar H + robot.</div></div>
+</div>
+
+<div class="card" data-cat="abs">
+  <span class="num">#14</span>
+  <img src="/logo-gen/logo-14.png" alt="Logo 14" loading="lazy">
+  <div class="card-info"><div class="label">Optisk illusion — dold robot i H:et.</div></div>
+</div>
+
+<div class="card" data-cat="abs">
+  <span class="num">#15</span>
+  <img src="/logo-gen/logo-15.png" alt="Logo 15" loading="lazy">
+  <div class="card-info"><div class="label">Liten robot i massivt H — skala och kontrast.</div></div>
+</div>
+
+<div class="card" data-cat="abs">
+  <span class="num">#16</span>
+  <img src="/logo-gen/logo-16.png" alt="Logo 16" loading="lazy">
+  <div class="card-info"><div class="label">Rundade stavar + robothuvud = H + robot.</div></div>
+</div>
+
+<div class="section-title" data-cat="word">E — Med text / Wordmark</div>
+
+<div class="card" data-cat="word">
+  <span class="num">#17</span>
+  <img src="/logo-gen/logo-17.png" alt="Logo 17" loading="lazy">
+  <div class="card-info"><div class="label">HELLONOID wordmark — H:et har robot integrerad.</div></div>
+</div>
+
+<div class="card" data-cat="word">
+  <span class="num">#18</span>
+  <img src="/logo-gen/logo-18.png" alt="Logo 18" loading="lazy">
+  <div class="card-info"><div class="label">Ikon ovanför 'hellonoid' i lowercase.</div></div>
+</div>
+
+<div class="card" data-cat="word">
+  <span class="num">#19</span>
+  <img src="/logo-gen/logo-19.png" alt="Logo 19" loading="lazy">
+  <div class="card-info"><div class="label">Robotfigur ersätter H i HELLONOID.</div></div>
+</div>
+
+<div class="card" data-cat="word">
+  <span class="num">#20</span>
+  <img src="/logo-gen/logo-20.png" alt="Logo 20" loading="lazy">
+  <div class="card-info"><div class="label">Delad layout: ikon + text sida vid sida.</div></div>
+</div>
+
+<div class="section-title" data-cat="color">F — Färgvariationer</div>
+
+<div class="card" data-cat="color">
+  <span class="num">#21</span>
+  <img src="/logo-gen/logo-21.png" alt="Logo 21" loading="lazy">
+  <div class="card-info"><div class="label">Rent svart, maximal kontrast.</div></div>
+</div>
+
+<div class="card" data-cat="color">
+  <span class="num">#22</span>
+  <img src="/logo-gen/logo-22.png" alt="Logo 22" loading="lazy">
+  <div class="card-info"><div class="label">Blå→teal→cyan gradient.</div></div>
+</div>
+
+<div class="card dark-preview" data-cat="color">
+  <span class="num">#23</span>
+  <img src="/logo-gen/logo-23.png" alt="Logo 23" loading="lazy">
+  <div class="card-info"><div class="label">Neon-glow på mörk bakgrund.</div></div>
+</div>
+
+<div class="card" data-cat="color">
+  <span class="num">#24</span>
+  <img src="/logo-gen/logo-24.png" alt="Logo 24" loading="lazy">
+  <div class="card-info"><div class="label">Djup navy — klassiskt och auktoritärt.</div></div>
+</div>
+
+<div class="section-title" data-cat="shape">G — Formvariationer</div>
+
+<div class="card" data-cat="shape">
+  <span class="num">#25</span>
+  <img src="/logo-gen/logo-25.png" alt="Logo 25" loading="lazy">
+  <div class="card-info"><div class="label">Pentagon-badge, rymdmyndighets-känsla.</div></div>
+</div>
+
+<div class="card" data-cat="shape">
+  <span class="num">#26</span>
+  <img src="/logo-gen/logo-26.png" alt="Logo 26" loading="lazy">
+  <div class="card-info"><div class="label">Diamant/romb — dynamisk vinkel.</div></div>
+</div>
+
+<div class="card" data-cat="shape">
+  <span class="num">#27</span>
+  <img src="/logo-gen/logo-27.png" alt="Logo 27" loading="lazy">
+  <div class="card-info"><div class="label">Högt smalt H, elegant vertikal proportion.</div></div>
+</div>
+
+<div class="card" data-cat="shape">
+  <span class="num">#28</span>
+  <img src="/logo-gen/logo-28.png" alt="Logo 28" loading="lazy">
+  <div class="card-info"><div class="label">Brett kraftfullt H — industriell känsla.</div></div>
+</div>
+
+<div class="section-title" data-cat="inno">H — Innovativa koncept</div>
+
+<div class="card" data-cat="inno">
+  <span class="num">#29</span>
+  <img src="/logo-gen/logo-29.png" alt="Logo 29" loading="lazy">
+  <div class="card-info"><div class="label">Två robotar mot varandra bildar H.</div></div>
+</div>
+
+<div class="card" data-cat="inno">
+  <span class="num">#30</span>
+  <img src="/logo-gen/logo-30.png" alt="Logo 30" loading="lazy">
+  <div class="card-info"><div class="label">Isometrisk 3D-H med robotskugga.</div></div>
+</div>
+
+</div><!-- /grid -->
+
+<div style="text-align:center; margin-top:60px; padding: 20px; color: #444; font-size: 0.8rem;">
+  Genererade med Gemini 2.5 Flash — Julia ⚡ 2026-03-06
+</div>
+
+<!-- Overlay for zoom -->
+<div class="overlay" id="overlay">
+  <img src="" alt="" id="overlay-img">
+  <div class="caption" id="overlay-caption"></div>
+  <div class="nav">
+    <button onclick="navOverlay(-1)">← Föregående</button>
+    <button onclick="navOverlay(1)">Nästa →</button>
+  </div>
+</div>
+
+<script>
+const overlay = document.getElementById('overlay');
+const overlayImg = document.getElementById('overlay-img');
+const overlayCaption = document.getElementById('overlay-caption');
+let currentIdx = 0;
+let visibleCards = [];
+
+function updateVisibleCards() {
+  visibleCards = [...document.querySelectorAll('.card:not([style*="display: none"])')];
+}
+
+document.querySelectorAll('.card').forEach(card => {
+  card.addEventListener('click', () => {
+    updateVisibleCards();
+    currentIdx = visibleCards.indexOf(card);
+    showOverlay(card);
+  });
+});
+
+function showOverlay(card) {
+  const img = card.querySelector('img');
+  const label = card.querySelector('.label');
+  const num = card.querySelector('.num');
+  overlayImg.src = img.src;
+  overlayCaption.textContent = num.textContent + ' — ' + label.textContent;
+  overlay.classList.add('show');
+}
+
+function navOverlay(dir) {
+  event.stopPropagation();
+  currentIdx = (currentIdx + dir + visibleCards.length) % visibleCards.length;
+  showOverlay(visibleCards[currentIdx]);
+}
+
+overlay.addEventListener('click', (e) => {
+  if (e.target === overlay) overlay.classList.remove('show');
+});
+
+document.addEventListener('keydown', (e) => {
+  if (!overlay.classList.contains('show')) return;
+  if (e.key === 'Escape') overlay.classList.remove('show');
+  if (e.key === 'ArrowLeft') navOverlay(-1);
+  if (e.key === 'ArrowRight') navOverlay(1);
+});
+
+function filterCards(cat) {
+  document.querySelectorAll('.controls button[data-filter]').forEach(b => b.classList.remove('active'));
+  document.querySelector(`[data-filter="${cat}"]`).classList.add('active');
+  
+  document.querySelectorAll('.card, .section-title').forEach(el => {
+    if (cat === 'all') {
+      el.style.display = '';
+    } else {
+      el.style.display = el.dataset.cat === cat ? '' : 'none';
+    }
+  });
+}
+</script>
+</body>
+</html>
