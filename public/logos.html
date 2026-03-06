@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hellonoid — Logotypförslag</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { 
+    background: #0a0a0b; color: #e0e0e0; 
+    font-family: 'Poppins', -apple-system, sans-serif; 
+    padding: 40px 20px;
+  }
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
+  h1 { text-align: center; font-size: 2rem; margin-bottom: 8px; color: #fff; }
+  .subtitle { text-align: center; color: #666; margin-bottom: 40px; font-size: 0.9rem; }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .card {
+    background: #141416;
+    border: 1px solid #222;
+    border-radius: 16px;
+    padding: 32px 24px 20px;
+    text-align: center;
+    transition: border-color 0.2s, transform 0.2s;
+    cursor: pointer;
+    position: relative;
+  }
+  .card:hover { border-color: #239eab; transform: translateY(-2px); }
+  .card svg { width: 120px; height: 120px; margin: 0 auto 16px; display: block; }
+  .card .num { 
+    position: absolute; top: 12px; left: 16px; 
+    font-size: 0.7rem; color: #444; font-weight: 500; 
+  }
+  .card .label { font-size: 0.8rem; color: #888; font-weight: 300; }
+  .card .wordmark { margin-top: 8px; font-size: 1.1rem; font-weight: 700; letter-spacing: 2px; color: #fff; }
+  .section-title {
+    grid-column: 1 / -1;
+    font-size: 1.1rem;
+    color: #239eab;
+    border-bottom: 1px solid #222;
+    padding-bottom: 8px;
+    margin-top: 20px;
+  }
+  /* Dark/light toggle */
+  .toggle { text-align: center; margin-bottom: 30px; }
+  .toggle button {
+    background: #222; border: 1px solid #333; color: #aaa;
+    padding: 8px 20px; border-radius: 8px; cursor: pointer;
+    font-size: 0.85rem;
+  }
+  .toggle button:hover { border-color: #239eab; color: #fff; }
+  body.light { background: #f5f5f5; color: #222; }
+  body.light .card { background: #fff; border-color: #ddd; }
+  body.light .card .num { color: #bbb; }
+  body.light .card .label { color: #888; }
+  body.light .card .wordmark { color: #111; }
+  body.light .section-title { color: #239eab; border-color: #ddd; }
+</style>
+</head>
+<body>
+<h1>Hellonoid — Logotypförslag</h1>
+<p class="subtitle">50 koncept: Humanoid robotsiluett × bokstaven H — klicka för att zooma</p>
+<div class="toggle">
+  <button onclick="document.body.classList.toggle('light')">Växla ljus/mörk bakgrund</button>
+</div>
+<div class="grid">
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="section-title">A — Negativt utrymme: Robot inuti H</div>
+
+<!-- 1 -->
+<div class="card">
+  <span class="num">#1</span>
+  <svg viewBox="0 0 200 200">
+    <defs><mask id="m1"><rect width="200" height="200" fill="white"/>
+    <!-- Robot cutout -->
+    <circle cx="100" cy="52" r="14" fill="black"/>
+    <rect x="90" y="66" width="20" height="8" rx="2" fill="black"/>
+    <rect x="86" y="74" width="28" height="36" rx="4" fill="black"/>
+    <rect x="88" y="110" width="10" height="34" rx="2" fill="black"/>
+    <rect x="102" y="110" width="10" height="34" rx="2" fill="black"/>
+    <rect x="76" y="78" width="10" height="24" rx="2" fill="black"/>
+    <rect x="114" y="78" width="10" height="24" rx="2" fill="black"/>
+    </mask></defs>
+    <path d="M30,10 h40 v80 h60 v-80 h40 v180 h-40 v-80 h-60 v80 h-40 z" fill="#239eab" mask="url(#m1)"/>
+  </svg>
+  <div class="label">Klassiskt H, robot negativt utrymme</div>
+</div>
+
+<!-- 2 -->
+<div class="card">
+  <span class="num">#2</span>
+  <svg viewBox="0 0 200 200">
+    <defs><mask id="m2"><rect width="200" height="200" fill="white"/>
+    <circle cx="100" cy="48" r="12" fill="black"/>
+    <rect x="92" y="60" width="16" height="6" rx="2" fill="black"/>
+    <path d="M88,66 L80,100 h10 l2-20 h20 l2,20 h10 L112,66 z" fill="black"/>
+    <rect x="86" y="100" width="12" height="38" rx="2" fill="black"/>
+    <rect x="102" y="100" width="12" height="38" rx="2" fill="black"/>
+    </mask></defs>
+    <rect x="20" y="10" width="160" height="180" rx="20" fill="#239eab" mask="url(#m2)"/>
+  </svg>
+  <div class="label">Rundad rektangel, dynamisk pose</div>
+</div>
+
+<!-- 3 -->
+<div class="card">
+  <span class="num">#3</span>
+  <svg viewBox="0 0 200 200">
+    <defs><mask id="m3"><rect width="200" height="200" fill="white"/>
+    <!-- Minimalist stick robot -->
+    <circle cx="100" cy="50" r="10" fill="black"/>
+    <line x1="100" y1="60" x2="100" y2="110" stroke="black" stroke-width="6"/>
+    <line x1="100" y1="75" x2="78" y2="95" stroke="black" stroke-width="5"/>
+    <line x1="100" y1="75" x2="122" y2="95" stroke="black" stroke-width="5"/>
+    <line x1="100" y1="110" x2="85" y2="145" stroke="black" stroke-width="5"/>
+    <line x1="100" y1="110" x2="115" y2="145" stroke="black" stroke-width="5"/>
+    </mask></defs>
+    <path d="M25,10 h50 v75 h50 v-75 h50 v180 h-50 v-75 h-50 v75 h-50 z" fill="#1a8a96" mask="url(#m3)"/>
+  </svg>
+  <div class="label">Stick-figur i smalt H</div>
+</div>
+
+<!-- 4 -->
+<div class="card">
+  <span class="num">#4</span>
+  <svg viewBox="0 0 200 200">
+    <defs><mask id="m4"><rect width="200" height="200" fill="white"/>
+    <rect x="82" y="40" width="36" height="28" rx="8" fill="black"/>
+    <circle cx="93" cy="52" r="4" fill="white"/>
+    <circle cx="107" cy="52" r="4" fill="white"/>
+    <rect x="88" y="72" width="24" height="40" rx="3" fill="black"/>
+    <rect x="90" y="112" width="8" height="32" rx="2" fill="black"/>
+    <rect x="102" y="112" width="8" height="32" rx="2" fill="black"/>
+    <rect x="74" y="76" width="14" height="6" rx="2" fill="black"/>
+    <rect x="112" y="76" width="14" height="6" rx="2" fill="black"/>
+    </mask></defs>
+    <path d="M30,5 L100,5 L170,5 L170,195 L120,195 L120,115 L80,115 L80,195 L30,195 Z" fill="#239eab" mask="url(#m4)"/>
+  </svg>
+  <div class="label">Kubiskt robothuvud med ögon</div>
+</div>
+
+<!-- 5 -->
+<div class="card">
+  <span class="num">#5</span>
+  <svg viewBox="0 0 200 200">
+    <defs><mask id="m5"><rect width="200" height="200" fill="white"/>
+    <!-- Elegant humanoid -->
+    <ellipse cx="100" cy="46" rx="11" ry="13" fill="black"/>
+    <path d="M94,59 Q88,85 86,110 h28 Q110,85 106,59 z" fill="black"/>
+    <path d="M86,110 L82,150 h10 l4-30 h-2 z" fill="black"/>
+    <path d="M114,110 L118,150 h-10 l-4-30 h2 z" fill="black"/>
+    <path d="M90,68 L72,92 l6,4 L90,78 z" fill="black"/>
+    <path d="M110,68 L128,92 l-6,4 L110,78 z" fill="black"/>
+    </mask></defs>
+    <path d="M20,0 Q20,0 20,0 L180,0 Q190,0 190,10 L190,190 Q190,200 180,200 L20,200 Q10,200 10,190 L10,10 Q10,0 20,0 z" fill="#239eab" mask="url(#m5)"/>
+  </svg>
+  <div class="label">Elegant siluett, rundad fyrkant</div>
+</div>
+
+<!-- 6 -->
+<div class="card">
+  <span class="num">#6</span>
+  <svg viewBox="0 0 200 200">
+    <defs>
+      <clipPath id="c6">
+        <path d="M30,20 h40 v65 h60 v-65 h40 v160 h-40 v-65 h-60 v65 h-40 z"/>
+      </clipPath>
+    </defs>
+    <path d="M30,20 h40 v65 h60 v-65 h40 v160 h-40 v-65 h-60 v65 h-40 z" fill="none" stroke="#239eab" stroke-width="4"/>
+    <!-- Robot inside, clipped to H -->
+    <g clip-path="url(#c6)">
+      <circle cx="100" cy="50" r="18" fill="none" stroke="#239eab" stroke-width="3"/>
+      <circle cx="94" cy="47" r="3" fill="#239eab"/>
+      <circle cx="106" cy="47" r="3" fill="#239eab"/>
+      <rect x="92" y="68" width="16" height="4" rx="2" fill="#239eab"/>
+      <rect x="85" y="72" width="30" height="40" rx="5" fill="none" stroke="#239eab" stroke-width="3"/>
+      <rect x="88" y="112" width="10" height="40" rx="3" fill="none" stroke="#239eab" stroke-width="3"/>
+      <rect x="102" y="112" width="10" height="40" rx="3" fill="none" stroke="#239eab" stroke-width="3"/>
+      <rect x="70" y="78" width="15" height="8" rx="3" fill="none" stroke="#239eab" stroke-width="3"/>
+      <rect x="115" y="78" width="15" height="8" rx="3" fill="none" stroke="#239eab" stroke-width="3"/>
+    </g>
+  </svg>
+  <div class="label">Outline H + outline robot</div>
+</div>
+
+<!-- 7 -->
+<div class="card">
+  <span class="num">#7</span>
+  <svg viewBox="0 0 200 200">
+    <defs><mask id="m7"><rect width="200" height="200" fill="white"/>
+    <circle cx="100" cy="44" r="16" fill="black"/>
+    <rect x="88" y="60" width="24" height="10" rx="3" fill="black"/>
+    <path d="M84,70 h32 l6,50 h-44 z" fill="black"/>
+    <rect x="86" y="120" width="12" height="35" rx="3" fill="black"/>
+    <rect x="102" y="120" width="12" height="35" rx="3" fill="black"/>
+    </mask></defs>
+    <!-- Shield shape -->
+    <path d="M100,5 L185,30 L185,120 Q185,190 100,195 Q15,190 15,120 L15,30 z" fill="#239eab" mask="url(#m7)"/>
+  </svg>
+  <div class="label">Sköldform med pyramidkropp</div>
+</div>
+
+<!-- 8 -->
+<div class="card">
+  <span class="num">#8</span>
+  <svg viewBox="0 0 200 200">
+    <defs><mask id="m8"><rect width="200" height="200" fill="white"/>
+    <!-- Android-style robot -->
+    <path d="M86,48 Q100,30 114,48 z" fill="black"/>
+    <rect x="84" y="48" width="32" height="24" rx="6" fill="black"/>
+    <circle cx="93" cy="58" r="3" fill="white"/>
+    <circle cx="107" cy="58" r="3" fill="white"/>
+    <rect x="88" y="76" width="24" height="38" rx="4" fill="black"/>
+    <rect x="90" y="114" width="8" height="30" rx="3" fill="black"/>
+    <rect x="102" y="114" width="8" height="30" rx="3" fill="black"/>
+    <rect x="76" y="80" width="12" height="26" rx="4" fill="black"/>
+    <rect x="112" y="80" width="12" height="26" rx="4" fill="black"/>
+    </mask></defs>
+    <path d="M35,10 h45 v75 h40 v-75 h45 v180 h-45 v-75 h-40 v75 h-45 z" fill="#0d6b73" mask="url(#m8)"/>
+  </svg>
+  <div class="label">Android-stil, mörk teal</div>
+</div>
+
+<!-- 9 -->
+<div class="card">
+  <span class="num">#9</span>
+  <svg viewBox="0 0 200 200">
+    <defs><mask id="m9"><rect width="200" height="200" fill="white"/>
+    <!-- Geometric robot -->
+    <polygon points="100,35 115,50 115,65 85,65 85,50" fill="black"/>
+    <rect x="85" y="68" width="30" height="42" fill="black"/>
+    <rect x="87" y="110" width="10" height="40" fill="black"/>
+    <rect x="103" y="110" width="10" height="40" fill="black"/>
+    <rect x="72" y="72" width="13" height="8" fill="black"/>
+    <rect x="115" y="72" width="13" height="8" fill="black"/>
+    </mask></defs>
+    <path d="M25,10 h55 v80 h40 v-80 h55 v180 h-55 v-80 h-40 v80 h-55 z" fill="#239eab" mask="url(#m9)"/>
+  </svg>
+  <div class="label">Geometriskt, skarpa kanter</div>
+</div>
+
+<!-- 10 -->
+<div class="card">
+  <span class="num">#10</span>
+  <svg viewBox="0 0 200 200">
+    <defs><mask id="m10"><rect width="200" height="200" fill="white"/>
+    <circle cx="100" cy="50" r="14" fill="black"/>
+    <rect x="90" y="64" width="20" height="6" rx="2" fill="black"/>
+    <rect x="86" y="70" width="28" height="38" rx="6" fill="black"/>
+    <path d="M88,108 L84,150 h12 l2-32 z" fill="black"/>
+    <path d="M112,108 L116,150 h-12 l-2-32 z" fill="black"/>
+    <path d="M86,76 L68,90 l4,8 L86,86 z" fill="black"/>
+    <path d="M114,76 L132,90 l-4,8 L114,86 z" fill="black"/>
+    </mask></defs>
+    <rect x="15" y="5" width="170" height="190" rx="30" fill="#239eab" mask="url(#m10)"/>
+  </svg>
+  <div class="label">Gående robot, piller-form</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="section-title">B — Robot som del av H-formen</div>
+
+<!-- 11 -->
+<div class="card">
+  <span class="num">#11</span>
+  <svg viewBox="0 0 200 200">
+    <!-- Robot body IS the H -->
+    <rect x="40" y="10" width="30" height="180" rx="4" fill="#239eab"/>
+    <rect x="130" y="10" width="30" height="180" rx="4" fill="#239eab"/>
+    <!-- Robot body as crossbar -->
+    <rect x="70" y="75" width="60" height="50" rx="8" fill="#239eab"/>
+    <!-- Head -->
+    <rect x="80" y="40" width="40" height="30" rx="10" fill="#239eab"/>
+    <circle cx="93" cy="53" r="4" fill="#0a0a0b"/>
+    <circle cx="107" cy="53" r="4" fill="#0a0a0b"/>
+    <!-- Antenna -->
+    <line x1="100" y1="40" x2="100" y2="28" stroke="#239eab" stroke-width="3"/>
+    <circle cx="100" cy="25" r="4" fill="#239eab"/>
+  </svg>
+  <div class="label">Robotkroppen ÄR H:et</div>
+</div>
+
+<!-- 12 -->
+<div class="card">
+  <span class="num">#12</span>
+  <svg viewBox="0 0 200 200">
+    <!-- H where the crossbar is a torso, pillars are legs/arms -->
+    <rect x="50" y="80" width="20" height="110" rx="4" fill="#239eab"/>
+    <rect x="130" y="80" width="20" height="110" rx="4" fill="#239eab"/>
+    <rect x="70" y="80" width="60" height="40" rx="6" fill="#239eab"/>
+    <!-- Arms extending outward -->
+    <rect x="30" y="88" width="40" height="12" rx="4" fill="#239eab"/>
+    <rect x="130" y="88" width="40" height="12" rx="4" fill="#239eab"/>
+    <!-- Head -->
+    <circle cx="100" cy="55" r="22" fill="#239eab"/>
+    <circle cx="92" cy="52" r="4" fill="#0a0a0b"/>
+    <circle cx="108" cy="52" r="4" fill="#0a0a0b"/>
+    <rect x="90" y="62" width="20" height="3" rx="1" fill="#0a0a0b"/>
+  </svg>
+  <div class="label">Stort huvud, armar som H-topp</div>
+</div>
+
+<!-- 13 -->
+<div class="card">
+  <span class="num">#13</span>
+  <svg viewBox="0 0 200 200">
+    <!-- Minimalist: robot silhouette that reads as H -->
+    <path d="M45,190 L45,10 L75,10 L75,70 L85,70 L85,60 Q100,35 115,60 L115,70 L125,70 L125,10 L155,10 L155,190 L125,190 L125,120 L115,120 L115,130 Q115,150 105,155 L105,190 L95,190 L95,155 Q85,150 85,130 L85,120 L75,120 L75,190 z" fill="#239eab"/>
+  </svg>
+  <div class="label">Robot-H hybrid silhouette</div>
+</div>
+
+<!-- 14 -->
+<div class="card">
+  <span class="num">#14</span>
+  <svg viewBox="0 0 200 200">
+    <!-- H with robot head replacing crossbar -->
+    <rect x="35" y="10" width="35" height="180" rx="4" fill="#239eab"/>
+    <rect x="130" y="10" width="35" height="180" rx="4" fill="#239eab"/>
+    <!-- Robot head as bridge -->
+    <rect x="70" y="72" width="60" height="45" rx="10" fill="#239eab"/>
+    <rect x="78" y="80" width="16" height="10" rx="3" fill="#0a0a0b"/>
+    <rect x="106" y="80" width="16" height="10" rx="3" fill="#0a0a0b"/>
+    <rect x="88" y="100" width="24" height="6" rx="2" fill="#0a0a0b"/>
+    <!-- Antenna -->
+    <rect x="90" y="58" width="20" height="14" rx="4" fill="#239eab"/>
+    <line x1="100" y1="58" x2="100" y2="45" stroke="#239eab" stroke-width="3"/>
+    <circle cx="100" cy="42" r="5" fill="#239eab"/>
+  </svg>
+  <div class="label">Robothuvud som korsband</div>
+</div>
+
+<!-- 15 -->
+<div class="card">
+  <span class="num">#15</span>
+  <svg viewBox="0 0 200 200">
+    <!-- Walking robot forming H -->
+    <path d="M55,190 L65,110 L70,80 L75,10 L85,10 L82,60 Q100,45 118,60 L115,10 L125,10 L130,80 L135,110 L145,190 L130,190 L120,120 L115,100 Q100,90 85,100 L80,120 L70,190 z" fill="#239eab"/>
+    <!-- Eyes -->
+    <circle cx="94" cy="56" r="3" fill="#0a0a0b"/>
+    <circle cx="106" cy="56" r="3" fill="#0a0a0b"/>
+  </svg>
+  <div class="label">Gående robot = H-form</div>
+</div>
+
+<!-- 16 -->
+<div class="card">
+  <span class="num">#16</span>
+  <svg viewBox="0 0 200 200">
+    <!-- Pillars with robot standing between them -->
+    <rect x="25" y="10" width="30" height="180" rx="3" fill="#239eab"/>
+    <rect x="145" y="10" width="30" height="180" rx="3" fill="#239eab"/>
+    <!-- Standing robot -->
+    <circle cx="100" cy="40" r="16" fill="#239eab"/>
+    <circle cx="94" cy="38" r="3" fill="#0a0a0b"/>
+    <circle cx="106" cy="38" r="3" fill="#0a0a0b"/>
+    <rect x="88" y="56" width="24" height="42" rx="5" fill="#239eab"/>
+    <!-- Arms reach to pillars = crossbar -->
+    <rect x="55" y="72" width="33" height="10" rx="3" fill="#239eab"/>
+    <rect x="112" y="72" width="33" height="10" rx="3" fill="#239eab"/>
+    <!-- Legs -->
+    <rect x="90" y="98" width="8" height="42" rx="3" fill="#239eab"/>
+    <rect x="102" y="98" width="8" height="42" rx="3" fill="#239eab"/>
+    <!-- Feet -->
+    <rect x="86" y="136" width="14" height="6" rx="2" fill="#239eab"/>
+    <rect x="100" y="136" width="14" height="6" rx="2" fill="#239eab"/>
+  </svg>
+  <div class="label">Robot binder ihop H-pelarna</div>
+</div>
+
+<!-- 17 -->
+<div class="card">
+  <span class="num">#17</span>
+  <svg viewBox="0 0 200 200">
+    <!-- Abstract: H formed by robot's body proportions -->
+    <rect x="42" y="10" width="28" height="180" fill="#239eab"/>
+    <rect x="130" y="10" width="28" height="180" fill="#239eab"/>
+    <!-- Torso bridge -->
+    <rect x="70" y="85" width="60" height="30" rx="4" fill="#239eab"/>
+    <!-- Head above -->
+    <circle cx="100" cy="60" r="20" fill="none" stroke="#239eab" stroke-width="5"/>
+    <circle cx="93" cy="57" r="3" fill="#239eab"/>
+    <circle cx="107" cy="57" r="3" fill="#239eab"/>
+  </svg>
+  <div class="label">H med flytande robothuvud</div>
+</div>
+
+<!-- 18 -->
+<div class="card">
+  <span class="num">#18</span>
+  <svg viewBox="0 0 200 200">
+    <path d="M40,190 V10 h30 v65 h10 V55 l20-25 20,25 v20 h10 V10 h30 v180 h-30 v-65 h-10 v10 l-10,15 v40 h-20 v-40 l-10-15 v-10 h-10 v65 z" fill="#239eab"/>
+  </svg>
+  <div class="label">H med integrerat robothuvud i mitten</div>
+</div>
+
+<!-- 19 -->
+<div class="card">
+  <span class="num">#19</span>
+  <svg viewBox="0 0 200 200">
+    <!-- Ultra minimal: two lines + circle + crossbar -->
+    <rect x="50" y="30" width="16" height="150" rx="8" fill="#239eab"/>
+    <rect x="134" y="30" width="16" height="150" rx="8" fill="#239eab"/>
+    <rect x="66" y="95" width="68" height="14" rx="7" fill="#239eab"/>
+    <circle cx="100" cy="60" r="20" fill="none" stroke="#239eab" stroke-width="5"/>
+    <circle cx="93" cy="58" r="3" fill="#239eab"/>
+    <circle cx="107" cy="58" r="3" fill="#239eab"/>
+  </svg>
+  <div class="label">Ultraminimalt, runda former</div>
+</div>
+
+<!-- 20 -->
+<div class="card">
+  <span class="num">#20</span>
+  <svg viewBox="0 0 200 200">
+    <!-- H where negative space between legs forms robot -->
+    <path d="M30,10 h140 v180 h-40 v-70 q0-20-15-25 L100,85 L85,95 q-15,5-15,25 v70 h-40 z" fill="#239eab"/>
+    <!-- Eyes in the head area -->
+    <circle cx="92" cy="50" r="5" fill="#0a0a0b"/>
+    <circle cx="108" cy="50" r="5" fill="#0a0a0b"/>
+  </svg>
+  <div class="label">Massivt H, robotben i negativt utr.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="section-title">C — Sköld / Emblem-varianter</div>
+
+<!-- 21 -->
+<div class="card">
+  <span class="num">#21</span>
+  <svg viewBox="0 0 200 200">
+    <defs><mask id="m21"><rect width="200" height="200" fill="white"/>
+    <circle cx="100" cy="52" r="13" fill="black"/>
+    <rect x="90" y="65" width="20" height="8" rx="2" fill="black"/>
+    <rect x="86" y="73" width="28" height="35" rx="4" fill="black"/>
+    <rect x="88" y="108" width="10" height="30" rx="2" fill="black"/>
+    <rect x="102" y="108" width="10" height="30" rx="2" fill="black"/>
+    <rect x="76" y="78" width="10" height="20" rx="2" fill="black"/>
+    <rect x="114" y="78" width="10" height="20" rx="2" fill="black"/>
+    </mask></defs>
+    <path d="M100,10 L180,40 L180,130 Q180,190 100,195 Q20,190 20,130 L20,40 z" fill="#239eab" mask="url(#m21)"/>
+  </svg>
+  <div class="label">Klassisk sköld</div>
+</div>
+
+<!-- 22 -->
+<div class="card">
+  <span class="num">#22</span>
+  <svg viewBox="0 0 200 200">
+    <defs><mask id="m22"><rect width="200" height="200" fill="white"/>
+    <circle cx="100" cy="55" r="15" fill="black"/>
+    <rect x="87" y="70" width="26" height="40" rx="5" fill="black"/>
+    <rect x="89" y="110" width="9" height="35" rx="2" fill="black"/>
+    <rect x="102" y="110" width="9" height="35" rx="2" fill="black"/>
+    <rect x="74" y="76" width="13" height="8" rx="2" fill="black"/>
+    <rect x="113" y="76" width="13" height="8" rx="2" fill="black"/>
+    </mask></defs>
+    <circle cx="100" cy="100" r="90" fill="#239eab" mask="url(#m22)"/>
+  </svg>
+  <div class="label">Cirkulärt emblem</div>
+</div>
+
+<!-- 23 -->
+<div class="card">
+  <span class="num">#23</span>
+  <svg viewBox="0 0 200 200">
+    <defs><mask id="m23"><rect width="200" height="200" fill="white"/>
+    <circle cx="100" cy="52" r="12" fill="black"/>
+    <rect x="90" y="64" width="20" height="6" rx="2" fill="black"/>
+    <rect x="85" y="70" width="30" height="38" rx="4" fill="black"/>
+    <rect x="87" y="108" width="11" height="34" rx="2" fill="black"/>
+    <rect x="102" y="108" width="11" height="34" rx="2" fill="black"/>
+    <rect x="75" y="74" width="10" height="24" rx="2" fill="black"/>
+    <rect x="115" y="74" width="10" height="24" rx="2" fill="black"/>
+    </mask></defs>
+    <!-- Hexagon -->
+    <polygon points="100,8 185,50 185,150 100,192 15,150 15,50" fill="#239eab" mask="url(#m23)"/>
+  </svg>
+  <div class="label">Hexagon-emblem</div>
+</div>
+
+<!-- 24 -->
+<div class="card">
+  <span class="num">#24</span>
+  <svg viewBox="0 0 200 200">
+    <defs><mask id="m24"><rect width="200" height="200" fill="white"/>
+    <!-- Stylized robot -->
+    <rect x="84" y="38" width="32" height="26" rx="5" fill="black"/>
+    <rect x="90" y="44" width="8" height="8" rx="2" fill="white"/>
+    <rect x="102" y="44" width="8" height="8" rx="2" fill="white"/>
+    <rect x="86" y="68" width="28" height="42" rx="3" fill="black"/>
+    <rect x="88" y="110" width="10" height="36" rx="2" fill="black"/>
+    <rect x="102" y="110" width="10" height="36" rx="2" fill="black"/>
+    <rect x="72" y="72" width="14" height="8" rx="2" fill="black"/>
+    <rect x="114" y="72" width="14" height="8" rx="2" fill="black"/>
+    </mask></defs>
+    <!-- Squircle -->
+    <rect x="12" y="8" width="176" height="184" rx="40" fill="#239eab" mask="url(#m24)"/>
+  </svg>
+  <div class="label">Squircle (app-ikon-stil)</div>
+</div>
+
+<!-- 25 -->
+<div class="card">
+  <span class="num">#25</span>
+  <svg viewBox="0 0 200 200">
+    <defs><mask id="m25"><rect width="200" height="200" fill="white"/>
+    <!-- Small H + robot combined -->
+    <path d="M70,40 h15 v30 h30 v-30 h15 v90 h-15 v-40 h-30 v40 h-15 z" fill="black"/>
+    <circle cx="100" cy="145" r="14" fill="black"/>
+    <circle cx="94" cy="143" r="3" fill="white"/>
+    <circle cx="106" cy="143" r="3" fill="white"/>
+    </mask></defs>
+    <path d="M100,5 L190,55 L190,145 L100,195 L10,145 L10,55 z" fill="#1a8a96" mask="url(#m25)"/>
+  </svg>
+  <div class="label">H + robothuvud, diamant</div>
+</div>
+
+<!-- 26 -->
+<div class="card">
+  <span class="num">#26</span>
+  <svg viewBox="0 0 200 200">
+    <!-- Double ring with robot -->
+    <circle cx="100" cy="100" r="90" fill="none" stroke="#239eab" stroke-width="4"/>
+    <circle cx="100" cy="100" r="78" fill="none" stroke="#239eab" stroke-width="2"/>
+    <!-- Robot inside -->
+    <circle cx="100" cy="58" r="16" fill="#239eab"/>
+    <circle cx="94" cy="55" r="3" fill="#0a0a0b"/>
+    <circle cx="106" cy="55" r="3" fill="#0a0a0b"/>
+    <rect x="88" y="74" width="24" height="36" rx="4" fill="#239eab"/>
+    <rect x="90" y="110" width="8" height="30" rx="2" fill="#239eab"/>
+    <rect x="102" y="110" width="8" height="30" rx="2" fill="#239eab"/>
+    <rect x="76" y="80" width="12" height="6" rx="2" fill="#239eab"/>
+    <rect x="112" y="80" width="12" height="6" rx="2" fill="#239eab"/>
+  </svg>
+  <div class="label">Dubbelring-emblem</div>
+</div>
+
+<!-- 27 -->
+<div class="card">
+  <span class="num">#27</span>
+  <svg viewBox="0 0 200 200">
+    <defs><mask id="m27"><rect width="200" height="200" fill="white"/>
+    <!-- Walking robot silhouette -->
+    <circle cx="100" cy="42" r="14" fill="black"/>
+    <path d="M90,56 h20 l8,50 h-36 z" fill="black"/>
+    <path d="M82,106 L74,155 h12 l8-39 z" fill="black"/>
+    <path d="M118,106 L126,155 h-12 l-8-39 z" fill="black"/>
+    <path d="M88,66 L68,82 l5,6 L88,74 z" fill="black"/>
+    <path d="M112,66 L132,82 l-5,6 L112,74 z" fill="black"/>
+    </mask></defs>
+    <!-- Rounded shield -->
+    <path d="M100,5 Q190,5 190,50 L190,150 Q190,195 100,195 Q10,195 10,150 L10,50 Q10,5 100,5 z" fill="#239eab" mask="url(#m27)"/>
+  </svg>
+  <div class="label">Rundad sköld, dynamisk pose</div>
+</div>
+
+<!-- 28 -->
+<div class="card">
+  <span class="num">#28</span>
+  <svg viewBox="0 0 200 200">
+    <!-- Octagon badge -->
+    <defs><mask id="m28"><rect width="200" height="200" fill="white"/>
+    <circle cx="100" cy="55" r="13" fill="black"/>
+    <rect x="88" y="68" width="24" height="35" rx="4" fill="black"/>
+    <rect x="90" y="103" width="8" height="32" rx="2" fill="black"/>
+    <rect x="102" y="103" width="8" height="32" rx="2" fill="black"/>
+    <rect x="78" y="72" width="10" height="20" rx="2" fill="black"/>
+    <rect x="112" y="72" width="10" height="20" rx="2" fill="black"/>
+    </mask></defs>
+    <polygon points="65,10 135,10 190,65 190,135 135,190 65,190 10,135 10,65" fill="#239eab" mask="url(#m28)"/>
+  </svg>
+  <div class="label">Oktagon-badge</div>
+</div>
+
+<!-- 29 -->
+<div class="card">
+  <span class="num">#29</span>
+  <svg viewBox="0 0 200 200">
+    <!-- Stamp style with text ring -->
+    <circle cx="100" cy="100" r="92" fill="none" stroke="#239eab" stroke-width="3"/>
+    <circle cx="100" cy="100" r="82" fill="none" stroke="#239eab" stroke-width="1"/>
+    <!-- Robot -->
+    <circle cx="100" cy="68" r="14" fill="#239eab"/>
+    <rect x="88" y="82" width="24" height="32" rx="4" fill="#239eab"/>
+    <rect x="90" y="114" width="8" height="24" rx="2" fill="#239eab"/>
+    <rect x="102" y="114" width="8" height="24" rx="2" fill="#239eab"/>
+    <!-- H letters on sides -->
+    <text x="38" y="106" fill="#239eab" font-family="Poppins,sans-serif" font-weight="700" font-size="36">H</text>
+    <text x="146" y="106" fill="#239eab" font-family="Poppins,sans-serif" font-weight="700" font-size="36">H</text>
+  </svg>
+  <div class="label">Stämpel med dubbel-H</div>
+</div>
+
+<!-- 30 -->
+<div class="card">
+  <span class="num">#30</span>
+  <svg viewBox="0 0 200 200">
+    <!-- Triangle/arrow pointing up -->
+    <defs><mask id="m30"><rect width="200" height="200" fill="white"/>
+    <circle cx="100" cy="72" r="12" fill="black"/>
+    <rect x="90" y="84" width="20" height="30" rx="3" fill="black"/>
+    <rect x="92" y="114" width="7" height="28" rx="2" fill="black"/>
+    <rect x="101" y="114" width="7" height="28" rx="2" fill="black"/>
+    <rect x="80" y="88" width="10" height="6" rx="2" fill="black"/>
+    <rect x="110" y="88" width="10" height="6" rx="2" fill="black"/>
+    </mask></defs>
+    <polygon points="100,5 190,190 10,190" fill="#239eab" mask="url(#m30)"/>
+  </svg>
+  <div class="label">Triangel/pil uppåt</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="section-title">D — Linjegrafik / Outline</div>
+
+<!-- 31 -->
+<div class="card">
+  <span class="num">#31</span>
+  <svg viewBox="0 0 200 200">
+    <!-- Single continuous line H-robot -->
+    <path d="M45,185 V15 h4 V85 h12 V65 Q100,35 138,65 V85 h12 V15 h4 V185 h-4 V115 h-12 v10 Q130,140 115,150 V185 h-4 V155 Q100,165 85,155 V185 h-4 V150 Q70,140 62,125 V115 H50 V185 z" 
+      fill="none" stroke="#239eab" stroke-width="2.5"/>
+    <!-- Eyes -->
+    <circle cx="92" cy="58" r="4" fill="none" stroke="#239eab" stroke-width="2"/>
+    <circle cx="108" cy="58" r="4" fill="none" stroke="#239eab" stroke-width="2"/>
+  </svg>
+  <div class="label">Kontinuerlig linje</div>
+</div>
+
+<!-- 32 -->
+<div class="card">
+  <span class="num">#32</span>
+  <svg viewBox="0 0 200 200">
+    <!-- Outline H with outline robot inside -->
+    <rect x="35" y="15" width="130" height="170" rx="8" fill="none" stroke="#239eab" stroke-width="3"/>
+    <!-- Robot outline -->
+    <circle cx="100" cy="55" r="16" fill="none" stroke="#239eab" stroke-width="2.5"/>
+    <circle cx="94" cy="52" r="3" fill="#239eab"/>
+    <circle cx="106" cy="52" r="3" fill="#239eab"/>
+    <line x1="100" y1="71" x2="100" y2="75" stroke="#239eab" stroke-width="2"/>
+    <rect x="85" y="75" width="30" height="40" rx="5" fill="none" stroke="#239eab" stroke-width="2.5"/>
+    <line x1="85" y1="90" x2="55" y2="90" stroke="#239eab" stroke-width="2.5"/>
+    <line x1="115" y1="90" x2="145" y2="90" stroke="#239eab" stroke-width="2.5"/>
+    <line x1="92" y1="115" x2="88" y2="155" stroke="#239eab" stroke-width="2.5"/>
+    <line x1="108" y1="115" x2="112" y2="155" stroke="#239eab" stroke-width="2.5"/>
+  </svg>
+  <div class="label">Outline-box med robot</div>
+</div>
+
+<!-- 33 -->
+<div class="card">
+  <span class="num">#33</span>
+  <svg viewBox="0 0 200 200">
+    <!-- Thin H frame -->
+    <path d="M40,15 h30 v70 h60 v-70 h30 v170 h-30 v-70 h-60 v70 h-30 z" fill="none" stroke="#239eab" stroke-width="2"/>
+    <!-- Dotted robot inside -->
+    <circle cx="100" cy="62" r="12" fill="none" stroke="#239eab" stroke-width="2" stroke-dasharray="3,3"/>
+    <rect x="88" y="78" width="24" height="30" rx="4" fill="none" stroke="#239eab" stroke-width="2" stroke-dasharray="3,3"/>
+    <line x1="92" y1="108" x2="90" y2="138" stroke="#239eab" stroke-width="2" stroke-dasharray="3,3"/>
+    <line x1="108" y1="108" x2="110" y2="138" stroke="#239eab" stroke-width="2" stroke-dasharray="3,3"/>
+  </svg>
+  <div class="label">Streckad robot i H-ram</div>
+</div>
+
+<!-- 34 -->
+<div class="card">
+  <span class="num">#34</span>
+  <svg viewBox="0 0 200 200">
+    <!-- Geometric line art -->
+    <polygon points="100,30 120,50 120,65 110,65 110,70 125,70 125,85 110,85 110,95 120,95 120,120 115,140 105,140 100,120 95,140 85,140 80,120 80,95 90,95 90,85 75,85 75,70 90,70 90,65 80,65 80,50" fill="none" stroke="#239eab" stroke-width="2.5" stroke-linejoin="round"/>
+    <!-- H frame -->
+    <rect x="30" y="10" width="140" height="180" rx="5" fill="none" stroke="#239eab" stroke-width="2"/>
+  </svg>
+  <div class="label">Geometrisk linjerobot i ram</div>
+</div>
+
+<!-- 35 -->
+<div class="card">
+  <span class="num">#35</span>
+  <svg viewBox="0 0 200 200">
+    <!-- Circuit board style -->
+    <path d="M50,20 V180" stroke="#239eab" stroke-width="3"/>
+    <path d="M150,20 V180" stroke="#239eab" stroke-width="3"/>
+    <path d="M50,100 H80" stroke="#239eab" stroke-width="3"/>
+    <path d="M120,100 H150" stroke="#239eab" stroke-width="3"/>
+    <!-- Robot from circuit nodes -->
+    <rect x="84" y="55" width="32" height="24" rx="4" fill="none" stroke="#239eab" stroke-width="2"/>
+    <circle cx="93" cy="65" r="3" fill="#239eab"/>
+    <circle cx="107" cy="65" r="3" fill="#239eab"/>
+    <path d="M80,79 h40 v36 h-40 z" fill="none" stroke="#239eab" stroke-width="2"/>
+    <line x1="90" y1="115" x2="90" y2="145" stroke="#239eab" stroke-width="2"/>
+    <line x1="110" y1="115" x2="110" y2="145" stroke="#239eab" stroke-width="2"/>
+    <!-- Circuit dots -->
+    <circle cx="50" cy="100" r="4" fill="#239eab"/>
+    <circle cx="150" cy="100" r="4" fill="#239eab"/>
+    <circle cx="90" cy="145" r="3" fill="#239eab"/>
+    <circle cx="110" cy="145" r="3" fill="#239eab"/>
+  </svg>
+  <div class="label">Kretskortsstil</div>
+</div>
+
+<!-- 36 -->
+<div class="card">
+  <span class="num">#36</span>
+  <svg viewBox="0 0 200 200">
+    <!-- Neon glow style (double stroke) -->
+    <path d="M40,10 h35 v75 h50 v-75 h35 v180 h-35 v-75 h-50 v75 h-35 z" fill="none" stroke="#239eab" stroke-width="1" opacity="0.4"/>
+    <path d="M40,10 h35 v75 h50 v-75 h35 v180 h-35 v-75 h-50 v75 h-35 z" fill="none" stroke="#74deee" stroke-width="2"/>
+    <!-- Glowing robot -->
+    <circle cx="100" cy="60" r="14" fill="none" stroke="#74deee" stroke-width="2"/>
+    <circle cx="100" cy="60" r="14" fill="none" stroke="#239eab" stroke-width="4" opacity="0.3"/>
+    <circle cx="94" cy="58" r="3" fill="#74deee"/>
+    <circle cx="106" cy="58" r="3" fill="#74deee"/>
+    <rect x="88" y="78" width="24" height="30" rx="4" fill="none" stroke="#74deee" stroke-width="2"/>
+    <line x1="92" y1="108" x2="90" y2="140" stroke="#74deee" stroke-width="2"/>
+    <line x1="108" y1="108" x2="110" y2="140" stroke="#74deee" stroke-width="2"/>
+  </svg>
+  <div class="label">Neon-glow effekt</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="section-title">E — Tvåfärg / Gradient</div>
+
+<!-- 37 -->
+<div class="card">
+  <span class="num">#37</span>
+  <svg viewBox="0 0 200 200">
+    <defs>
+      <linearGradient id="g37" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#239eab"/>
+        <stop offset="100%" stop-color="#74deee"/>
+      </linearGradient>
+      <mask id="m37"><rect width="200" height="200" fill="white"/>
+      <circle cx="100" cy="52" r="14" fill="black"/>
+      <rect x="88" y="66" width="24" height="38" rx="4" fill="black"/>
+      <rect x="90" y="104" width="8" height="34" rx="2" fill="black"/>
+      <rect x="102" y="104" width="8" height="34" rx="2" fill="black"/>
+      <rect x="76" y="72" width="12" height="22" rx="2" fill="black"/>
+      <rect x="112" y="72" width="12" height="22" rx="2" fill="black"/>
+      </mask>
+    </defs>
+    <path d="M30,10 h45 v80 h50 v-80 h45 v180 h-45 v-80 h-50 v80 h-45 z" fill="url(#g37)" mask="url(#m37)"/>
+  </svg>
+  <div class="label">Teal→cyan gradient, klassiskt H</div>
+</div>
+
+<!-- 38 -->
+<div class="card">
+  <span class="num">#38</span>
+  <svg viewBox="0 0 200 200">
+    <defs>
+      <linearGradient id="g38" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#0d6b73"/>
+        <stop offset="100%" stop-color="#74deee"/>
+      </linearGradient>
+    </defs>
+    <!-- Split: left half solid, right half gradient -->
+    <path d="M30,10 h45 v80 h25 v-80 h-25 v0 h25 v180 h-25 v-80 h-25 v80 h-45 z" fill="#239eab"/>
+    <path d="M100,10 h45 v0 h25 v180 h-25 v0 h-45 v-80 h25 v-20 h-25 z" fill="url(#g38)"/>
+    <!-- Robot in center -->
+    <circle cx="100" cy="55" r="12" fill="#0a0a0b"/>
+    <rect x="90" y="67" width="20" height="26" rx="3" fill="#0a0a0b"/>
+  </svg>
+  <div class="label">Split-tone H</div>
+</div>
+
+<!-- 39 -->
+<div class="card">
+  <span class="num">#39</span>
+  <svg viewBox="0 0 200 200">
+    <defs>
+      <linearGradient id="g39" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#239eab"/>
+        <stop offset="100%" stop-color="#74deee"/>
+      </linearGradient>
+    </defs>
+    <!-- Rounded H with gradient -->
+    <rect x="30" y="10" width="45" height="180" rx="22" fill="url(#g39)"/>
+    <rect x="125" y="10" width="45" height="180" rx="22" fill="url(#g39)"/>
+    <rect x="75" y="80" width="50" height="40" rx="20" fill="url(#g39)"/>
+    <!-- Robot head -->
+    <circle cx="100" cy="52" r="20" fill="url(#g39)"/>
+    <circle cx="93" cy="49" r="4" fill="#0a0a0b"/>
+    <circle cx="107" cy="49" r="4" fill="#0a0a0b"/>
+  </svg>
+  <div class="label">Runda pelare + gradient</div>
+</div>
+
+<!-- 40 -->
+<div class="card">
+  <span class="num">#40</span>
+  <svg viewBox="0 0 200 200">
+    <defs>
+      <radialGradient id="g40">
+        <stop offset="0%" stop-color="#74deee"/>
+        <stop offset="100%" stop-color="#239eab"/>
+      </radialGradient>
+      <mask id="m40"><rect width="200" height="200" fill="white"/>
+      <circle cx="100" cy="55" r="15" fill="black"/>
+      <rect x="87" y="70" width="26" height="38" rx="5" fill="black"/>
+      <rect x="89" y="108" width="9" height="32" rx="2" fill="black"/>
+      <rect x="102" y="108" width="9" height="32" rx="2" fill="black"/>
+      <rect x="74" y="76" width="13" height="8" rx="2" fill="black"/>
+      <rect x="113" y="76" width="13" height="8" rx="2" fill="black"/>
+      </mask>
+    </defs>
+    <circle cx="100" cy="100" r="90" fill="url(#g40)" mask="url(#m40)"/>
+  </svg>
+  <div class="label">Radiell gradient, cirkel</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="section-title">F — Monokrom / Navy / Svart-vitt</div>
+
+<!-- 41 -->
+<div class="card">
+  <span class="num">#41</span>
+  <svg viewBox="0 0 200 200">
+    <defs><mask id="m41"><rect width="200" height="200" fill="white"/>
+    <circle cx="100" cy="52" r="14" fill="black"/>
+    <rect x="88" y="66" width="24" height="38" rx="4" fill="black"/>
+    <rect x="90" y="104" width="8" height="34" rx="2" fill="black"/>
+    <rect x="102" y="104" width="8" height="34" rx="2" fill="black"/>
+    <rect x="76" y="72" width="12" height="22" rx="2" fill="black"/>
+    <rect x="112" y="72" width="12" height="22" rx="2" fill="black"/>
+    </mask></defs>
+    <path d="M30,10 h45 v80 h50 v-80 h45 v180 h-45 v-80 h-50 v80 h-45 z" fill="#1B3160" mask="url(#m41)"/>
+  </svg>
+  <div class="label">Navy, som referensbilden</div>
+</div>
+
+<!-- 42 -->
+<div class="card">
+  <span class="num">#42</span>
+  <svg viewBox="0 0 200 200">
+    <defs><mask id="m42"><rect width="200" height="200" fill="white"/>
+    <circle cx="100" cy="52" r="14" fill="black"/>
+    <rect x="88" y="66" width="24" height="38" rx="4" fill="black"/>
+    <rect x="90" y="104" width="8" height="34" rx="2" fill="black"/>
+    <rect x="102" y="104" width="8" height="34" rx="2" fill="black"/>
+    <rect x="76" y="72" width="12" height="22" rx="2" fill="black"/>
+    <rect x="112" y="72" width="12" height="22" rx="2" fill="black"/>
+    </mask></defs>
+    <path d="M30,10 h45 v80 h50 v-80 h45 v180 h-45 v-80 h-50 v80 h-45 z" fill="#ffffff" mask="url(#m42)"/>
+  </svg>
+  <div class="label">Ren vit</div>
+</div>
+
+<!-- 43 -->
+<div class="card">
+  <span class="num">#43</span>
+  <svg viewBox="0 0 200 200">
+    <defs><mask id="m43"><rect width="200" height="200" fill="white"/>
+    <circle cx="100" cy="50" r="14" fill="black"/>
+    <rect x="88" y="64" width="24" height="40" rx="5" fill="black"/>
+    <rect x="90" y="104" width="8" height="36" rx="2" fill="black"/>
+    <rect x="102" y="104" width="8" height="36" rx="2" fill="black"/>
+    <rect x="76" y="70" width="12" height="24" rx="2" fill="black"/>
+    <rect x="112" y="70" width="12" height="24" rx="2" fill="black"/>
+    </mask></defs>
+    <rect x="15" y="5" width="170" height="190" rx="20" fill="#222" mask="url(#m43)"/>
+  </svg>
+  <div class="label">Mörkgrå, avrundad</div>
+</div>
+
+<!-- 44 -->
+<div class="card">
+  <span class="num">#44</span>
+  <svg viewBox="0 0 200 200">
+    <!-- Black on teal background -->
+    <rect x="10" y="10" width="180" height="180" rx="12" fill="#239eab"/>
+    <defs><mask id="m44"><rect width="200" height="200" fill="white"/>
+    <circle cx="100" cy="55" r="13" fill="black"/>
+    <rect x="88" y="68" width="24" height="36" rx="4" fill="black"/>
+    <rect x="90" y="104" width="8" height="32" rx="2" fill="black"/>
+    <rect x="102" y="104" width="8" height="32" rx="2" fill="black"/>
+    <rect x="76" y="74" width="12" height="20" rx="2" fill="black"/>
+    <rect x="112" y="74" width="12" height="20" rx="2" fill="black"/>
+    </mask></defs>
+    <path d="M35,20 h40 v70 h50 v-70 h40 v160 h-40 v-70 h-50 v70 h-40 z" fill="#0a0a0b" mask="url(#m44)"/>
+  </svg>
+  <div class="label">Inverterad: svart H på teal</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="section-title">G — Abstrakta / Experimentella</div>
+
+<!-- 45 -->
+<div class="card">
+  <span class="num">#45</span>
+  <svg viewBox="0 0 200 200">
+    <!-- Pixelated H-robot -->
+    <g fill="#239eab">
+      <!-- H left pillar -->
+      <rect x="30" y="10" width="20" height="20"/><rect x="30" y="30" width="20" height="20"/>
+      <rect x="30" y="50" width="20" height="20"/><rect x="30" y="70" width="20" height="20"/>
+      <rect x="30" y="90" width="20" height="20"/><rect x="30" y="110" width="20" height="20"/>
+      <rect x="30" y="130" width="20" height="20"/><rect x="30" y="150" width="20" height="20"/>
+      <rect x="30" y="170" width="20" height="20"/>
+      <!-- H right pillar -->
+      <rect x="150" y="10" width="20" height="20"/><rect x="150" y="30" width="20" height="20"/>
+      <rect x="150" y="50" width="20" height="20"/><rect x="150" y="70" width="20" height="20"/>
+      <rect x="150" y="90" width="20" height="20"/><rect x="150" y="110" width="20" height="20"/>
+      <rect x="150" y="130" width="20" height="20"/><rect x="150" y="150" width="20" height="20"/>
+      <rect x="150" y="170" width="20" height="20"/>
+      <!-- Robot head -->
+      <rect x="70" y="30" width="20" height="20"/><rect x="90" y="30" width="20" height="20"/>
+      <rect x="110" y="30" width="20" height="20"/>
+      <rect x="70" y="50" width="20" height="20"/><rect x="110" y="50" width="20" height="20"/>
+      <!-- Crossbar/body -->
+      <rect x="50" y="70" width="20" height="20"/>
+      <rect x="70" y="70" width="20" height="20"/><rect x="90" y="70" width="20" height="20"/>
+      <rect x="110" y="70" width="20" height="20"/><rect x="130" y="70" width="20" height="20"/>
+      <rect x="70" y="90" width="20" height="20"/><rect x="90" y="90" width="20" height="20"/>
+      <rect x="110" y="90" width="20" height="20"/>
+      <!-- Legs -->
+      <rect x="70" y="110" width="20" height="20"/><rect x="110" y="110" width="20" height="20"/>
+      <rect x="70" y="130" width="20" height="20"/><rect x="110" y="130" width="20" height="20"/>
+    </g>
+    <!-- Eyes (dark) -->
+    <rect x="76" y="36" width="8" height="8" fill="#0a0a0b"/>
+    <rect x="116" y="36" width="8" height="8" fill="#0a0a0b"/>
+  </svg>
+  <div class="label">Pixel-art / 8-bit stil</div>
+</div>
+
+<!-- 46 -->
+<div class="card">
+  <span class="num">#46</span>
+  <svg viewBox="0 0 200 200">
+    <!-- Fragmented / glitch -->
+    <defs><mask id="m46"><rect width="200" height="200" fill="white"/>
+    <circle cx="100" cy="52" r="14" fill="black"/>
+    <rect x="88" y="66" width="24" height="38" rx="4" fill="black"/>
+    <rect x="90" y="104" width="8" height="34" rx="2" fill="black"/>
+    <rect x="102" y="104" width="8" height="34" rx="2" fill="black"/>
+    </mask></defs>
+    <path d="M30,10 h45 v80 h50 v-80 h45 v90 h-170 z" fill="#239eab" mask="url(#m46)"/>
+    <path d="M33,100 h170 v90 h-45 v-60 h-50 v60 h-45 z" fill="#1a8a96" mask="url(#m46)" transform="translate(3,0)"/>
+  </svg>
+  <div class="label">Glitch / offset-effekt</div>
+</div>
+
+<!-- 47 -->
+<div class="card">
+  <span class="num">#47</span>
+  <svg viewBox="0 0 200 200">
+    <!-- Dots forming H-robot -->
+    <g fill="#239eab">
+      <!-- Left pillar dots -->
+      <circle cx="45" cy="20" r="8"/><circle cx="45" cy="50" r="8"/>
+      <circle cx="45" cy="80" r="8"/><circle cx="45" cy="110" r="8"/>
+      <circle cx="45" cy="140" r="8"/><circle cx="45" cy="170" r="8"/>
+      <!-- Right pillar dots -->
+      <circle cx="155" cy="20" r="8"/><circle cx="155" cy="50" r="8"/>
+      <circle cx="155" cy="80" r="8"/><circle cx="155" cy="110" r="8"/>
+      <circle cx="155" cy="140" r="8"/><circle cx="155" cy="170" r="8"/>
+      <!-- Robot head -->
+      <circle cx="100" cy="40" r="14"/>
+      <!-- Crossbar dots -->
+      <circle cx="75" cy="80" r="8"/><circle cx="100" cy="80" r="8"/>
+      <circle cx="125" cy="80" r="8"/>
+      <!-- Body -->
+      <circle cx="100" cy="110" r="10"/>
+      <!-- Legs -->
+      <circle cx="88" cy="140" r="7"/><circle cx="112" cy="140" r="7"/>
+      <circle cx="85" cy="168" r="6"/><circle cx="115" cy="168" r="6"/>
+    </g>
+    <circle cx="94" cy="38" r="3" fill="#0a0a0b"/>
+    <circle cx="106" cy="38" r="3" fill="#0a0a0b"/>
+  </svg>
+  <div class="label">Punkt-komposition</div>
+</div>
+
+<!-- 48 -->
+<div class="card">
+  <span class="num">#48</span>
+  <svg viewBox="0 0 200 200">
+    <!-- Layered transparency -->
+    <path d="M25,10 h45 v80 h60 v-80 h45 v180 h-45 v-80 h-60 v80 h-45 z" fill="#239eab" opacity="0.3"/>
+    <path d="M30,15 h45 v80 h60 v-80 h45 v180 h-45 v-80 h-60 v80 h-45 z" fill="#239eab" opacity="0.5" transform="translate(5,5)"/>
+    <!-- Robot on top -->
+    <circle cx="105" cy="62" r="16" fill="#239eab"/>
+    <circle cx="99" cy="59" r="3" fill="#0a0a0b"/>
+    <circle cx="111" cy="59" r="3" fill="#0a0a0b"/>
+    <rect x="93" y="78" width="24" height="36" rx="4" fill="#239eab"/>
+    <rect x="95" y="114" width="8" height="28" rx="2" fill="#239eab"/>
+    <rect x="107" y="114" width="8" height="28" rx="2" fill="#239eab"/>
+  </svg>
+  <div class="label">Lagrat / skuggeffekt</div>
+</div>
+
+<!-- 49 -->
+<div class="card">
+  <span class="num">#49</span>
+  <svg viewBox="0 0 200 200">
+    <!-- Isometric / 3D-ish H -->
+    <path d="M40,30 L60,15 L60,175 L40,190 z" fill="#1a8a96"/>
+    <path d="M60,15 L90,15 L90,85 L60,85 z" fill="#239eab"/>
+    <path d="M40,100 L60,85 L140,85 L140,115 L60,115 L40,130 z" fill="#2bb5c2"/>
+    <path d="M140,15 L160,30 L160,190 L140,175 z" fill="#239eab"/>
+    <path d="M110,15 L140,15 L140,175 L110,175 z" fill="#1a8a96"/>
+    <path d="M60,115 L90,115 L90,175 L60,175 z" fill="#239eab"/>
+    <!-- Robot face on front -->
+    <circle cx="100" cy="50" r="10" fill="none" stroke="#0a0a0b" stroke-width="2"/>
+    <circle cx="96" cy="48" r="2" fill="#0a0a0b"/>
+    <circle cx="104" cy="48" r="2" fill="#0a0a0b"/>
+  </svg>
+  <div class="label">Isometrisk / pseudo-3D</div>
+</div>
+
+<!-- 50 -->
+<div class="card">
+  <span class="num">#50</span>
+  <svg viewBox="0 0 200 200">
+    <defs>
+      <linearGradient id="g50" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#239eab"/>
+        <stop offset="100%" stop-color="#74deee"/>
+      </linearGradient>
+      <mask id="m50"><rect width="200" height="200" fill="white"/>
+      <!-- Detailed anatomical robot -->
+      <circle cx="100" cy="42" r="16" fill="black"/>
+      <rect x="96" y="35" width="3" height="7" rx="1" fill="white"/>
+      <rect x="101" y="35" width="3" height="7" rx="1" fill="white"/>
+      <rect x="90" y="58" width="20" height="8" rx="3" fill="black"/>
+      <path d="M84,66 h32 v42 q0,6-6,6 h-20 q-6,0-6-6 z" fill="black"/>
+      <rect x="88" y="114" width="10" height="36" rx="3" fill="black"/>
+      <rect x="102" y="114" width="10" height="36" rx="3" fill="black"/>
+      <path d="M84,72 L66,84 l-2,18 l8,2 L76,88 L84,80 z" fill="black"/>
+      <path d="M116,72 L134,84 l2,18 l-8,2 L124,88 L116,80 z" fill="black"/>
+      <!-- Visor line -->
+      <rect x="88" y="38" width="24" height="8" rx="4" fill="black"/>
+      <rect x="88" y="38" width="24" height="8" rx="4" fill="white" opacity="0.3"/>
+      </mask>
+    </defs>
+    <!-- Shield with robot cutout -->
+    <path d="M100,5 L185,25 Q190,25 190,30 L190,140 Q190,195 100,198 Q10,195 10,140 L10,30 Q10,25 15,25 z" fill="url(#g50)" mask="url(#m50)"/>
+  </svg>
+  <div class="label">Premium sköld, visir-robot, gradient</div>
+</div>
+
+</div><!-- /grid -->
+
+<div style="text-align:center; margin-top:60px; padding: 20px; color: #444; font-size: 0.8rem;">
+  Hellonoid Logotypförslag — Julia ⚡ 2026-03-06
+</div>
+
+<script>
+// Click to zoom
+document.querySelectorAll('.card').forEach(card => {
+  card.addEventListener('click', () => {
+    const overlay = document.createElement('div');
+    overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.9);display:flex;align-items:center;justify-content:center;z-index:999;cursor:pointer;flex-direction:column;gap:20px;';
+    const svg = card.querySelector('svg').cloneNode(true);
+    svg.style.cssText = 'width:400px;height:400px;max-width:90vw;max-height:70vh;';
+    const label = document.createElement('div');
+    label.textContent = card.querySelector('.num').textContent + ' — ' + card.querySelector('.label').textContent;
+    label.style.cssText = 'color:#888;font-size:1rem;';
+    overlay.appendChild(svg);
+    overlay.appendChild(label);
+    overlay.addEventListener('click', () => overlay.remove());
+    document.body.appendChild(overlay);
+  });
+});
+</script>
+</body>
+</html>
