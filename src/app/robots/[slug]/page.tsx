@@ -1,20 +1,7 @@
 import { getRobotWithDetails, getAllRobotSlugs } from '@/lib/queries';
 import SpecTable from '@/components/SpecTable';
 import { notFound } from 'next/navigation';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { 
-  faRobot, 
-  faShirt, 
-  faBroom, 
-  faStairs, 
-  faDumbbell, 
-  faBox, 
-  faBatteryFull, 
-  faMicrophone, 
-  faMicrophoneSlash, 
-  faGamepad, 
-  faBolt 
-} from '@/lib/fontawesome';
+import Icon from '@/components/Icon';
 
 export const revalidate = 60;
 
@@ -64,7 +51,7 @@ export default async function RobotPage({ params }: { params: Promise<{ slug: st
 
           {/* Hero image placeholder */}
           <div className="mb-8 flex h-64 items-center justify-center rounded-xl border border-[#222] bg-[#111] text-6xl text-[#333]">
-            <FontAwesomeIcon icon={faRobot} />
+            <Icon name="robot" />
           </div>
 
           <p className="mb-8 text-lg text-[#a0a0a0]">{robot.summary}</p>
@@ -76,37 +63,37 @@ export default async function RobotPage({ params }: { params: Promise<{ slug: st
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {robot.capabilities.can_fold_laundry === true && (
                   <div className="flex items-center gap-3 rounded-lg border border-[#222] bg-[#161616] p-3">
-                    <FontAwesomeIcon icon={faShirt} className="text-2xl" />
+                    <Icon name="shirt" className="text-2xl" />
                     <span className="text-sm font-medium">Fold Laundry</span>
                   </div>
                 )}
                 {robot.capabilities.can_vacuum === true && (
                   <div className="flex items-center gap-3 rounded-lg border border-[#222] bg-[#161616] p-3">
-                    <FontAwesomeIcon icon={faBroom} className="text-2xl" />
+                    <Icon name="broom" className="text-2xl" />
                     <span className="text-sm font-medium">Vacuum Cleaning</span>
                   </div>
                 )}
                 {robot.capabilities.can_climb_stairs === true && (
                   <div className="flex items-center gap-3 rounded-lg border border-[#222] bg-[#161616] p-3">
-                    <FontAwesomeIcon icon={faStairs} className="text-2xl" />
+                    <Icon name="stairs" className="text-2xl" />
                     <span className="text-sm font-medium">Climb Stairs</span>
                   </div>
                 )}
                 {robot.capabilities.max_lift_kg && (
                   <div className="flex items-center gap-3 rounded-lg border border-[#222] bg-[#161616] p-3">
-                    <FontAwesomeIcon icon={faDumbbell} className="text-2xl" />
+                    <Icon name="dumbbell" className="text-2xl" />
                     <span className="text-sm font-medium">Lift up to {robot.capabilities.max_lift_kg}kg</span>
                   </div>
                 )}
                 {robot.capabilities.max_carry_kg && (
                   <div className="flex items-center gap-3 rounded-lg border border-[#222] bg-[#161616] p-3">
-                    <FontAwesomeIcon icon={faBox} className="text-2xl" />
+                    <Icon name="box" className="text-2xl" />
                     <span className="text-sm font-medium">Carry up to {robot.capabilities.max_carry_kg}kg</span>
                   </div>
                 )}
                 {robot.capabilities.autonomous_duration_hours && (
                   <div className="flex items-center gap-3 rounded-lg border border-[#222] bg-[#161616] p-3">
-                    <FontAwesomeIcon icon={faBatteryFull} className="text-2xl" />
+                    <Icon name="battery-full" className="text-2xl" />
                     <span className="text-sm font-medium">{robot.capabilities.autonomous_duration_hours}h autonomous</span>
                   </div>
                 )}
@@ -182,8 +169,8 @@ export default async function RobotPage({ params }: { params: Promise<{ slug: st
                   <div className="flex gap-4">
                     {robot.ai.voice_capable !== null && (
                       <div className="flex items-center gap-2">
-                        <FontAwesomeIcon 
-                          icon={robot.ai.voice_capable ? faMicrophone : faMicrophoneSlash} 
+                        <Icon 
+                          name={robot.ai.voice_capable ? 'microphone' : 'microphone-slash'} 
                           className="text-lg" 
                         />
                         <span className="text-sm">{robot.ai.voice_capable ? 'Voice Capable' : 'No Voice'}</span>
@@ -191,9 +178,9 @@ export default async function RobotPage({ params }: { params: Promise<{ slug: st
                     )}
                     {robot.ai.autonomy_level && (
                       <div className="flex items-center gap-2">
-                        <FontAwesomeIcon 
-                          icon={robot.ai.autonomy_level === 'full_autonomous' ? faRobot : 
-                                robot.ai.autonomy_level === 'teleoperated' ? faGamepad : faBolt} 
+                        <Icon 
+                          name={robot.ai.autonomy_level === 'full_autonomous' ? 'robot' : 
+                                robot.ai.autonomy_level === 'teleoperated' ? 'gamepad' : 'bolt'} 
                           className="text-lg"
                         />
                         <span className="text-sm capitalize">{robot.ai.autonomy_level.replace('_', ' ')}</span>

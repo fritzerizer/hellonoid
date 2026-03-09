@@ -1,22 +1,14 @@
 import React from 'react';
 import { RobotSpec } from '@/data/robots';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { 
-  faRulerCombined, 
-  faBolt, 
-  faEye, 
-  faBatteryFull, 
-  faHandFist, 
-  faClipboardList 
-} from '@/lib/fontawesome';
+import Icon from '@/components/Icon';
 
 const categoryLabels: Record<string, React.JSX.Element> = {
-  dimensions: <><FontAwesomeIcon icon={faRulerCombined} className="mr-2" /> Dimensions</>,
-  performance: <><FontAwesomeIcon icon={faBolt} className="mr-2" /> Performance</>,
-  sensors: <><FontAwesomeIcon icon={faEye} className="mr-2" /> Sensors</>,
-  battery: <><FontAwesomeIcon icon={faBatteryFull} className="mr-2" /> Battery & Power</>,
-  actuators: <><FontAwesomeIcon icon={faHandFist} className="mr-2" /> Actuators</>,
-  general: <><FontAwesomeIcon icon={faClipboardList} className="mr-2" /> General</>,
+  dimensions: <><Icon name="ruler-combined" className="mr-2" /> Dimensions</>,
+  performance: <><Icon name="bolt" className="mr-2" /> Performance</>,
+  sensors: <><Icon name="eye" className="mr-2" /> Sensors</>,
+  battery: <><Icon name="battery-full" className="mr-2" /> Battery & Power</>,
+  actuators: <><Icon name="hand-fist" className="mr-2" /> Actuators</>,
+  general: <><Icon name="clipboard-list" className="mr-2" /> General</>,
 };
 
 const categoryOrder = ['dimensions', 'performance', 'actuators', 'battery', 'sensors', 'general'];

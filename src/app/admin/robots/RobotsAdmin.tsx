@@ -3,11 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faRobot, faPlus, faPenToSquare, faTrash, faMagnifyingGlass,
-  faFloppyDisk, faXmark, faImage, faBuilding, faGlobe, faSpinner, faCheck
-} from '@fortawesome/free-solid-svg-icons';
+import Icon from '@/components/Icon';
 
 interface Robot {
   id: number;
@@ -170,7 +166,7 @@ export default function RobotsAdmin({ initialRobots, manufacturers }: Props) {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-white flex items-center gap-3">
-            <FontAwesomeIcon icon={faRobot} className="text-[#239eab]" />
+            <Icon name="robot" className="text-[#239eab]" />
             Robots
           </h1>
           <p className="mt-1 text-gray-400">{robots.length} robots in database</p>
@@ -179,7 +175,7 @@ export default function RobotsAdmin({ initialRobots, manufacturers }: Props) {
           onClick={openNew}
           className="flex items-center gap-2 px-4 py-2 bg-[#239eab] text-white rounded-lg hover:bg-[#1a8a96] transition font-medium"
         >
-          <FontAwesomeIcon icon={faPlus} />
+          <Icon name="plus" />
           Add robot
         </button>
       </div>
@@ -189,7 +185,7 @@ export default function RobotsAdmin({ initialRobots, manufacturers }: Props) {
         <div className={`p-3 rounded-lg text-sm flex items-center gap-2 ${
           message.type === 'success' ? 'bg-green-900/50 text-green-300 border border-green-800' : 'bg-red-900/50 text-red-300 border border-red-800'
         }`}>
-          <FontAwesomeIcon icon={message.type === 'success' ? faCheck : faXmark} />
+          <Icon name={message.type === 'success' ? 'check' : 'xmark'} />
           {message.text}
         </div>
       )}
@@ -202,7 +198,7 @@ export default function RobotsAdmin({ initialRobots, manufacturers }: Props) {
               {editing ? 'Edit robot' : 'Add new robot'}
             </h2>
             <button onClick={resetForm} className="text-gray-400 hover:text-white">
-              <FontAwesomeIcon icon={faXmark} className="text-lg" />
+              <Icon name="xmark" className="text-lg" />
             </button>
           </div>
 
@@ -231,7 +227,7 @@ export default function RobotsAdmin({ initialRobots, manufacturers }: Props) {
             </div>
             <div>
               <label className="block text-sm text-gray-400 mb-1">
-                <FontAwesomeIcon icon={faBuilding} className="mr-1" /> Manufacturer
+                <Icon name="building" className="mr-1" /> Manufacturer
               </label>
               <select
                 value={form.manufacturer_id}
@@ -258,7 +254,7 @@ export default function RobotsAdmin({ initialRobots, manufacturers }: Props) {
             </div>
             <div>
               <label className="block text-sm text-gray-400 mb-1">
-                <FontAwesomeIcon icon={faGlobe} className="mr-1" /> Category
+                <Icon name="globe" className="mr-1" /> Category
               </label>
               <select
                 value={form.category}
@@ -272,7 +268,7 @@ export default function RobotsAdmin({ initialRobots, manufacturers }: Props) {
             </div>
             <div>
               <label className="block text-sm text-gray-400 mb-1">
-                <FontAwesomeIcon icon={faImage} className="mr-1" /> Hero image URL
+                <Icon name="image" className="mr-1" /> Hero image URL
               </label>
               <input
                 type="text"
@@ -301,7 +297,7 @@ export default function RobotsAdmin({ initialRobots, manufacturers }: Props) {
               disabled={saving}
               className="flex items-center gap-2 px-4 py-2 bg-[#239eab] text-white rounded-lg hover:bg-[#1a8a96] transition font-medium disabled:opacity-50"
             >
-              <FontAwesomeIcon icon={saving ? faSpinner : faFloppyDisk} className={saving ? 'animate-spin' : ''} />
+              <Icon name={saving ? 'spinner' : 'floppy-disk'} spin={saving} />
               {saving ? 'Saving...' : editing ? 'Update' : 'Create'}
             </button>
             <button
@@ -316,7 +312,7 @@ export default function RobotsAdmin({ initialRobots, manufacturers }: Props) {
 
       {/* Search */}
       <div className="relative">
-        <FontAwesomeIcon icon={faMagnifyingGlass} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+        <Icon name="magnifying-glass" className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
         <input
           type="text"
           value={search}
@@ -329,7 +325,7 @@ export default function RobotsAdmin({ initialRobots, manufacturers }: Props) {
       {/* Table */}
       {filtered.length === 0 ? (
         <div className="bg-gray-800 rounded-lg p-12 border border-gray-700 text-center">
-          <FontAwesomeIcon icon={faRobot} className="text-gray-600 text-5xl mb-4" />
+          <Icon name="robot" className="text-gray-600 text-5xl mb-4" />
           <h3 className="text-xl font-medium text-white mb-2">
             {robots.length === 0 ? 'No robots yet' : 'No results'}
           </h3>
@@ -360,7 +356,7 @@ export default function RobotsAdmin({ initialRobots, manufacturers }: Props) {
                           <img src={robot.hero_image_url} alt="" className="w-10 h-10 rounded-lg object-cover bg-gray-700" />
                         ) : (
                           <div className="w-10 h-10 rounded-lg bg-gray-700 flex items-center justify-center">
-                            <FontAwesomeIcon icon={faRobot} className="text-gray-500" />
+                            <Icon name="robot" className="text-gray-500" />
                           </div>
                         )}
                         <div>
@@ -392,7 +388,7 @@ export default function RobotsAdmin({ initialRobots, manufacturers }: Props) {
                           className="p-2 text-gray-400 hover:text-[#239eab] transition"
                           title="Edit"
                         >
-                          <FontAwesomeIcon icon={faPenToSquare} />
+                          <Icon name="pen-to-square" />
                         </button>
                         <button
                           onClick={() => handleDelete(robot)}
@@ -400,7 +396,7 @@ export default function RobotsAdmin({ initialRobots, manufacturers }: Props) {
                           className="p-2 text-gray-400 hover:text-red-400 transition disabled:opacity-50"
                           title="Delete"
                         >
-                          <FontAwesomeIcon icon={deleting === robot.id ? faSpinner : faTrash} className={deleting === robot.id ? 'animate-spin' : ''} />
+                          <Icon name={deleting === robot.id ? 'spinner' : 'trash'} spin={deleting === robot.id} />
                         </button>
                       </div>
                     </td>

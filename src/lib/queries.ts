@@ -106,6 +106,7 @@ export async function getNews(): Promise<NewsArticle[]> {
   const { data, error } = await supabase
     .from('news')
     .select('*')
+    .eq('status', 'published')
     .order('published_at', { ascending: false });
   
   if (error) throw new Error(`Failed to fetch news: ${error.message}`);
@@ -117,6 +118,7 @@ export async function getNewsForRobot(robotId: number): Promise<NewsArticle[]> {
     .from('news')
     .select('*')
     .eq('robot_id', robotId)
+    .eq('status', 'published')
     .order('published_at', { ascending: false });
   
   if (error) throw new Error(`Failed to fetch news: ${error.message}`);

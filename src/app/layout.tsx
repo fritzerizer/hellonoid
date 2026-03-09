@@ -1,11 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins } from 'next/font/google';
-import { config } from '@fortawesome/fontawesome-svg-core';
-import '@fortawesome/fontawesome-svg-core/styles.css';
-config.autoAddCss = false;
 import "./globals.css";
 
-import '@/lib/fontawesome';
 import NavbarServer from '@/components/NavbarServer';
 
 const poppins = Poppins({ subsets: ['latin'], variable: '--font-poppins', weight: ['300', '400', '500', '600', '700'] });
@@ -19,6 +15,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className="dark">
+      <head>
+        <link rel="stylesheet" href="/fonts/fontawesome/all.min.css" />
+      </head>
       <body className={`min-h-screen antialiased ${poppins.variable} font-sans`}>
         <NavbarServer />
         <main>{children}</main>

@@ -1,5 +1,4 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRobot } from '@fortawesome/free-solid-svg-icons';
+import Icon from '@/components/Icon';
 import Figure03Viewer from './Figure03Viewer';
 
 export const metadata = {
@@ -19,7 +18,7 @@ export default function Figure03Page() {
           <span className="text-[#239eab]">3D Model</span>
         </div>
         <h1 className="text-3xl font-bold text-white flex items-center gap-3">
-          <FontAwesomeIcon icon={faRobot} className="text-[#239eab]" />
+          <Icon name="robot" className="text-[#239eab]" />
           Figure 03
         </h1>
         <p className="mt-2 text-gray-400">

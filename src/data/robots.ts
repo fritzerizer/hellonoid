@@ -84,10 +84,16 @@ export interface NewsArticle {
   title: string;
   slug: string;
   content: string;
+  summary: string | null;
   robot_id: number | null;
   published_at: string;
   source_url: string;
+  source_name: string | null;
   image_url: string;
+  status: 'draft' | 'approved' | 'rejected' | 'published';
+  significance: number;
+  tags: string[];
+  created_at: string | null;
 }
 
 // Newsletter types
