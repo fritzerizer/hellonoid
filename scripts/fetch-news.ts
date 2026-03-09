@@ -74,6 +74,10 @@ interface SearchResult {
   source?: string;
 }
 
+function stripHtml(text: string): string {
+  return text.replace(/<[^>]*>/g, '').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#x27;/g, "'").replace(/&nbsp;/g, ' ').trim();
+}
+
 interface NewsCandidate {
   title: string;
   source_url: string;
@@ -280,10 +284,10 @@ async function main() {
   const slugify = (t: string) => t.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '').slice(0, 80);
 
   const rows = candidates.map(c => ({
-    title: c.title,
-    slug: slugify(c.title),
-    content: c.summary,
-    summary: c.summary,
+    title: stripHtml(c.title),
+    slug: slugify(stripHtml(c.title)),
+    content: stripHtml(c.summary),
+    summary: stripHtml(c.summary),
     source_url: c.source_url,
     source_name: c.source_name,
     published_at: c.published_at,
