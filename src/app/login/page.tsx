@@ -1,5 +1,5 @@
-import SimpleLogin from './SimpleLogin';
+import WorkingLogin from './WorkingLogin';
 
 export default function LoginPage() {
-  return <SimpleLogin />;
+  return <WorkingLogin />;
 }

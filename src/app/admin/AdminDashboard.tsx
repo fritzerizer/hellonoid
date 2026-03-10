@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Icon from '@/components/Icon';
 import Link from 'next/link';
-import { getCurrentUser, supabase, type User } from '@/lib/simple-auth';
+import { getCurrentUser, supabase, type User } from '@/lib/working-auth';
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState({
@@ -16,8 +16,8 @@ export default function AdminDashboard() {
   useEffect(() => {
     async function loadData() {
       try {
-        // Get current user
-        const user = await getCurrentUser();
+        // Get current user (synchronous now)
+        const user = getCurrentUser();
         
         if (!user) {
           // No auth - redirect to login
