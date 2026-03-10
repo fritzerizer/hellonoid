@@ -1,20 +1,15 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { createClient } from '@supabase/supabase-js';
 import Icon from '@/components/Icon';
 import Link from 'next/link';
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+import { getCurrentUser, supabase, type User } from '@/lib/simple-auth';
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState({
     robotCount: 0,
     newsCount: 0,
-    user: null as any,
+    user: null as User | null,
     loading: true
   });
 
@@ -22,23 +17,10 @@ export default function AdminDashboard() {
     async function loadData() {
       try {
         // Get current user
-        const { data: { session } } = await supabase.auth.getSession();
+        const user = await getCurrentUser();
         
-        if (!session?.user) {
+        if (!user) {
           // No auth - redirect to login
-          window.location.href = '/login';
-          return;
-        }
-
-        // Check if admin
-        const { data: adminUser } = await supabase
-          .from('admin_users')
-          .select('role')
-          .eq('email', session.user.email)
-          .single();
-
-        if (!adminUser && session.user.email !== 'f.linder@me.com') {
-          // Not an admin - redirect to login
           window.location.href = '/login';
           return;
         }
@@ -52,7 +34,7 @@ export default function AdminDashboard() {
         setStats({
           robotCount: robotsResult.count || 0,
           newsCount: newsResult.count || 0,
-          user: session.user,
+          user,
           loading: false
         });
       } catch (err) {

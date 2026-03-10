@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Poppins } from 'next/font/google';
-import { AuthProvider } from '@/contexts/AuthContext';
-import SimpleAuthNavbar from '@/components/SimpleAuthNavbar';
+import SimpleNavbar from '@/components/SimpleNavbar';
 import "./globals.css";
 
 const poppins = Poppins({ subsets: ['latin', 'latin-ext'], variable: '--font-poppins', weight: ['300', '400', '500', '600', '700'] });
@@ -19,15 +18,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="stylesheet" href="/fonts/fontawesome/all.min.css" />
       </head>
       <body className={`min-h-screen antialiased ${poppins.variable} font-sans`}>
-        <AuthProvider>
-          <SimpleAuthNavbar />
-          <main>{children}</main>
-          <footer className="border-t border-[#27272a] py-8 text-center text-sm text-[#71717a]">
-            <div className="mx-auto max-w-7xl px-4">
-              © {new Date().getFullYear()} hellonoid.com — The humanoid robot database
-            </div>
-          </footer>
-        </AuthProvider>
+        <SimpleNavbar />
+        <main>{children}</main>
+        <footer className="border-t border-[#27272a] py-8 text-center text-sm text-[#71717a]">
+          <div className="mx-auto max-w-7xl px-4">
+            © {new Date().getFullYear()} hellonoid.com — The humanoid robot database
+          </div>
+        </footer>
       </body>
     </html>
   );
