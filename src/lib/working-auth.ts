@@ -82,9 +82,15 @@ export async function signOut(): Promise<void> {
 export function getCurrentUser(): User | null {
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
+    console.log('getCurrentUser - stored:', stored);
+    
     if (stored) {
-      return JSON.parse(stored);
+      const parsed = JSON.parse(stored);
+      console.log('getCurrentUser - parsed:', parsed);
+      return parsed;
     }
+    
+    console.log('getCurrentUser - no stored user');
     return null;
   } catch (err) {
     console.error('Error getting current user:', err);

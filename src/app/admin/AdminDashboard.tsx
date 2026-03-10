@@ -16,12 +16,25 @@ export default function AdminDashboard() {
   useEffect(() => {
     async function loadData() {
       try {
-        // Get current user (synchronous now)
-        const user = getCurrentUser();
+        // Add delay to ensure localStorage is ready
+        setTimeout(() => {
+          const user = getCurrentUser();
+          console.log('AdminDashboard - auth check result:', user);
+          
+          if (!user) {
+            console.log('AdminDashboard - no user, redirecting to login');
+            // No auth - redirect to login
+            window.location.href = '/login';
+            return;
+          }
+
+          console.log('AdminDashboard - user found, loading data');
+        }, 100);
         
+        // Continue loading data for now
+        const user = getCurrentUser();
         if (!user) {
-          // No auth - redirect to login
-          window.location.href = '/login';
+          setStats(prev => ({ ...prev, loading: false }));
           return;
         }
 
