@@ -2,8 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/contexts/AuthContext';
+import { createClient } from '@supabase/supabase-js';
 import Link from 'next/link';
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -11,15 +16,29 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
-  const { signIn, user } = useAuth();
+  const [user, setUser] = useState<any>(null);
   const router = useRouter();
 
-  // Redirect if already logged in
+  // Check if already logged in
   useEffect(() => {
-    if (user) {
-      router.push('/admin');
+    async function checkAuth() {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user) {
+        // Check if user is admin
+        const { data: adminUser } = await supabase
+          .from('admin_users')
+          .select('role')
+          .eq('email', session.user.email)
+          .single();
+
+        if (adminUser || session.user.email === 'f.linder@me.com') {
+          setUser(session.user);
+          router.push('/admin');
+        }
+      }
     }
-  }, [user, router]);
+    checkAuth();
+  }, [router]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,16 +47,35 @@ export default function LoginPage() {
     setSuccess(null);
 
     try {
-      const result = await signIn(email, password);
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
       
-      if (result.error) {
-        setError(result.error);
-      } else {
-        setSuccess('Login successful! Redirecting...');
-        // Force redirect after a small delay to let auth state update
-        setTimeout(() => {
-          window.location.href = '/admin';
-        }, 500);
+      if (error) {
+        setError('Invalid login credentials');
+        setLoading(false);
+        return;
+      }
+
+      if (data.user) {
+        // Check if user is admin
+        const { data: adminUser } = await supabase
+          .from('admin_users')
+          .select('role')
+          .eq('email', data.user.email)
+          .single();
+
+        if (adminUser || data.user.email === 'f.linder@me.com') {
+          setSuccess('Login successful! Redirecting...');
+          // Force full page reload to update auth state everywhere
+          setTimeout(() => {
+            window.location.href = '/admin';
+          }, 1000);
+        } else {
+          setError('Access denied - admin privileges required');
+          await supabase.auth.signOut();
+        }
       }
     } catch (err) {
       setError('Something went wrong. Please try again.');
