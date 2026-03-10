@@ -34,7 +34,10 @@ export default function LoginPage() {
         setError(result.error);
       } else {
         setSuccess('Login successful! Redirecting...');
-        router.push('/admin');
+        // Force redirect after a small delay to let auth state update
+        setTimeout(() => {
+          window.location.href = '/admin';
+        }, 500);
       }
     } catch (err) {
       setError('Something went wrong. Please try again.');

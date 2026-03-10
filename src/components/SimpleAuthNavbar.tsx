@@ -35,14 +35,16 @@ export default function SimpleAuthNavbar() {
     // Get current user and check if admin
     async function checkUser() {
       try {
-        const { data: { user: authUser }, error } = await supabase.auth.getUser();
-        console.log('Auth user check:', { authUser, error });
+        const { data: { session }, error } = await supabase.auth.getSession();
+        console.log('Session check:', { session: !!session, email: session?.user?.email, error });
         
-        if (error || !authUser) {
+        if (error || !session?.user) {
           setUser(null);
           setLoading(false);
           return;
         }
+
+        const authUser = session.user;
 
         // For Fredrik's email, assume admin for now
         if (authUser.email === 'f.linder@me.com') {
