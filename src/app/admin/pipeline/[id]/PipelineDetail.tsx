@@ -112,6 +112,10 @@ export default function PipelineDetail({ pipeline, media, log, prompts, adjustme
   const [activeTab, setActiveTab] = useState<'status' | 'media' | 'prompts' | 'adjustments' | 'log'>('status');
   const [loading, setLoading] = useState(false);
   const [comment, setComment] = useState('');
+  const [mediaList, setMediaList] = useState(media);
+  const [uploading, setUploading] = useState(false);
+  const [uploadType, setUploadType] = useState('reference');
+  const [uploadAngle, setUploadAngle] = useState('');
 
   const currentStepInfo = steps.find(s => s.key === pipeline.current_step);
   const currentStepNum = currentStepInfo?.num ?? 0;
@@ -137,9 +141,43 @@ export default function PipelineDetail({ pipeline, media, log, prompts, adjustme
     }
   }
 
-  const referenceMedia = media.filter(m => m.media_type === 'reference');
-  const riggedMedia = media.filter(m => m.media_type === 'rigged_view');
-  const exportMedia = media.filter(m => m.media_type === 'export');
+  const referenceMedia = mediaList.filter(m => m.media_type === 'reference');
+  const riggedMedia = mediaList.filter(m => m.media_type === 'rigged_view');
+  const exportMedia = mediaList.filter(m => m.media_type === 'export');
+
+  async function handleUpload(files: FileList | null) {
+    if (!files || files.length === 0) return;
+    setUploading(true);
+    try {
+      for (const file of Array.from(files)) {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('pipeline_id', String(pipeline.id));
+        formData.append('media_type', uploadType);
+        if (uploadAngle) formData.append('view_angle', uploadAngle);
+
+        const res = await fetch('/api/admin/pipeline/upload', { method: 'POST', body: formData });
+        if (res.ok) {
+          const newMedia = await res.json();
+          setMediaList(prev => [newMedia, ...prev]);
+        }
+      }
+    } finally {
+      setUploading(false);
+    }
+  }
+
+  async function validateMedia(mediaId: number, status: 'approved' | 'rejected', validationComment?: string) {
+    const res = await fetch('/api/admin/pipeline/media/validate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ media_id: mediaId, status, comment: validationComment }),
+    });
+    if (res.ok) {
+      const updated = await res.json();
+      setMediaList(prev => prev.map(m => m.id === mediaId ? { ...m, ...updated } : m));
+    }
+  }
 
   return (
     <div>
@@ -346,25 +384,67 @@ export default function PipelineDetail({ pipeline, media, log, prompts, adjustme
       {/* Tab: Media */}
       {activeTab === 'media' && (
         <div>
-          <div className="mb-4 flex items-center justify-between">
-            <h3 className="font-semibold">Alla mediafiler</h3>
-            <button className="rounded-md bg-[#239eab] px-3 py-1.5 text-sm text-white hover:bg-[#1e8a95] transition">
-              <Icon name="upload" /> Ladda upp
-            </button>
+          {/* Upload area */}
+          <div className="mb-6 rounded-lg border-2 border-dashed border-[#333] bg-[#161616] p-6">
+            <div className="flex flex-wrap items-end gap-3">
+              <div>
+                <label className="block text-xs text-gray-400 mb-1">Typ</label>
+                <select
+                  value={uploadType}
+                  onChange={e => setUploadType(e.target.value)}
+                  className="rounded border border-gray-600 bg-gray-800 px-2 py-1.5 text-sm text-white"
+                >
+                  <option value="reference">Referensbild</option>
+                  <option value="cropped">Beskuren</option>
+                  <option value="rigged_view">Riggad vy</option>
+                  <option value="3d_model">3D-modell</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-xs text-gray-400 mb-1">Vinkel</label>
+                <select
+                  value={uploadAngle}
+                  onChange={e => setUploadAngle(e.target.value)}
+                  className="rounded border border-gray-600 bg-gray-800 px-2 py-1.5 text-sm text-white"
+                >
+                  <option value="">Ingen specifik</option>
+                  <option value="front">Framifrån</option>
+                  <option value="back">Bakifrån</option>
+                  <option value="left">Vänster sida</option>
+                  <option value="right">Höger sida</option>
+                  <option value="three_quarter_front">Snett framifrån</option>
+                  <option value="top">Ovanifrån</option>
+                  <option value="bottom">Underifrån</option>
+                </select>
+              </div>
+              <label className="cursor-pointer rounded-md bg-[#239eab] px-4 py-1.5 text-sm font-medium text-white hover:bg-[#1e8a95] transition">
+                <Icon name="upload" /> {uploading ? 'Laddar upp...' : 'Välj filer'}
+                <input
+                  type="file"
+                  multiple
+                  accept="image/*,.glb,.gltf,.blend"
+                  className="hidden"
+                  onChange={e => handleUpload(e.target.files)}
+                  disabled={uploading}
+                />
+              </label>
+            </div>
           </div>
-          {media.length === 0 ? (
+
+          {/* Media grid */}
+          {mediaList.length === 0 ? (
             <div className="rounded-lg border border-[#222] bg-[#161616] p-8 text-center text-gray-400">
               Inga mediafiler ännu. Ladda upp referensbilder för att komma igång.
             </div>
           ) : (
             <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3">
-              {media.map(m => (
+              {mediaList.map(m => (
                 <div key={m.id} className="rounded-lg border border-[#222] bg-[#161616] overflow-hidden">
                   <div className="h-40 bg-[#111] flex items-center justify-center">
-                    {m.file_url ? (
+                    {m.file_url && m.mime_type?.startsWith('image') ? (
                       <img src={m.file_url} alt={m.file_name} className="h-full w-full object-contain" />
                     ) : (
-                      <Icon name="image" />
+                      <div className="text-3xl text-gray-500"><Icon name="cube" /></div>
                     )}
                   </div>
                   <div className="p-3 space-y-2">
@@ -389,8 +469,25 @@ export default function PipelineDetail({ pipeline, media, log, prompts, adjustme
                     {m.validation_comment && (
                       <div className="text-xs text-gray-400 italic">{m.validation_comment}</div>
                     )}
-                    {m.width && m.height && (
-                      <div className="text-xs text-gray-500">{m.width}×{m.height}px</div>
+                    {/* Validation buttons */}
+                    {m.validation_status === 'pending' && (
+                      <div className="flex gap-1 pt-1">
+                        <button
+                          onClick={() => validateMedia(m.id, 'approved')}
+                          className="rounded bg-green-900/40 px-2 py-0.5 text-[10px] text-green-300 hover:bg-green-800 transition"
+                        >
+                          <Icon name="check" /> Godkänn
+                        </button>
+                        <button
+                          onClick={() => {
+                            const c = prompt('Anledning:');
+                            if (c) validateMedia(m.id, 'rejected', c);
+                          }}
+                          className="rounded bg-red-900/40 px-2 py-0.5 text-[10px] text-red-300 hover:bg-red-800 transition"
+                        >
+                          <Icon name="xmark" /> Avvisa
+                        </button>
+                      </div>
                     )}
                   </div>
                 </div>
