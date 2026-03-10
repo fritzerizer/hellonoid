@@ -4,7 +4,7 @@ import "./globals.css";
 
 import NavbarServer from '@/components/NavbarServer';
 
-const poppins = Poppins({ subsets: ['latin'], variable: '--font-poppins', weight: ['300', '400', '500', '600', '700'] });
+const poppins = Poppins({ subsets: ['latin', 'latin-ext'], variable: '--font-poppins', weight: ['300', '400', '500', '600', '700'] });
 
 export const metadata: Metadata = {
   title: "Hellonoid — Humanoid Robot Database",
