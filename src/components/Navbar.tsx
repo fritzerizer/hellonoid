@@ -20,6 +20,8 @@ const adminLinks = [
   { href: '/admin', label: 'Dashboard' },
   { href: '/admin/robots', label: 'Manage Robots' },
   { href: '/admin/news', label: 'Manage News' },
+  { href: '/admin/pipeline', label: 'Asset Pipeline' },
+  { href: '/admin/pipeline/about', label: 'Pipeline Info' },
 ];
 
 export default function Navbar({ isLoggedIn, isAdmin, userEmail }: NavbarProps) {
