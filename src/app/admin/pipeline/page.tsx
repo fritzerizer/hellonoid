@@ -1,5 +1,4 @@
 import { createClient } from '@supabase/supabase-js';
-import AuthGuard from '@/components/AuthGuard';
 import PipelineDashboard from './PipelineDashboard';
 
 const supabase = createClient(
@@ -50,31 +49,29 @@ export default async function PipelinePage() {
   const data = await getData();
 
   return (
-    <AuthGuard requireRole="agent">
-      <div className="min-h-screen bg-[#0c0c0d] text-white">
-        <div className="mx-auto max-w-7xl px-4 py-8">
-          <div className="mb-8 flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold">Asset Pipeline</h1>
-              <p className="mt-1 text-sm text-gray-400">
-                19-step workflow from research to publication
-              </p>
-            </div>
-            <a href="/admin" className="text-sm text-[#239eab] hover:underline">
-              ← Back to Admin
-            </a>
+    <div className="min-h-screen bg-[#0c0c0d] text-white">
+      <div className="mx-auto max-w-7xl px-4 py-8">
+        <div className="mb-8 flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold">Asset Pipeline</h1>
+            <p className="mt-1 text-sm text-gray-400">
+              19-step workflow from research to publication
+            </p>
           </div>
-
-          <PipelineDashboard
-            initialPipelines={data.pipelines}
-            robots={data.robots}
-            sources={data.sources}
-            media={data.media}
-            steps={PIPELINE_STEPS}
-          />
+          <a href="/admin" className="text-sm text-[#239eab] hover:underline">
+            ← Back to Admin
+          </a>
         </div>
+
+        <PipelineDashboard
+          initialPipelines={data.pipelines}
+          robots={data.robots}
+          sources={data.sources}
+          media={data.media}
+          steps={PIPELINE_STEPS}
+        />
       </div>
-    </AuthGuard>
+    </div>
   );
 }
 

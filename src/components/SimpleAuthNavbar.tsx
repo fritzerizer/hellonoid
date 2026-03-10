@@ -3,7 +3,12 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useAuth } from '@/contexts/AuthContext';
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
 
 const publicLinks = [
   { href: '/robots', label: 'Robots' },
@@ -17,16 +22,75 @@ const adminRobotLinks = [
   { href: '/admin/pipeline/about', label: 'Pipeline Info' },
 ];
 
-export default function AuthNavbar() {
+export default function SimpleAuthNavbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [robotsDropdown, setRobotsDropdown] = useState(false);
-  const { user, signOut, loading } = useAuth();
+  const [user, setUser] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
   const pathname = usePathname();
-
-  // Debug logging
-  console.log('AuthNavbar render - user:', user, 'loading:', loading);
   const navRef = useRef<HTMLElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Get current user and check if admin
+    async function checkUser() {
+      try {
+        const { data: { user: authUser }, error } = await supabase.auth.getUser();
+        console.log('Auth user check:', { authUser, error });
+        
+        if (error || !authUser) {
+          setUser(null);
+          setLoading(false);
+          return;
+        }
+
+        // For Fredrik's email, assume admin for now
+        if (authUser.email === 'f.linder@me.com') {
+          setUser({
+            email: authUser.email,
+            role: 'admin'
+          });
+        } else {
+          // Check admin_users table
+          const { data: adminUser } = await supabase
+            .from('admin_users')
+            .select('role')
+            .eq('email', authUser.email)
+            .single();
+
+          if (adminUser) {
+            setUser({
+              email: authUser.email,
+              role: adminUser.role
+            });
+          } else {
+            setUser(null);
+          }
+        }
+      } catch (err) {
+        console.error('Error checking user:', err);
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    checkUser();
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        console.log('Auth state change:', event, session?.user?.email);
+        if (!session) {
+          setUser(null);
+        } else {
+          checkUser();
+        }
+      }
+    );
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   useEffect(() => {
     setMenuOpen(false);
@@ -50,9 +114,12 @@ export default function AuthNavbar() {
   const isRobotsActive = pathname.startsWith('/admin/robots') || pathname.startsWith('/admin/pipeline');
 
   const handleSignOut = async () => {
-    await signOut();
+    await supabase.auth.signOut();
+    setUser(null);
     setMenuOpen(false);
   };
+
+  console.log('SimpleAuthNavbar - user:', user, 'loading:', loading);
 
   return (
     <nav ref={navRef} className="sticky top-0 z-50 border-b border-[#27272a] bg-[#0c0c0d]/90 backdrop-blur-md">
@@ -119,7 +186,7 @@ export default function AuthNavbar() {
                 News
               </Link>
 
-              {/* User menu */}
+              {/* User info */}
               <div className="flex items-center gap-3 text-xs">
                 <span className="text-gray-400">{user.email}</span>
                 <span className="bg-[#239eab]/20 text-[#239eab] px-2 py-0.5 rounded-full text-[10px] font-medium">
@@ -135,7 +202,7 @@ export default function AuthNavbar() {
             </>
           )}
 
-          {!user && (
+          {!user && !loading && (
             <Link href="/login" className="transition hover:text-white opacity-75 hover:opacity-100">
               Sign in
             </Link>
@@ -222,7 +289,7 @@ export default function AuthNavbar() {
             </>
           )}
 
-          {!user && (
+          {!user && !loading && (
             <>
               <div className="border-t border-[#27272a] my-2" />
               <Link

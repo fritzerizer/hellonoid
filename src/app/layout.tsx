@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins } from 'next/font/google';
 import { AuthProvider } from '@/contexts/AuthContext';
-import AuthNavbar from '@/components/AuthNavbar';
+import SimpleAuthNavbar from '@/components/SimpleAuthNavbar';
 import "./globals.css";
 
 const poppins = Poppins({ subsets: ['latin', 'latin-ext'], variable: '--font-poppins', weight: ['300', '400', '500', '600', '700'] });
@@ -20,7 +20,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className={`min-h-screen antialiased ${poppins.variable} font-sans`}>
         <AuthProvider>
-          <AuthNavbar />
+          <SimpleAuthNavbar />
           <main>{children}</main>
           <footer className="border-t border-[#27272a] py-8 text-center text-sm text-[#71717a]">
             <div className="mx-auto max-w-7xl px-4">

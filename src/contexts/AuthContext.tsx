@@ -58,6 +58,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   async function updateUserFromSession(session: Session) {
+    console.log('updateUserFromSession called with:', session.user.email);
     try {
       // Get user role from admin_users table
       const { data: adminUser, error } = await supabase
@@ -66,18 +67,30 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         .eq('email', session.user.email)
         .single();
 
-      if (error || !adminUser) {
-        // Not an admin user
+      console.log('Admin user lookup result:', { adminUser, error });
+
+      if (error) {
+        console.error('Database error fetching admin user:', error);
         setUser(null);
         setLoading(false);
         return;
       }
 
-      setUser({
+      if (!adminUser) {
+        console.log('No admin user found for email:', session.user.email);
+        setUser(null);
+        setLoading(false);
+        return;
+      }
+
+      const userData = {
         id: session.user.id,
         email: session.user.email!,
         role: adminUser.role as 'admin' | 'editor' | 'agent'
-      });
+      };
+      
+      console.log('Setting user data:', userData);
+      setUser(userData);
     } catch (error) {
       console.error('Error fetching user role:', error);
       setUser(null);
