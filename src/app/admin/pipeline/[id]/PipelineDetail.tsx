@@ -347,6 +347,17 @@ export default function PipelineDetail({ pipeline, media, log, prompts, adjustme
               </div>
             )}
 
+            {/* Meshy 3D Modeling (step 11) */}
+            {['11_3d_modeling', '10_upscale_views', '09_validate_views'].includes(pipeline.current_step) && (
+              <MeshyPanel
+                pipelineId={pipeline.id}
+                generations={pipeline.meshy_generations}
+                maxGenerations={pipeline.max_generations}
+                creditsUsed={pipeline.meshy_credits_used}
+                onModelCreated={(media) => setMediaList(prev => [media, ...prev])}
+              />
+            )}
+
             {/* Media preview */}
             {mediaList.length > 0 && (
               <div>
@@ -638,6 +649,118 @@ export default function PipelineDetail({ pipeline, media, log, prompts, adjustme
           )}
         </div>
       )}
+    </div>
+  );
+}
+
+function MeshyPanel({ pipelineId, generations, maxGenerations, creditsUsed, onModelCreated }: {
+  pipelineId: number;
+  generations: number;
+  maxGenerations: number;
+  creditsUsed: number;
+  onModelCreated: (media: any) => void;
+}) {
+  const [meshyTaskId, setMeshyTaskId] = useState<string | null>(null);
+  const [meshyStatus, setMeshyStatus] = useState<string>('');
+  const [meshyProgress, setMeshyProgress] = useState(0);
+  const [meshyError, setMeshyError] = useState('');
+  const [meshyLoading, setMeshyLoading] = useState(false);
+
+  async function startMeshy() {
+    setMeshyLoading(true);
+    setMeshyError('');
+    try {
+      const res = await fetch('/api/admin/pipeline/meshy', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pipeline_id: pipelineId, action: 'create' }),
+      });
+      const data = await res.json();
+      if (data.task_id) {
+        setMeshyTaskId(data.task_id);
+        setMeshyStatus('PENDING');
+        pollMeshy(data.task_id);
+      } else {
+        setMeshyError(data.error || 'Okänt fel');
+      }
+    } catch (err: any) {
+      setMeshyError(err.message);
+    } finally {
+      setMeshyLoading(false);
+    }
+  }
+
+  async function pollMeshy(taskId: string) {
+    const interval = setInterval(async () => {
+      try {
+        const res = await fetch('/api/admin/pipeline/meshy', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ pipeline_id: pipelineId, action: 'status', task_id: taskId }),
+        });
+        const task = await res.json();
+        setMeshyStatus(task.status || '');
+        setMeshyProgress(task.progress || 0);
+
+        if (task.status === 'SUCCEEDED') {
+          clearInterval(interval);
+          // Download the model
+          const dlRes = await fetch('/api/admin/pipeline/meshy', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ pipeline_id: pipelineId, action: 'download', task_id: taskId }),
+          });
+          const dlData = await dlRes.json();
+          if (dlData.media) onModelCreated(dlData.media);
+        } else if (task.status === 'FAILED') {
+          clearInterval(interval);
+          setMeshyError(task.task_error?.message || '3D-generering misslyckades');
+        }
+      } catch {
+        clearInterval(interval);
+      }
+    }, 10000); // Kolla var 10:e sekund
+  }
+
+  return (
+    <div className="rounded-lg border border-[#333] bg-[#1a1a1d] p-4">
+      <h3 className="mb-2 font-semibold text-sm">
+        <Icon name="cube" /> 3D-modellering (Meshy.ai)
+      </h3>
+      <div className="mb-3 flex gap-4 text-xs text-gray-400">
+        <span>Genereringar: {generations}/{maxGenerations}</span>
+        <span>Credits: {creditsUsed}</span>
+      </div>
+
+      {meshyStatus && meshyStatus !== 'SUCCEEDED' && meshyStatus !== 'FAILED' && (
+        <div className="mb-3">
+          <div className="flex items-center gap-2 text-sm text-yellow-300 mb-1">
+            <span className="animate-pulse">●</span> {meshyStatus} ({meshyProgress}%)
+          </div>
+          <div className="h-2 rounded-full bg-[#222]">
+            <div className="h-full rounded-full bg-yellow-500 transition-all" style={{ width: `${meshyProgress}%` }} />
+          </div>
+        </div>
+      )}
+
+      {meshyStatus === 'SUCCEEDED' && (
+        <div className="mb-3 text-sm text-green-400">✅ 3D-modell skapad och nedladdad!</div>
+      )}
+
+      {meshyError && (
+        <div className="mb-3 text-sm text-red-400">❌ {meshyError}</div>
+      )}
+
+      <button
+        onClick={startMeshy}
+        disabled={meshyLoading || generations >= maxGenerations || (!!meshyStatus && meshyStatus !== 'SUCCEEDED' && meshyStatus !== 'FAILED')}
+        className="rounded-md bg-orange-600 px-4 py-1.5 text-sm text-white hover:bg-orange-500 disabled:opacity-50 transition"
+      >
+        {meshyLoading ? 'Startar...' : generations >= maxGenerations ? 'Max genereringar nått' : 'Generera 3D-modell'}
+      </button>
+      <p className="mt-2 text-[10px] text-gray-500">
+        Använder godkänd frontbild. Kostar ~30 credits (mesh + textur).
+      </p>
     </div>
   );
 }
