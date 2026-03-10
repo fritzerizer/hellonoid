@@ -89,23 +89,23 @@ interface Props {
 }
 
 const mediaTypeLabels: Record<string, string> = {
-  reference: 'Referensbild',
-  cropped: 'Beskuren',
-  rigged_view: 'Riggad vy',
-  upscaled: 'Uppskalad',
-  '3d_model': '3D-modell',
-  blender_file: 'Blender-fil',
+  reference: 'Reference',
+  cropped: 'Cropped',
+  rigged_view: 'Rigged View',
+  upscaled: 'Upscaled',
+  '3d_model': '3D Model',
+  blender_file: 'Blender File',
   export: 'Export',
 };
 
 const viewAngleLabels: Record<string, string> = {
-  front: 'Framifrån',
-  back: 'Bakifrån',
-  left: 'Vänster sida',
-  right: 'Höger sida',
-  three_quarter_front: 'Snett framifrån',
-  top: 'Ovanifrån',
-  bottom: 'Underifrån',
+  front: 'Front',
+  back: 'Back',
+  left: 'Left Side',
+  right: 'Right Side',
+  three_quarter_front: 'Three-Quarter Front',
+  top: 'Top',
+  bottom: 'Bottom',
 };
 
 export default function PipelineDetail({ pipeline, media, log, prompts, adjustments, exportConfigs, steps }: Props) {
@@ -182,7 +182,6 @@ export default function PipelineDetail({ pipeline, media, log, prompts, adjustme
       const data = await res.json();
       if (data.results) {
         setGenerateResults(data.results);
-        // Add successful media to list
         for (const r of data.results) {
           if (r.success && r.media) {
             setMediaList(prev => [r.media, ...prev]);
@@ -242,11 +241,11 @@ export default function PipelineDetail({ pipeline, media, log, prompts, adjustme
       {/* Tabs */}
       <div className="mb-6 flex gap-4 border-b border-[#222] pb-2">
         {([
-          { key: 'status', label: 'Status & Åtgärder' },
+          { key: 'status', label: 'Status & Actions' },
           { key: 'media', label: `Media (${media.length})` },
-          { key: 'prompts', label: 'Promptar' },
-          { key: 'adjustments', label: 'Justeringar' },
-          { key: 'log', label: 'Historik' },
+          { key: 'prompts', label: 'Prompts' },
+          { key: 'adjustments', label: 'Adjustments' },
+          { key: 'log', label: 'History' },
         ] as const).map(t => (
           <button
             key={t.key}
@@ -267,7 +266,7 @@ export default function PipelineDetail({ pipeline, media, log, prompts, adjustme
             {/* Current step info */}
             <div className="rounded-lg border border-[#239eab]/30 bg-[#239eab]/5 p-6">
               <h2 className="mb-2 text-lg font-semibold">
-                Steg {currentStepNum}: {currentStepInfo?.name}
+                Step {currentStepNum}: {currentStepInfo?.name}
               </h2>
               <p className="text-sm text-gray-400">
                 {getStepDescription(pipeline.current_step)}
@@ -278,7 +277,7 @@ export default function PipelineDetail({ pipeline, media, log, prompts, adjustme
                 <textarea
                   value={comment}
                   onChange={e => setComment(e.target.value)}
-                  placeholder="Kommentar (valfritt)..."
+                  placeholder="Comment (optional)..."
                   className="w-full rounded-md border border-gray-600 bg-gray-800 px-3 py-2 text-sm text-white placeholder-gray-400"
                   rows={2}
                 />
@@ -288,21 +287,21 @@ export default function PipelineDetail({ pipeline, media, log, prompts, adjustme
                     disabled={loading}
                     className="rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-500 disabled:opacity-50 transition"
                   >
-                    <Icon name="check" /> Godkänn & gå vidare
+                    <Icon name="check" /> Approve & Next
                   </button>
                   <button
                     onClick={() => doAction('reject', '06_collect_media')}
                     disabled={loading}
                     className="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-500 disabled:opacity-50 transition"
                   >
-                    <Icon name="rotate-left" /> Skicka tillbaka
+                    <Icon name="rotate-left" /> Send Back
                   </button>
                   <button
                     onClick={() => doAction('skip')}
                     disabled={loading}
                     className="rounded-md bg-gray-700 px-3 py-2 text-sm text-gray-300 hover:bg-gray-600 disabled:opacity-50 transition"
                   >
-                    Hoppa över
+                    Skip
                   </button>
                 </div>
               </div>
@@ -311,9 +310,9 @@ export default function PipelineDetail({ pipeline, media, log, prompts, adjustme
             {/* Generate views (step 8) */}
             {(pipeline.current_step === '08_generate_views' || pipeline.current_step === '06_collect_media' || pipeline.current_step === '07_validate_media') && (
               <div className="rounded-lg border border-[#333] bg-[#1a1a1d] p-4">
-                <h3 className="mb-3 font-semibold text-sm">Generera riggade vyer (Gemini)</h3>
+                <h3 className="mb-3 font-semibold text-sm">Generate Rigged Views (Gemini)</h3>
                 <p className="text-xs text-gray-400 mb-3">
-                  Kräver godkända referensbilder. Genererar bilder i 6 standardvinklar.
+                  Requires approved reference images. Generates images in 6 standard angles.
                 </p>
                 <div className="flex flex-wrap gap-2">
                   <button
@@ -321,7 +320,7 @@ export default function PipelineDetail({ pipeline, media, log, prompts, adjustme
                     disabled={generating || referenceMedia.filter(m => m.validation_status === 'approved').length === 0}
                     className="rounded-md bg-purple-600 px-3 py-1.5 text-sm text-white hover:bg-purple-500 disabled:opacity-50 transition"
                   >
-                    {generating ? 'Genererar...' : 'Generera alla vyer'}
+                    {generating ? 'Generating...' : 'Generate All Views'}
                   </button>
                   {['front', 'left', 'back', 'three_quarter_front'].map(angle => (
                     <button
@@ -339,7 +338,7 @@ export default function PipelineDetail({ pipeline, media, log, prompts, adjustme
                     {generateResults.map((r, i) => (
                       <div key={i} className={`text-xs ${r.success ? 'text-green-400' : 'text-red-400'}`}>
                         {r.angle && `${viewAngleLabels[r.angle] || r.angle}: `}
-                        {r.success ? '✅ Genererad' : `❌ ${r.error}`}
+                        {r.success ? '✅ Generated' : `❌ ${r.error}`}
                       </div>
                     ))}
                   </div>
@@ -354,14 +353,14 @@ export default function PipelineDetail({ pipeline, media, log, prompts, adjustme
                 generations={pipeline.meshy_generations}
                 maxGenerations={pipeline.max_generations}
                 creditsUsed={pipeline.meshy_credits_used}
-                onModelCreated={(media) => setMediaList(prev => [media, ...prev])}
+                onModelCreated={(m) => setMediaList(prev => [m, ...prev])}
               />
             )}
 
             {/* Media preview */}
             {mediaList.length > 0 && (
               <div>
-                <h3 className="mb-3 font-semibold">Senaste media</h3>
+                <h3 className="mb-3 font-semibold">Recent Media</h3>
                 <div className="grid grid-cols-3 gap-2">
                   {mediaList.slice(0, 6).map(m => (
                     <div key={m.id} className="relative rounded-lg border border-[#222] bg-[#161616] overflow-hidden">
@@ -395,10 +394,10 @@ export default function PipelineDetail({ pipeline, media, log, prompts, adjustme
           {/* Sidebar */}
           <div className="space-y-4">
             <div className="rounded-lg border border-[#222] bg-[#161616] p-4 space-y-3">
-              <h3 className="font-semibold text-sm">Robotinfo</h3>
+              <h3 className="font-semibold text-sm">Robot Info</h3>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-gray-400">Namn</span>
+                  <span className="text-gray-400">Name</span>
                   <span>{pipeline.robots?.name}</span>
                 </div>
                 <div className="flex justify-between">
@@ -406,52 +405,52 @@ export default function PipelineDetail({ pipeline, media, log, prompts, adjustme
                   <span>{pipeline.robots?.status}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-400">Höjd</span>
+                  <span className="text-gray-400">Height</span>
                   <span>
-                    {pipeline.height_cm ? `${pipeline.height_cm} cm` : 'Okänd'}
+                    {pipeline.height_cm ? `${pipeline.height_cm} cm` : 'Unknown'}
                     {pipeline.height_cm && !pipeline.height_confirmed && ' ⚠️'}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-400">Pipeline-version</span>
+                  <span className="text-gray-400">Pipeline Version</span>
                   <span>v{pipeline.version}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-400">Meshy-genereringar</span>
+                  <span className="text-gray-400">Meshy Generations</span>
                   <span>{pipeline.meshy_generations}/{pipeline.max_generations}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-400">Meshy-credits</span>
+                  <span className="text-gray-400">Meshy Credits</span>
                   <span>{pipeline.meshy_credits_used}</span>
                 </div>
               </div>
             </div>
 
             <div className="rounded-lg border border-[#222] bg-[#161616] p-4 space-y-3">
-              <h3 className="font-semibold text-sm">Media-översikt</h3>
+              <h3 className="font-semibold text-sm">Media Overview</h3>
               <div className="space-y-1 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-gray-400">Referensbilder</span>
+                  <span className="text-gray-400">Reference Images</span>
                   <span>{referenceMedia.length}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-400">Riggade vyer</span>
+                  <span className="text-gray-400">Rigged Views</span>
                   <span>{riggedMedia.length}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-400">Exporter</span>
+                  <span className="text-gray-400">Exports</span>
                   <span>{exportMedia.length}</span>
                 </div>
               </div>
             </div>
 
             <div className="rounded-lg border border-[#222] bg-[#161616] p-4 space-y-3">
-              <h3 className="font-semibold text-sm">Exportformat</h3>
+              <h3 className="font-semibold text-sm">Export Formats</h3>
               <div className="space-y-1 text-xs text-gray-400">
                 {exportConfigs.map(c => (
                   <div key={c.id} className="flex justify-between">
                     <span>{c.name}</span>
-                    <span>{c.width}×{c.height} {c.format.toUpperCase()}</span>
+                    <span>{c.width}x{c.height} {c.format.toUpperCase()}</span>
                   </div>
                 ))}
               </div>
@@ -465,39 +464,40 @@ export default function PipelineDetail({ pipeline, media, log, prompts, adjustme
         <div>
           {/* Upload area */}
           <div className="mb-6 rounded-lg border-2 border-dashed border-[#333] bg-[#161616] p-6">
+            <h3 className="mb-3 font-semibold text-sm">Upload Media</h3>
             <div className="flex flex-wrap items-end gap-3">
               <div>
-                <label className="block text-xs text-gray-400 mb-1">Typ</label>
+                <label className="block text-xs text-gray-400 mb-1">Type</label>
                 <select
                   value={uploadType}
                   onChange={e => setUploadType(e.target.value)}
                   className="rounded border border-gray-600 bg-gray-800 px-2 py-1.5 text-sm text-white"
                 >
-                  <option value="reference">Referensbild</option>
-                  <option value="cropped">Beskuren</option>
-                  <option value="rigged_view">Riggad vy</option>
-                  <option value="3d_model">3D-modell</option>
+                  <option value="reference">Reference Image</option>
+                  <option value="cropped">Cropped</option>
+                  <option value="rigged_view">Rigged View</option>
+                  <option value="3d_model">3D Model</option>
                 </select>
               </div>
               <div>
-                <label className="block text-xs text-gray-400 mb-1">Vinkel</label>
+                <label className="block text-xs text-gray-400 mb-1">View Angle</label>
                 <select
                   value={uploadAngle}
                   onChange={e => setUploadAngle(e.target.value)}
                   className="rounded border border-gray-600 bg-gray-800 px-2 py-1.5 text-sm text-white"
                 >
-                  <option value="">Ingen specifik</option>
-                  <option value="front">Framifrån</option>
-                  <option value="back">Bakifrån</option>
-                  <option value="left">Vänster sida</option>
-                  <option value="right">Höger sida</option>
-                  <option value="three_quarter_front">Snett framifrån</option>
-                  <option value="top">Ovanifrån</option>
-                  <option value="bottom">Underifrån</option>
+                  <option value="">Not specified</option>
+                  <option value="front">Front</option>
+                  <option value="back">Back</option>
+                  <option value="left">Left Side</option>
+                  <option value="right">Right Side</option>
+                  <option value="three_quarter_front">Three-Quarter Front</option>
+                  <option value="top">Top</option>
+                  <option value="bottom">Bottom</option>
                 </select>
               </div>
               <label className="cursor-pointer rounded-md bg-[#239eab] px-4 py-1.5 text-sm font-medium text-white hover:bg-[#1e8a95] transition">
-                <Icon name="upload" /> {uploading ? 'Laddar upp...' : 'Välj filer'}
+                <Icon name="upload" /> {uploading ? 'Uploading...' : 'Choose Files'}
                 <input
                   type="file"
                   multiple
@@ -508,12 +508,17 @@ export default function PipelineDetail({ pipeline, media, log, prompts, adjustme
                 />
               </label>
             </div>
+            <p className="mt-2 text-xs text-gray-500">
+              Accepts JPG, PNG, WebP, GLB, GLTF, and Blender files. You can select multiple files.
+            </p>
           </div>
+
+          {/* Drag & Drop overlay hint */}
 
           {/* Media grid */}
           {mediaList.length === 0 ? (
             <div className="rounded-lg border border-[#222] bg-[#161616] p-8 text-center text-gray-400">
-              Inga mediafiler ännu. Ladda upp referensbilder för att komma igång.
+              No media files yet. Upload reference images to get started.
             </div>
           ) : (
             <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3">
@@ -555,16 +560,16 @@ export default function PipelineDetail({ pipeline, media, log, prompts, adjustme
                           onClick={() => validateMedia(m.id, 'approved')}
                           className="rounded bg-green-900/40 px-2 py-0.5 text-[10px] text-green-300 hover:bg-green-800 transition"
                         >
-                          <Icon name="check" /> Godkänn
+                          <Icon name="check" /> Approve
                         </button>
                         <button
                           onClick={() => {
-                            const c = prompt('Anledning:');
+                            const c = prompt('Reason for rejection:');
                             if (c) validateMedia(m.id, 'rejected', c);
                           }}
                           className="rounded bg-red-900/40 px-2 py-0.5 text-[10px] text-red-300 hover:bg-red-800 transition"
                         >
-                          <Icon name="xmark" /> Avvisa
+                          <Icon name="xmark" /> Reject
                         </button>
                       </div>
                     )}
@@ -579,7 +584,7 @@ export default function PipelineDetail({ pipeline, media, log, prompts, adjustme
       {/* Tab: Prompts */}
       {activeTab === 'prompts' && (
         <div className="space-y-3">
-          <h3 className="font-semibold mb-3">Bildgenereringspromptar (steg 8)</h3>
+          <h3 className="font-semibold mb-3">Image Generation Prompts (Step 8)</h3>
           {prompts.filter(p => p.step === '08_generate_views').map(p => (
             <div key={p.id} className="rounded-lg border border-[#222] bg-[#161616] p-4">
               <div className="flex items-center justify-between mb-2">
@@ -601,7 +606,7 @@ export default function PipelineDetail({ pipeline, media, log, prompts, adjustme
       {/* Tab: Adjustments */}
       {activeTab === 'adjustments' && (
         <div className="space-y-3">
-          <h3 className="font-semibold mb-3">Blender-justeringar (steg 14-15)</h3>
+          <h3 className="font-semibold mb-3">Blender Adjustments (Steps 14-15)</h3>
           {adjustments.map(a => (
             <div key={a.id} className="flex items-center justify-between rounded-lg border border-[#222] bg-[#161616] p-3">
               <div>
@@ -618,7 +623,7 @@ export default function PipelineDetail({ pipeline, media, log, prompts, adjustme
       {activeTab === 'log' && (
         <div className="space-y-2">
           {log.length === 0 ? (
-            <div className="text-center text-gray-400 py-8">Ingen historik ännu.</div>
+            <div className="text-center text-gray-400 py-8">No history yet.</div>
           ) : (
             log.map(entry => (
               <div key={entry.id} className="flex items-start gap-3 rounded-lg border border-[#222] bg-[#161616] p-3">
@@ -634,14 +639,14 @@ export default function PipelineDetail({ pipeline, media, log, prompts, adjustme
                     </span>
                     <span className="text-xs text-gray-400">{entry.action}</span>
                     {entry.performed_by && (
-                      <span className="text-xs text-gray-500">av {entry.performed_by}</span>
+                      <span className="text-xs text-gray-500">by {entry.performed_by}</span>
                     )}
                   </div>
                   {entry.comment && (
                     <p className="text-xs text-gray-400 mt-0.5">{entry.comment}</p>
                   )}
                   <div className="text-[10px] text-gray-600 mt-0.5">
-                    {new Date(entry.created_at).toLocaleString('sv-SE')}
+                    {new Date(entry.created_at).toLocaleString('en-US')}
                   </div>
                 </div>
               </div>
@@ -681,7 +686,7 @@ function MeshyPanel({ pipelineId, generations, maxGenerations, creditsUsed, onMo
         setMeshyStatus('PENDING');
         pollMeshy(data.task_id);
       } else {
-        setMeshyError(data.error || 'Okänt fel');
+        setMeshyError(data.error || 'Unknown error');
       }
     } catch (err: any) {
       setMeshyError(err.message);
@@ -704,7 +709,6 @@ function MeshyPanel({ pipelineId, generations, maxGenerations, creditsUsed, onMo
 
         if (task.status === 'SUCCEEDED') {
           clearInterval(interval);
-          // Download the model
           const dlRes = await fetch('/api/admin/pipeline/meshy', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -714,21 +718,21 @@ function MeshyPanel({ pipelineId, generations, maxGenerations, creditsUsed, onMo
           if (dlData.media) onModelCreated(dlData.media);
         } else if (task.status === 'FAILED') {
           clearInterval(interval);
-          setMeshyError(task.task_error?.message || '3D-generering misslyckades');
+          setMeshyError(task.task_error?.message || '3D generation failed');
         }
       } catch {
         clearInterval(interval);
       }
-    }, 10000); // Kolla var 10:e sekund
+    }, 10000);
   }
 
   return (
     <div className="rounded-lg border border-[#333] bg-[#1a1a1d] p-4">
       <h3 className="mb-2 font-semibold text-sm">
-        <Icon name="cube" /> 3D-modellering (Meshy.ai)
+        <Icon name="cube" /> 3D Modeling (Meshy.ai)
       </h3>
       <div className="mb-3 flex gap-4 text-xs text-gray-400">
-        <span>Genereringar: {generations}/{maxGenerations}</span>
+        <span>Generations: {generations}/{maxGenerations}</span>
         <span>Credits: {creditsUsed}</span>
       </div>
 
@@ -744,11 +748,11 @@ function MeshyPanel({ pipelineId, generations, maxGenerations, creditsUsed, onMo
       )}
 
       {meshyStatus === 'SUCCEEDED' && (
-        <div className="mb-3 text-sm text-green-400">✅ 3D-modell skapad och nedladdad!</div>
+        <div className="mb-3 text-sm text-green-400">3D model created and downloaded!</div>
       )}
 
       {meshyError && (
-        <div className="mb-3 text-sm text-red-400">❌ {meshyError}</div>
+        <div className="mb-3 text-sm text-red-400">{meshyError}</div>
       )}
 
       <button
@@ -756,10 +760,10 @@ function MeshyPanel({ pipelineId, generations, maxGenerations, creditsUsed, onMo
         disabled={meshyLoading || generations >= maxGenerations || (!!meshyStatus && meshyStatus !== 'SUCCEEDED' && meshyStatus !== 'FAILED')}
         className="rounded-md bg-orange-600 px-4 py-1.5 text-sm text-white hover:bg-orange-500 disabled:opacity-50 transition"
       >
-        {meshyLoading ? 'Startar...' : generations >= maxGenerations ? 'Max genereringar nått' : 'Generera 3D-modell'}
+        {meshyLoading ? 'Starting...' : generations >= maxGenerations ? 'Max generations reached' : 'Generate 3D Model'}
       </button>
       <p className="mt-2 text-[10px] text-gray-500">
-        Använder godkänd frontbild. Kostar ~30 credits (mesh + textur).
+        Uses approved front image. Costs ~30 credits (mesh + texture).
       </p>
     </div>
   );
@@ -767,25 +771,25 @@ function MeshyPanel({ pipelineId, generations, maxGenerations, creditsUsed, onMo
 
 function getStepDescription(step: string): string {
   const descriptions: Record<string, string> = {
-    '01_research': 'Sök efter nya robotar på tillverkarsidor, nyhetssidor och sociala medier.',
-    '02_duplicate_check': 'Kontrollera att roboten inte redan finns i databasen.',
-    '03_create_robot': 'Skapa robotpost i databasen med grundläggande information.',
-    '04_create_storage': 'Skapa lagringsmapp för robotens tillgångar.',
-    '05_create_subfolders': 'Skapa undermappar: råmaterial, 3D-modell, export.',
-    '06_collect_media': 'Samla in bildmaterial som täcker hela roboten. Framsida, baksida, sidor i hög upplösning. Beskär bilder så bara roboten syns.',
-    '07_validate_media': 'Granska och godkänn insamlat bildmaterial. Alla vinklar täckta? Tillräcklig upplösning?',
-    '08_generate_views': 'Generera riggade bilder i fasta vinklar med AI (Gemini). Framifrån, sidan, bakifrån, snett framifrån, ovanifrån, underifrån.',
-    '09_validate_views': 'Validera de genererade vyerna. Om kvaliteten inte räcker, skicka tillbaka till steg 6.',
-    '10_upscale_views': 'Skapa högupplösta versioner av varje vy separat.',
-    '11_3d_modeling': 'Skicka underlag till Meshy.ai för 3D-modellering.',
-    '12_validate_3d': 'Granska 3D-modellen. Proportioner, detaljer, textur.',
-    '13_import_blender': 'Importera 3D-modellen i Blender för efterbearbetning.',
-    '14_auto_cleanup': 'Kör automatiska Blender-skript för att snygga till modellen.',
-    '15_manual_adjustments': 'Gör manuella justeringar vid behov enligt instruktioner.',
-    '16_validate_result': 'Slutgiltig validering av den färdiga 3D-modellen.',
-    '17_export_web': 'Exportera bilder för webben. Proportionella storlekar, vattenstämpel, transparent bakgrund.',
-    '18_upload': 'Ladda upp de färdiga bilderna på hellonoid.com.',
-    '19_ready_to_publish': 'Roboten är redo att publiceras med alla bilder på plats.',
+    '01_research': 'Search for new robots on manufacturer sites, news outlets, and social media.',
+    '02_duplicate_check': 'Verify the robot does not already exist in the database.',
+    '03_create_robot': 'Create a robot entry in the database with basic information.',
+    '04_create_storage': 'Create a storage folder for the robot\'s assets.',
+    '05_create_subfolders': 'Create subfolders: raw materials, 3D model, export.',
+    '06_collect_media': 'Collect images covering the entire robot. Front, back, sides in high resolution. Crop images to show only the robot.',
+    '07_validate_media': 'Review and approve collected images. Are all angles covered? Is the resolution sufficient?',
+    '08_generate_views': 'Generate rigged images in fixed angles using AI (Gemini). Front, side, back, three-quarter front, top, bottom.',
+    '09_validate_views': 'Validate the generated views. If quality is insufficient, send back to step 6.',
+    '10_upscale_views': 'Create high-resolution versions of each view separately.',
+    '11_3d_modeling': 'Send materials to Meshy.ai for 3D model generation.',
+    '12_validate_3d': 'Review the 3D model. Check proportions, details, and texture quality.',
+    '13_import_blender': 'Import the 3D model into Blender for post-processing.',
+    '14_auto_cleanup': 'Run automated Blender scripts to clean up and polish the model.',
+    '15_manual_adjustments': 'Make manual adjustments as needed following instructions.',
+    '16_validate_result': 'Final validation of the finished 3D model after all adjustments.',
+    '17_export_web': 'Export images for the web. Proportional sizing, watermark, transparent background.',
+    '18_upload': 'Upload the finished images to hellonoid.com.',
+    '19_ready_to_publish': 'The robot is ready to publish with all images in place.',
   };
   return descriptions[step] || '';
 }

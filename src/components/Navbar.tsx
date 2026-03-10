@@ -16,45 +16,45 @@ const publicLinks = [
   { href: '/news', label: 'News' },
 ];
 
-const adminLinks = [
-  { href: '/admin', label: 'Dashboard' },
+const adminRobotLinks = [
   { href: '/admin/robots', label: 'Manage Robots' },
-  { href: '/admin/news', label: 'Manage News' },
   { href: '/admin/pipeline', label: 'Asset Pipeline' },
   { href: '/admin/pipeline/about', label: 'Pipeline Info' },
 ];
 
 export default function Navbar({ isLoggedIn, isAdmin, userEmail }: NavbarProps) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [robotsDropdown, setRobotsDropdown] = useState(false);
   const pathname = usePathname();
   const navRef = useRef<HTMLElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Close menu on route change
   useEffect(() => {
     setMenuOpen(false);
+    setRobotsDropdown(false);
   }, [pathname]);
 
-  // Close menu on click outside entire nav
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
       if (navRef.current && !navRef.current.contains(e.target as Node)) {
         setMenuOpen(false);
       }
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setRobotsDropdown(false);
+      }
     }
-    if (menuOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-      return () => document.removeEventListener('mousedown', handleClickOutside);
-    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [menuOpen]);
 
   const isActive = (href: string) => pathname === href;
+  const isRobotsActive = pathname.startsWith('/admin/robots') || pathname.startsWith('/admin/pipeline');
 
   return (
     <nav ref={navRef} className="sticky top-0 z-50 border-b border-[#27272a] bg-[#0c0c0d]/90 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
         {/* Logo */}
         <a href="/" className="flex items-center gap-2 text-lg font-bold tracking-tight">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/logo.svg" alt="Hellonoid" className="h-10 w-auto max-w-[200px]" />
         </a>
 
@@ -73,15 +73,47 @@ export default function Navbar({ isLoggedIn, isAdmin, userEmail }: NavbarProps) 
           {isAdmin && (
             <>
               <span className="text-[#333] select-none">|</span>
-              {adminLinks.map(link => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`transition hover:text-white ${isActive(link.href) ? 'text-[#239eab]' : 'text-[#239eab]/70'}`}
+              <Link
+                href="/admin"
+                className={`transition hover:text-white ${isActive('/admin') ? 'text-[#239eab]' : 'text-[#239eab]/70'}`}
+              >
+                Dashboard
+              </Link>
+
+              {/* Robots dropdown */}
+              <div ref={dropdownRef} className="relative">
+                <button
+                  onClick={() => setRobotsDropdown(prev => !prev)}
+                  className={`flex items-center gap-1 transition hover:text-white ${isRobotsActive ? 'text-[#239eab]' : 'text-[#239eab]/70'}`}
                 >
-                  {link.label}
-                </Link>
-              ))}
+                  Robots
+                  <svg className={`w-3 h-3 transition ${robotsDropdown ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                {robotsDropdown && (
+                  <div className="absolute top-full mt-2 right-0 min-w-[180px] rounded-lg border border-[#27272a] bg-[#161616] py-1 shadow-xl">
+                    {adminRobotLinks.map(link => (
+                      <Link
+                        key={link.href}
+                        href={link.href}
+                        className={`block px-4 py-2 text-sm transition ${
+                          isActive(link.href) ? 'bg-[#239eab]/10 text-[#239eab]' : 'text-gray-300 hover:bg-[#1a1a1d] hover:text-white'
+                        }`}
+                      >
+                        {link.label}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <Link
+                href="/admin/news"
+                className={`transition hover:text-white ${isActive('/admin/news') ? 'text-[#239eab]' : 'text-[#239eab]/70'}`}
+              >
+                News
+              </Link>
             </>
           )}
 
@@ -127,17 +159,37 @@ export default function Navbar({ isLoggedIn, isAdmin, userEmail }: NavbarProps) 
             <>
               <div className="border-t border-[#27272a] my-2" />
               <p className="px-3 py-1 text-xs text-[#555] uppercase tracking-wider">Admin</p>
-              {adminLinks.map(link => (
+              <Link
+                href="/admin"
+                className={`block px-3 py-3 rounded-md text-base transition ${
+                  isActive('/admin') ? 'bg-[#239eab]/20 text-[#239eab]' : 'text-[#239eab]/70 hover:bg-[#1a1a1d] hover:text-[#239eab]'
+                }`}
+              >
+                Dashboard
+              </Link>
+
+              <p className="px-3 pt-2 pb-1 text-xs text-[#444] uppercase tracking-wider">Robots</p>
+              {adminRobotLinks.map(link => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`block px-3 py-3 rounded-md text-base transition ${
+                  className={`block px-3 py-3 pl-6 rounded-md text-base transition ${
                     isActive(link.href) ? 'bg-[#239eab]/20 text-[#239eab]' : 'text-[#239eab]/70 hover:bg-[#1a1a1d] hover:text-[#239eab]'
                   }`}
                 >
                   {link.label}
                 </Link>
               ))}
+
+              <Link
+                href="/admin/news"
+                className={`block px-3 py-3 rounded-md text-base transition ${
+                  isActive('/admin/news') ? 'bg-[#239eab]/20 text-[#239eab]' : 'text-[#239eab]/70 hover:bg-[#1a1a1d] hover:text-[#239eab]'
+                }`}
+              >
+                News
+              </Link>
+
               <div className="border-t border-[#27272a] my-2" />
               <p className="px-3 py-1 text-xs text-[#555] truncate">{userEmail}</p>
             </>
