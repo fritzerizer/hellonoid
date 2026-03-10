@@ -1,22 +1,12 @@
-import { createClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
-import { readFileSync } from 'fs';
-import { homedir } from 'os';
-
-function getSupabase() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-  let key = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
-  if (!key) {
-    try { key = readFileSync(`${homedir()}/.secrets/supabase-service-role`, 'utf-8').trim(); } catch {}
-  }
-  if (!key) key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-  return createClient(url, key);
-}
+import { getSupabase, requireAuth } from '@/lib/auth';
 
 export async function POST(req: NextRequest) {
-  const supabase = getSupabase();
+  try {
+    await requireAuth(req, 'agent');
+    const supabase = getSupabase();
 
-  const formData = await req.formData();
+    const formData = await req.formData();
   const file = formData.get('file') as File | null;
   const pipelineId = formData.get('pipeline_id') as string;
   const mediaType = (formData.get('media_type') as string) || 'reference';
@@ -82,5 +72,19 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: dbError.message }, { status: 500 });
   }
 
-  return NextResponse.json(media);
+    return NextResponse.json(media);
+
+  } catch (error: any) {
+    if (error.message === 'Authentication required') {
+      return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
+    }
+    if (error.message === 'Insufficient permissions') {
+      return NextResponse.json({ error: 'Insufficient permissions' }, { status: 403 });
+    }
+
+    console.error('Upload error:', error);
+    return NextResponse.json({ 
+      error: `Upload failed: ${error.message}` 
+    }, { status: 500 });
+  }
 }

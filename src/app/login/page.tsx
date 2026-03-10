@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { createClient } from '@/lib/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
 import Link from 'next/link';
 
 export default function LoginPage() {
@@ -11,7 +11,15 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const { signIn, user } = useAuth();
   const router = useRouter();
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (user) {
+      router.push('/admin');
+    }
+  }, [user, router]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,24 +27,17 @@ export default function LoginPage() {
     setError(null);
     setSuccess(null);
 
-    const supabase = createClient();
-
     try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (error) {
-        setError(error.message);
+      const result = await signIn(email, password);
+      
+      if (result.error) {
+        setError(result.error);
       } else {
-        setSuccess('Inloggning lyckades! Omdirigerar...');
-        // Redirect sker automatiskt via middleware
+        setSuccess('Login successful! Redirecting...');
         router.push('/admin');
-        router.refresh();
       }
     } catch (err) {
-      setError('Något gick fel. Försök igen.');
+      setError('Something went wrong. Please try again.');
     } finally {
       setLoading(false);
     }

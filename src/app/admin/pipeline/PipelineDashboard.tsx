@@ -1,6 +1,9 @@
 'use client';
 
 import { useState } from 'react';
+import { useAuth } from '@/contexts/AuthContext';
+import { useApiClient } from '@/hooks/useApiClient';
+import { api } from '@/lib/api-client';
 import Icon from '@/components/Icon';
 
 interface Pipeline {
@@ -65,11 +68,15 @@ const statusColors: Record<string, string> = {
 };
 
 export default function PipelineDashboard({ initialPipelines, robots, sources, media, steps }: Props) {
+  const { user } = useAuth();
+  useApiClient(); // Set up auth token provider
+  
   const [pipelines, setPipelines] = useState(initialPipelines);
   const [tab, setTab] = useState<'overview' | 'robots' | 'sources'>('overview');
   const [showAddRobot, setShowAddRobot] = useState(false);
   const [selectedRobotId, setSelectedRobotId] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   // Robots not yet in pipeline
   const pipelineRobotIds = new Set(pipelines.map(p => p.robot_id));
@@ -93,18 +100,16 @@ export default function PipelineDashboard({ initialPipelines, robots, sources, m
   async function addRobotToPipeline() {
     if (!selectedRobotId) return;
     setLoading(true);
+    setError(null);
     try {
-      const res = await fetch('/api/admin/pipeline', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ robot_id: selectedRobotId }),
+      const newPipeline = await api.post('/api/admin/pipeline', { 
+        robot_id: selectedRobotId 
       });
-      if (res.ok) {
-        const newPipeline = await res.json();
-        setPipelines([newPipeline, ...pipelines]);
-        setShowAddRobot(false);
-        setSelectedRobotId(null);
-      }
+      setPipelines([newPipeline, ...pipelines]);
+      setShowAddRobot(false);
+      setSelectedRobotId(null);
+    } catch (err: any) {
+      setError(`Failed to add robot to pipeline: ${err.message}`);
     } finally {
       setLoading(false);
     }
@@ -112,16 +117,16 @@ export default function PipelineDashboard({ initialPipelines, robots, sources, m
 
   async function advanceStep(pipelineId: number, comment?: string) {
     setLoading(true);
+    setError(null);
     try {
-      const res = await fetch('/api/admin/pipeline/advance', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ pipeline_id: pipelineId, action: 'approve', comment }),
+      const updated = await api.post('/api/admin/pipeline/advance', {
+        pipeline_id: pipelineId,
+        action: 'approve',
+        comment
       });
-      if (res.ok) {
-        const updated = await res.json();
-        setPipelines(pipelines.map(p => p.id === pipelineId ? { ...p, ...updated } : p));
-      }
+      setPipelines(pipelines.map(p => p.id === pipelineId ? { ...p, ...updated } : p));
+    } catch (err: any) {
+      setError(`Failed to advance pipeline: ${err.message}`);
     } finally {
       setLoading(false);
     }
@@ -129,16 +134,17 @@ export default function PipelineDashboard({ initialPipelines, robots, sources, m
 
   async function rejectStep(pipelineId: number, comment: string, targetStep: string) {
     setLoading(true);
+    setError(null);
     try {
-      const res = await fetch('/api/admin/pipeline/advance', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ pipeline_id: pipelineId, action: 'reject', comment, target_step: targetStep }),
+      const updated = await api.post('/api/admin/pipeline/advance', {
+        pipeline_id: pipelineId,
+        action: 'reject',
+        comment,
+        target_step: targetStep
       });
-      if (res.ok) {
-        const updated = await res.json();
-        setPipelines(pipelines.map(p => p.id === pipelineId ? { ...p, ...updated } : p));
-      }
+      setPipelines(pipelines.map(p => p.id === pipelineId ? { ...p, ...updated } : p));
+    } catch (err: any) {
+      setError(`Failed to reject pipeline: ${err.message}`);
     } finally {
       setLoading(false);
     }
@@ -146,6 +152,25 @@ export default function PipelineDashboard({ initialPipelines, robots, sources, m
 
   return (
     <div>
+      {/* Error display */}
+      {error && (
+        <div className="mb-4 rounded-lg border border-red-500/30 bg-red-900/20 p-4">
+          <div className="flex items-start gap-2">
+            <Icon name="exclamation-triangle" className="text-red-400 mt-0.5" />
+            <div>
+              <h4 className="font-medium text-red-400">Error</h4>
+              <p className="text-sm text-red-300 mt-1">{error}</p>
+            </div>
+            <button 
+              onClick={() => setError(null)}
+              className="ml-auto text-red-400 hover:text-red-300"
+            >
+              <Icon name="xmark" />
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Summary stats */}
       <div className="mb-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
         <div className="rounded-lg border border-[#222] bg-[#161616] p-4">

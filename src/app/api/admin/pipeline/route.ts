@@ -4,9 +4,7 @@ import { getSupabase, requireAuth } from '@/lib/auth';
 // POST: Add robot to pipeline  
 export async function POST(req: NextRequest) {
   try {
-    // TODO: Re-enable auth after frontend integration
-    // const user = await requireAuth(req, 'agent');
-    const user = { email: 'admin' }; // Temporary
+    const user = await requireAuth(req, 'agent');
     const supabase = getSupabase();
     const { robot_id } = await req.json();
 
@@ -76,6 +74,13 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(data);
 
   } catch (error: any) {
+    if (error.message === 'Authentication required') {
+      return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
+    }
+    if (error.message === 'Insufficient permissions') {
+      return NextResponse.json({ error: 'Insufficient permissions' }, { status: 403 });
+    }
+
     console.error('Pipeline creation error:', error);
     return NextResponse.json({ 
       error: `Failed to create pipeline: ${error.message}` 
@@ -86,8 +91,7 @@ export async function POST(req: NextRequest) {
 // GET: List pipeline entries
 export async function GET(req: NextRequest) {
   try {
-    // TODO: Re-enable auth after frontend integration
-    // await requireAuth(req, 'agent');
+    await requireAuth(req, 'agent');
     const supabase = getSupabase();
     
     const { data, error } = await supabase
@@ -101,6 +105,13 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json(data);
   } catch (error: any) {
+    if (error.message === 'Authentication required') {
+      return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
+    }
+    if (error.message === 'Insufficient permissions') {
+      return NextResponse.json({ error: 'Insufficient permissions' }, { status: 403 });
+    }
+    
     console.error('Pipeline list error:', error);
     return NextResponse.json({ 
       error: `Failed to fetch pipelines: ${error.message}` 
