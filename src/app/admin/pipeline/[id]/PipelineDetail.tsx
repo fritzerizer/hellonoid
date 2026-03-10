@@ -167,6 +167,35 @@ export default function PipelineDetail({ pipeline, media, log, prompts, adjustme
     }
   }
 
+  const [generating, setGenerating] = useState(false);
+  const [generateResults, setGenerateResults] = useState<any[]>([]);
+
+  async function generateViews(angle?: string) {
+    setGenerating(true);
+    setGenerateResults([]);
+    try {
+      const res = await fetch('/api/admin/pipeline/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pipeline_id: pipeline.id, view_angle: angle }),
+      });
+      const data = await res.json();
+      if (data.results) {
+        setGenerateResults(data.results);
+        // Add successful media to list
+        for (const r of data.results) {
+          if (r.success && r.media) {
+            setMediaList(prev => [r.media, ...prev]);
+          }
+        }
+      } else if (data.error) {
+        setGenerateResults([{ error: data.error }]);
+      }
+    } finally {
+      setGenerating(false);
+    }
+  }
+
   async function validateMedia(mediaId: number, status: 'approved' | 'rejected', validationComment?: string) {
     const res = await fetch('/api/admin/pipeline/media/validate', {
       method: 'POST',
@@ -279,12 +308,51 @@ export default function PipelineDetail({ pipeline, media, log, prompts, adjustme
               </div>
             </div>
 
+            {/* Generate views (step 8) */}
+            {(pipeline.current_step === '08_generate_views' || pipeline.current_step === '06_collect_media' || pipeline.current_step === '07_validate_media') && (
+              <div className="rounded-lg border border-[#333] bg-[#1a1a1d] p-4">
+                <h3 className="mb-3 font-semibold text-sm">Generera riggade vyer (Gemini)</h3>
+                <p className="text-xs text-gray-400 mb-3">
+                  Kräver godkända referensbilder. Genererar bilder i 6 standardvinklar.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    onClick={() => generateViews()}
+                    disabled={generating || referenceMedia.filter(m => m.validation_status === 'approved').length === 0}
+                    className="rounded-md bg-purple-600 px-3 py-1.5 text-sm text-white hover:bg-purple-500 disabled:opacity-50 transition"
+                  >
+                    {generating ? 'Genererar...' : 'Generera alla vyer'}
+                  </button>
+                  {['front', 'left', 'back', 'three_quarter_front'].map(angle => (
+                    <button
+                      key={angle}
+                      onClick={() => generateViews(angle)}
+                      disabled={generating}
+                      className="rounded bg-gray-700 px-2 py-1 text-xs text-gray-300 hover:bg-gray-600 disabled:opacity-50 transition"
+                    >
+                      {viewAngleLabels[angle] || angle}
+                    </button>
+                  ))}
+                </div>
+                {generateResults.length > 0 && (
+                  <div className="mt-3 space-y-1">
+                    {generateResults.map((r, i) => (
+                      <div key={i} className={`text-xs ${r.success ? 'text-green-400' : 'text-red-400'}`}>
+                        {r.angle && `${viewAngleLabels[r.angle] || r.angle}: `}
+                        {r.success ? '✅ Genererad' : `❌ ${r.error}`}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
             {/* Media preview */}
-            {media.length > 0 && (
+            {mediaList.length > 0 && (
               <div>
                 <h3 className="mb-3 font-semibold">Senaste media</h3>
                 <div className="grid grid-cols-3 gap-2">
-                  {media.slice(0, 6).map(m => (
+                  {mediaList.slice(0, 6).map(m => (
                     <div key={m.id} className="relative rounded-lg border border-[#222] bg-[#161616] overflow-hidden">
                       {m.file_url && m.mime_type?.startsWith('image') ? (
                         <img src={m.file_url} alt={m.file_name} className="h-32 w-full object-cover" />
