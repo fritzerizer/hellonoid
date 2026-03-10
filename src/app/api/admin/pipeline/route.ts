@@ -1,23 +1,12 @@
-import { createClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
-import { readFileSync } from 'fs';
-import { homedir } from 'os';
-
-function getSupabase() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-  // Use service role for admin operations
-  let key = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
-  if (!key) {
-    try { key = readFileSync(`${homedir()}/.secrets/supabase-service-role`, 'utf-8').trim(); } catch {}
-  }
-  if (!key) key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-  return createClient(url, key);
-}
+import { getSupabase, requireAuth } from '@/lib/auth';
 
 // POST: Add robot to pipeline
 export async function POST(req: NextRequest) {
-  const supabase = getSupabase();
-  const { robot_id } = await req.json();
+  try {
+    const user = await requireAuth(req, 'agent');
+    const supabase = getSupabase();
+    const { robot_id } = await req.json();
 
   if (!robot_id) {
     return NextResponse.json({ error: 'robot_id required' }, { status: 400 });
@@ -64,7 +53,7 @@ export async function POST(req: NextRequest) {
       current_step: '06_collect_media',  // Skip steps 1-5 for existing robots
       height_cm: heightCm,
       height_confirmed: !!heightCm,
-      started_by: 'admin',
+      started_by: user.email,
     })
     .select('*, robots(name, slug, status)')
     .single();
@@ -73,29 +62,59 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  // Log the step entry
-  await supabase.from('pipeline_step_log').insert({
-    pipeline_id: data.id,
-    step: '06_collect_media',
-    action: 'enter',
-    performed_by: 'admin',
-    comment: `Pipeline v${nextVersion} started for existing robot`,
-  });
+    // Log the step entry
+    await supabase.from('pipeline_step_log').insert({
+      pipeline_id: data.id,
+      step: '06_collect_media',
+      action: 'enter',
+      performed_by: user.email,
+      comment: `Pipeline v${nextVersion} started for existing robot`,
+    });
 
-  return NextResponse.json(data);
+    return NextResponse.json(data);
+
+  } catch (error: any) {
+    if (error.message === 'Authentication required') {
+      return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
+    }
+    if (error.message === 'Insufficient permissions') {
+      return NextResponse.json({ error: 'Insufficient permissions' }, { status: 403 });
+    }
+
+    console.error('Pipeline creation error:', error);
+    return NextResponse.json({ 
+      error: `Failed to create pipeline: ${error.message}` 
+    }, { status: 500 });
+  }
 }
 
 // GET: List pipeline entries
-export async function GET() {
-  const supabase = getSupabase();
-  const { data, error } = await supabase
-    .from('robot_pipeline')
-    .select('*, robots(name, slug, status)')
-    .order('updated_at', { ascending: false });
+export async function GET(req: NextRequest) {
+  try {
+    await requireAuth(req, 'agent');
+    const supabase = getSupabase();
+    
+    const { data, error } = await supabase
+      .from('robot_pipeline')
+      .select('*, robots(name, slug, status)')
+      .order('updated_at', { ascending: false });
 
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    return NextResponse.json(data);
+  } catch (error: any) {
+    if (error.message === 'Authentication required') {
+      return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
+    }
+    if (error.message === 'Insufficient permissions') {
+      return NextResponse.json({ error: 'Insufficient permissions' }, { status: 403 });
+    }
+    
+    console.error('Pipeline list error:', error);
+    return NextResponse.json({ 
+      error: `Failed to fetch pipelines: ${error.message}` 
+    }, { status: 500 });
   }
-
-  return NextResponse.json(data);
 }

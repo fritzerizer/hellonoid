@@ -1,7 +1,5 @@
-import { createClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
-import { readFileSync } from 'fs';
-import { homedir } from 'os';
+import { getSupabase, requireAuth } from '@/lib/auth';
 
 const STEPS_ORDER = [
   '01_research', '02_duplicate_check', '03_create_robot', '04_create_storage',
@@ -11,19 +9,11 @@ const STEPS_ORDER = [
   '17_export_web', '18_upload', '19_ready_to_publish',
 ];
 
-function getSupabase() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-  let key = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
-  if (!key) {
-    try { key = readFileSync(`${homedir()}/.secrets/supabase-service-role`, 'utf-8').trim(); } catch {}
-  }
-  if (!key) key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-  return createClient(url, key);
-}
-
 export async function POST(req: NextRequest) {
-  const supabase = getSupabase();
-  const { pipeline_id, action, comment, target_step } = await req.json();
+  try {
+    const user = await requireAuth(req, 'agent');
+    const supabase = getSupabase();
+    const { pipeline_id, action, comment, target_step } = await req.json();
 
   if (!pipeline_id || !action) {
     return NextResponse.json({ error: 'pipeline_id and action required' }, { status: 400 });
@@ -67,14 +57,14 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Invalid action' }, { status: 400 });
   }
 
-  // Log the action
-  await supabase.from('pipeline_step_log').insert({
-    pipeline_id,
-    step: pipeline.current_step,
-    action,
-    comment: comment || null,
-    performed_by: 'admin',
-  });
+    // Log the action
+    await supabase.from('pipeline_step_log').insert({
+      pipeline_id,
+      step: pipeline.current_step,
+      action,
+      comment: comment || null,
+      performed_by: user.email,
+    });
 
   // Update pipeline
   const { data: updated, error: updateError } = await supabase
@@ -92,15 +82,29 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: updateError.message }, { status: 500 });
   }
 
-  // If entering new step, log it
-  if (newStep !== pipeline.current_step) {
-    await supabase.from('pipeline_step_log').insert({
-      pipeline_id,
-      step: newStep,
-      action: 'enter',
-      performed_by: 'admin',
-    });
-  }
+    // If entering new step, log it
+    if (newStep !== pipeline.current_step) {
+      await supabase.from('pipeline_step_log').insert({
+        pipeline_id,
+        step: newStep,
+        action: 'enter',
+        performed_by: user.email,
+      });
+    }
 
-  return NextResponse.json(updated);
+    return NextResponse.json(updated);
+
+  } catch (error: any) {
+    if (error.message === 'Authentication required') {
+      return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
+    }
+    if (error.message === 'Insufficient permissions') {
+      return NextResponse.json({ error: 'Insufficient permissions' }, { status: 403 });
+    }
+
+    console.error('Pipeline advance error:', error);
+    return NextResponse.json({ 
+      error: `Failed to advance pipeline: ${error.message}` 
+    }, { status: 500 });
+  }
 }
