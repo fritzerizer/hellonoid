@@ -3,12 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { createClient } from '@supabase/supabase-js';
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+import { useAuth } from '@/contexts/AuthContext';
 
 const publicLinks = [
   { href: '/robots', label: 'Robots' },
@@ -22,77 +17,13 @@ const adminRobotLinks = [
   { href: '/admin/pipeline/about', label: 'Pipeline Info' },
 ];
 
-export default function SimpleAuthNavbar() {
+export default function AppNavbar() {
+  const { user, loading, signOut } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const [robotsDropdown, setRobotsDropdown] = useState(false);
-  const [user, setUser] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
   const pathname = usePathname();
   const navRef = useRef<HTMLElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    // Get current user and check if admin
-    async function checkUser() {
-      try {
-        const { data: { session }, error } = await supabase.auth.getSession();
-        console.log('Session check:', { session: !!session, email: session?.user?.email, error });
-        
-        if (error || !session?.user) {
-          setUser(null);
-          setLoading(false);
-          return;
-        }
-
-        const authUser = session.user;
-
-        // For Fredrik's email, assume admin for now
-        if (authUser.email === 'f.linder@me.com') {
-          setUser({
-            email: authUser.email,
-            role: 'admin'
-          });
-        } else {
-          // Check admin_users table
-          const { data: adminUser } = await supabase
-            .from('admin_users')
-            .select('role')
-            .eq('email', authUser.email)
-            .single();
-
-          if (adminUser) {
-            setUser({
-              email: authUser.email,
-              role: adminUser.role
-            });
-          } else {
-            setUser(null);
-          }
-        }
-      } catch (err) {
-        console.error('Error checking user:', err);
-        setUser(null);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    checkUser();
-
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        console.log('Auth state change:', event, session?.user?.email);
-        if (!session) {
-          setUser(null);
-        } else {
-          checkUser();
-        }
-      }
-    );
-
-    return () => subscription.unsubscribe();
-  }, []);
 
   useEffect(() => {
     setMenuOpen(false);
@@ -116,12 +47,10 @@ export default function SimpleAuthNavbar() {
   const isRobotsActive = pathname.startsWith('/admin/robots') || pathname.startsWith('/admin/pipeline');
 
   const handleSignOut = async () => {
-    await supabase.auth.signOut();
-    setUser(null);
     setMenuOpen(false);
+    await signOut();
+    window.location.href = '/';
   };
-
-  console.log('SimpleAuthNavbar - user:', user, 'loading:', loading);
 
   return (
     <nav ref={navRef} className="sticky top-0 z-50 border-b border-[#27272a] bg-[#0c0c0d]/90 backdrop-blur-md">
@@ -211,7 +140,7 @@ export default function SimpleAuthNavbar() {
           )}
         </div>
 
-        {/* Hamburger button */}
+        {/* Hamburger */}
         <button
           onClick={() => setMenuOpen(prev => !prev)}
           className="md:hidden flex flex-col justify-center items-center w-10 h-10 gap-1.5"
@@ -254,7 +183,6 @@ export default function SimpleAuthNavbar() {
               >
                 Dashboard
               </Link>
-
               <p className="px-3 pt-2 pb-1 text-xs text-[#444] uppercase tracking-wider">Robots</p>
               {adminRobotLinks.map(link => (
                 <Link
@@ -267,7 +195,6 @@ export default function SimpleAuthNavbar() {
                   {link.label}
                 </Link>
               ))}
-
               <Link
                 href="/admin/news"
                 className={`block px-3 py-3 rounded-md text-base transition ${
@@ -276,7 +203,6 @@ export default function SimpleAuthNavbar() {
               >
                 News
               </Link>
-
               <div className="border-t border-[#27272a] my-2" />
               <div className="px-3 py-1">
                 <p className="text-xs text-[#555] truncate">{user.email}</p>

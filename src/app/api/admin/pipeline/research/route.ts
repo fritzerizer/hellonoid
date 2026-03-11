@@ -19,7 +19,7 @@ interface ResearchResult {
     name: string;
     manufacturer?: string;
     description?: string;
-    external_url?: string;
+    external_url?: string;  
   }>;
   errors: string[];
 }
@@ -135,7 +135,7 @@ export async function POST(req: NextRequest) {
 async function getExistingRobots(supabase: any) {
   const { data } = await supabase
     .from('robots')
-    .select('name, manufacturer, slug');
+    .select('name, slug, manufacturer_id, manufacturers!robots_manufacturer_id_fkey(name)');
   return data || [];
 }
 
@@ -158,7 +158,11 @@ async function searchBrave(source: ResearchSource): Promise<any[]> {
   const query = source.search_query || 'new humanoid robot announcement';
   
   try {
-    const response = await fetch('https://api.search.brave.com/res/v1/web/search', {
+    const searchUrl = new URL('https://api.search.brave.com/res/v1/web/search');
+    searchUrl.searchParams.set('q', query);
+    searchUrl.searchParams.set('count', '10');
+
+    const response = await fetch(searchUrl.toString(), {
       headers: {
         'Accept': 'application/json',
         'X-Subscription-Token': process.env.BRAVE_API_KEY || ''
@@ -282,18 +286,40 @@ async function createRobotFromResearch(
   source: ResearchSource, 
   userEmail: string
 ): Promise<void> {
+  // Find or create manufacturer
+  let manufacturerId: number | null = null;
+  const manufacturerName = robotData.manufacturer || 'Unknown';
+  
+  const { data: existingMfg } = await supabase
+    .from('manufacturers')
+    .select('id')
+    .ilike('name', manufacturerName)
+    .limit(1)
+    .single();
+
+  if (existingMfg) {
+    manufacturerId = existingMfg.id;
+  } else {
+    const mfgSlug = generateSlug(manufacturerName);
+    const { data: newMfg } = await supabase
+      .from('manufacturers')
+      .insert({ name: manufacturerName, slug: mfgSlug })
+      .select('id')
+      .single();
+    manufacturerId = newMfg?.id ?? null;
+  }
+
   // Create robot with status "researching"
   const { data: robot } = await supabase
     .from('robots')
     .insert({
       name: robotData.name,
       slug: generateSlug(robotData.name),
-      manufacturer: robotData.manufacturer || 'Unknown',
+      manufacturer_id: manufacturerId,
       category: 'Humanoid',
       status: 'researching',
-      description: robotData.description,
+      summary: robotData.description,
       hero_image_url: null,
-      created_at: new Date().toISOString()
     })
     .select()
     .single();

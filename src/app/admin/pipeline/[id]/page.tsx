@@ -1,22 +1,18 @@
-import { createClient } from '@supabase/supabase-js';
 import { notFound } from 'next/navigation';
 import PipelineDetail from './PipelineDetail';
 import { PIPELINE_STEPS } from '../page';
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+import { getSupabase } from '@/lib/auth';
 
 interface Props {
   params: Promise<{ id: string }>;
 }
 
 async function getData(id: number) {
+  const supabase = getSupabase();
   const [pipelineRes, mediaRes, logRes, promptsRes, adjustmentsRes, exportConfigRes] = await Promise.all([
     supabase.from('robot_pipeline').select('*, robots(id, name, slug, status, hero_image_url)').eq('id', id).single(),
     supabase.from('pipeline_media').select('*').eq('pipeline_id', id).order('created_at', { ascending: false }),
-    supabase.from('pipeline_step_log').select('*').eq('pipeline_id', id).order('created_at', { ascending: false }).limit(50),
+    supabase.from('pipeline_step_log').select('*').eq('pipeline_id', id).order('created_at', { ascending: false }).limit(100),
     supabase.from('pipeline_prompts').select('*').order('id'),
     supabase.from('pipeline_adjustments').select('*').order('id'),
     supabase.from('pipeline_export_config').select('*').order('id'),

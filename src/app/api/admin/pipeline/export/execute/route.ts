@@ -159,7 +159,7 @@ export async function POST(req: NextRequest) {
                 file_name: filename,
                 file_size: finalBuffer.length,
                 mime_type: 'image/png',
-                storage_backend: 'vercel',
+                storage_backend: 'r2',
                 media_type: 'export',
                 view_angle: view,
                 width: config.width,

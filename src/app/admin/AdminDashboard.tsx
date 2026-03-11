@@ -3,42 +3,19 @@
 import { useState, useEffect } from 'react';
 import Icon from '@/components/Icon';
 import Link from 'next/link';
-import { getCurrentUser, supabase, type User } from '@/lib/working-auth';
+import { useAuth } from '@/contexts/AuthContext';
+import { createClient } from '@/lib/supabase/client';
 
 export default function AdminDashboard() {
-  const [stats, setStats] = useState({
-    robotCount: 0,
-    newsCount: 0,
-    user: null as User | null,
-    loading: true
-  });
+  const { user, loading: authLoading } = useAuth();
+  const [stats, setStats] = useState({ robotCount: 0, newsCount: 0, loading: true });
 
   useEffect(() => {
+    if (authLoading || !user) return;
+
     async function loadData() {
       try {
-        // Add delay to ensure localStorage is ready
-        setTimeout(() => {
-          const user = getCurrentUser();
-          console.log('AdminDashboard - auth check result:', user);
-          
-          if (!user) {
-            console.log('AdminDashboard - no user, redirecting to login');
-            // No auth - redirect to login
-            window.location.href = '/login';
-            return;
-          }
-
-          console.log('AdminDashboard - user found, loading data');
-        }, 100);
-        
-        // Continue loading data for now
-        const user = getCurrentUser();
-        if (!user) {
-          setStats(prev => ({ ...prev, loading: false }));
-          return;
-        }
-
-        // Get stats
+        const supabase = createClient();
         const [robotsResult, newsResult] = await Promise.all([
           supabase.from('robots').select('*', { count: 'exact', head: true }),
           supabase.from('news').select('*', { count: 'exact', head: true })
@@ -47,8 +24,7 @@ export default function AdminDashboard() {
         setStats({
           robotCount: robotsResult.count || 0,
           newsCount: newsResult.count || 0,
-          user,
-          loading: false
+          loading: false,
         });
       } catch (err) {
         console.error('Error loading admin dashboard:', err);
@@ -57,9 +33,9 @@ export default function AdminDashboard() {
     }
 
     loadData();
-  }, []);
+  }, [authLoading, user]);
 
-  if (stats.loading) {
+  if (authLoading || stats.loading) {
     return (
       <div className="min-h-screen bg-[#0c0c0d] text-white flex items-center justify-center">
         <div className="text-center">
@@ -70,12 +46,14 @@ export default function AdminDashboard() {
     );
   }
 
+  if (!user) return null; // Middleware handles redirect
+
   return (
     <div className="min-h-screen bg-[#0c0c0d] text-white">
       <div className="mx-auto max-w-7xl px-4 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold">Admin Dashboard</h1>
-          <p className="text-gray-400 mt-1">Welcome back, {stats.user?.email}</p>
+          <p className="text-gray-400 mt-1">Welcome back, {user.email}</p>
         </div>
 
         {/* Quick stats */}

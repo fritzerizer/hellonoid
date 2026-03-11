@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
+import { createServerClient } from '@supabase/ssr';
 import { readFileSync } from 'fs';
 import { homedir } from 'os';
 import { NextRequest } from 'next/server';
@@ -23,35 +24,67 @@ export interface AuthUser {
 
 export async function getAuthUser(req: NextRequest): Promise<AuthUser | null> {
   try {
-    // Try to get user from session/cookie/header
+    let userId: string | undefined;
+    let userEmail: string | undefined;
+
+    // 1. Try Bearer token (for API/agent calls)
     const authHeader = req.headers.get('Authorization');
-    if (!authHeader?.startsWith('Bearer ')) {
-      return null;
+    if (authHeader?.startsWith('Bearer ')) {
+      const token = authHeader.replace('Bearer ', '');
+      const supabase = getSupabase();
+      const { data: { user }, error } = await supabase.auth.getUser(token);
+      if (!error && user) {
+        userId = user.id;
+        userEmail = user.email;
+      }
     }
 
-    const token = authHeader.replace('Bearer ', '');
-    const supabase = getSupabase();
-    
-    // Verify token and get user
-    const { data: { user }, error } = await supabase.auth.getUser(token);
-    if (error || !user) {
+    // 2. Fall back to cookie-based session (for browser requests)
+    if (!userId) {
+      const supabase = createServerClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+        {
+          cookies: {
+            getAll() {
+              return req.cookies.getAll();
+            },
+            setAll() {
+              // Read-only in route handlers
+            },
+          },
+        }
+      );
+      const { data: { user }, error } = await supabase.auth.getUser();
+      if (!error && user) {
+        userId = user.id;
+        userEmail = user.email;
+      }
+    }
+
+    if (!userId || !userEmail) {
       return null;
     }
 
     // Get user role from admin_users table
-    const { data: adminUser } = await supabase
+    const adminSupabase = getSupabase();
+    const { data: adminUser } = await adminSupabase
       .from('admin_users')
       .select('role')
-      .eq('email', user.email)
+      .eq('email', userEmail)
       .single();
 
     if (!adminUser) {
-      return null; // Not an admin user
+      // Hardcoded admin fallback
+      if (userEmail === 'f.linder@me.com') {
+        return { id: userId, email: userEmail, role: 'admin' };
+      }
+      return null;
     }
 
     return {
-      id: user.id,
-      email: user.email!,
+      id: userId,
+      email: userEmail,
       role: adminUser.role as 'admin' | 'editor' | 'agent'
     };
   } catch {

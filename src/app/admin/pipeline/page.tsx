@@ -1,10 +1,5 @@
-import { createClient } from '@supabase/supabase-js';
 import PipelineDashboard from './PipelineDashboard';
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+import { getSupabase } from '@/lib/auth';
 
 // Pipeline step definitions with labels
 export const PIPELINE_STEPS = [
@@ -30,11 +25,13 @@ export const PIPELINE_STEPS = [
 ] as const;
 
 async function getData() {
-  const [pipelinesRes, robotsRes, sourcesRes, mediaRes] = await Promise.all([
+  const supabase = getSupabase();
+  const [pipelinesRes, robotsRes, sourcesRes, mediaRes, activityRes] = await Promise.all([
     supabase.from('robot_pipeline').select('*, robots(name, slug, status)').order('updated_at', { ascending: false }),
     supabase.from('robots').select('id, name, slug, status').order('name'),
     supabase.from('pipeline_sources').select('*').order('name'),
     supabase.from('pipeline_media').select('pipeline_id, media_type, validation_status'),
+    supabase.from('pipeline_step_log').select('*').order('created_at', { ascending: false }).limit(30),
   ]);
 
   return {
@@ -42,6 +39,7 @@ async function getData() {
     robots: robotsRes.data ?? [],
     sources: sourcesRes.data ?? [],
     media: mediaRes.data ?? [],
+    recentActivity: activityRes.data ?? [],
   };
 }
 
@@ -51,16 +49,21 @@ export default async function PipelinePage() {
   return (
     <div className="min-h-screen bg-[#0c0c0d] text-white">
       <div className="mx-auto max-w-7xl px-4 py-8">
-        <div className="mb-8 flex items-center justify-between">
+        <div className="mb-8 flex items-center justify-between flex-wrap gap-4">
           <div>
             <h1 className="text-3xl font-bold">Asset Pipeline</h1>
             <p className="mt-1 text-sm text-gray-400">
               19-step workflow from research to publication
             </p>
           </div>
-          <a href="/admin" className="text-sm text-[#239eab] hover:underline">
-            ← Back to Admin
-          </a>
+          <div className="flex items-center gap-3">
+            <a href="/admin/pipeline/about" className="text-sm text-gray-400 hover:text-[#239eab] transition flex items-center gap-1">
+              <span>About Pipeline</span>
+            </a>
+            <a href="/admin" className="text-sm text-[#239eab] hover:underline">
+              ← Back to Admin
+            </a>
+          </div>
         </div>
 
         <PipelineDashboard
@@ -68,6 +71,7 @@ export default async function PipelinePage() {
           robots={data.robots}
           sources={data.sources}
           media={data.media}
+          recentActivity={data.recentActivity}
           steps={PIPELINE_STEPS}
         />
       </div>

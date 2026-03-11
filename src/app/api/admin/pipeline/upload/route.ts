@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
       file_name: file.name,
       file_size: file.size,
       mime_type: file.type,
-      storage_backend: 'vercel',  // Using Supabase storage for now
+      storage_backend: 'r2',
       media_type: mediaType,
       view_angle: viewAngle || null,
       width,
